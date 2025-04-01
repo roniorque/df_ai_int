@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from helper.desc import Analysts, Analysts_Description, Data_Source
 st.set_page_config(layout="wide")
 from classes.Off_Page import SeoOffPageAnalyst
 from classes.On_Page_GT import SeoOnGT
