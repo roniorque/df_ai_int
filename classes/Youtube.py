@@ -135,52 +135,55 @@ class YouTube:
             '''
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
             start_time = time.time()
+            if 'analyze' not in st.session_state:
+                st.session_state['analyze'] = ''
             if st.session_state['analyze'] == 'clicked':
                 hide_button()
-                try:
-                    combined_text = ""
-                    with st.spinner('Youtube...', show_time=True):
-                            st.write('')
-                            # INITIALIZING SESSIONS
-                            combined_text += f"Client Summary: {st.session_state.nature}\n"
+                if self.youtube or self.youtube_er or self.youtube_pf:
+                    try:
+                        combined_text = ""
+                        with st.spinner('Youtube...', show_time=True):
+                                st.write('')
+                                # INITIALIZING SESSIONS
+                                combined_text += f"Client Summary: {st.session_state.nature}\n"
 
-                            try:
-                                combined_text += f"\nYoutube Followers: {self.youtube}"
-                                combined_text += f"\nYoutube Audience Engagement Rate: {self.youtube_er}%"
-                                combined_text += f"\nYoutube Post Frequency: {self.youtube_pf}"
+                                try:
+                                    combined_text += f"\nYoutube Followers: {self.youtube}"
+                                    combined_text += f"\nYoutube Audience Engagement Rate: {self.youtube_er}%"
+                                    combined_text += f"\nYoutube Post Frequency: {self.youtube_pf}"
 
-                            except KeyError:
-                                pass
+                                except KeyError:
+                                    pass
 
-            
-                            # OUTPUT FOR SEO ANALYST
-                            payload_txt = {"question": combined_text}
-                            result = self.request_model(payload_txt)
-                            
-                            end_time = time.time()
-                            time_lapsed = end_time - start_time
-                            debug_info = {
-                                #'analyst': self.analyst_name,
-                                'url_uuid': self.model_url.split("-")[-1],
-                                'time_lapsed': time_lapsed,
-                                'payload': payload_txt,
-                                'result': result,
-                            }
-                            
-                            collect_telemetry(debug_info)
-                            
-                            with st.expander("Debug information", icon="⚙"):
-                                st.write(debug_info)
+                
+                                # OUTPUT FOR SEO ANALYST
+                                payload_txt = {"question": combined_text}
+                                result = self.request_model(payload_txt)
+                                
+                                end_time = time.time()
+                                time_lapsed = end_time - start_time
+                                debug_info = {
+                                    #'analyst': self.analyst_name,
+                                    'url_uuid': self.model_url.split("-")[-1],
+                                    'time_lapsed': time_lapsed,
+                                    'payload': payload_txt,
+                                    'result': result,
+                                }
+                                
+                                collect_telemetry(debug_info)
+                                
+                                #with st.expander("Debug information", icon="⚙"):
+                                #    st.write(debug_info)
 
-                            for df in st.session_state.keys():
-                                del st.session_state[df]
-                            for facebook_ad_campaign in st.session_state.keys():
-                                del st.session_state[facebook_ad_campaign]
+                                for df in st.session_state.keys():
+                                    del st.session_state[df]
+                                for facebook_ad_campaign in st.session_state.keys():
+                                    del st.session_state[facebook_ad_campaign]
 
-                            st.session_state['analyzing'] = False 
-                except AttributeError:
-                    st.info("Please upload CSV or PDF files first.")
-                    hide_button() 
+                                st.session_state['analyzing'] = False 
+                    except AttributeError:
+                        st.info("Please upload CSV or PDF files first.")
+                        hide_button() 
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
