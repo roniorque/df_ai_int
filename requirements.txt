@@ -1,0 +1,10 @@
+numpy
+pandas
+requests
+streamlit 
+python-dotenv
+chardet
+st_img_pastebutton
+streamlit_paste_button
+pymupdf
+pymongo
