@@ -10,7 +10,6 @@ from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
-from helper.analyze import analyze_button
 
 class SeoOffPageAnalyst:
     def __init__(self, model_url):

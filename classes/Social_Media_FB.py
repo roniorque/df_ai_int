@@ -246,9 +246,7 @@ class Facebook:
                                 del st.session_state[facebook_ad_campaign]
 
                             st.session_state['analyzing'] = False 
-                    else:
-                        st.info("Please upload CSV or PDF files first.")
-                        hide_button()    
+                    
                 except AttributeError:
                     st.info("Please upload CSV or PDF files first.")
                     hide_button() 

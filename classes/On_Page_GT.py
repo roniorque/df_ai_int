@@ -8,7 +8,6 @@ from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
-from helper.analyze import analyze_button
 
 class SeoOnGT:
     def __init__(self, model_url):
@@ -150,10 +149,7 @@ class SeoOnGT:
                         if 'analyze' not in st.session_state:
                             st.session_state['analyze'] = ''
                         st.session_state['analyze'] == ''
-
-                else:
-                    st.info("Please upload CSV or PDF files first.")
-                    unhide_button()       
+      
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

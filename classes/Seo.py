@@ -292,10 +292,7 @@ class Seo:
                         for others in st.session_state.keys():
                             del st.session_state[others]
 
-                        st.session_state['analyzing'] = False
-                else:
-                    st.info("Please upload CSV or PDF files first.")
-                    hide_button()       
+                        st.session_state['analyzing'] = False    
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
