@@ -8,11 +8,10 @@ load_dotenv()
 
 actual_email = os.getenv('email')
 actual_password = os.getenv('password')
-
 # Insert a form in the container
 with placeholder.form("login"):
     st.markdown("#### Digital Footprint AI Team")
-    email = st.text_input("Email")
+    email = st.text_input("Username")
     password = st.text_input("Password", type="password")
     submit = st.form_submit_button("Login")
 

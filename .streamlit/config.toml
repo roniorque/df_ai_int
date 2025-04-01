@@ -1,0 +1,11 @@
+[client]
+showSidebarNavigation = false
+
+[runner]
+fastReruns = true
+
+[browser]
+gatherUsageStats = false
+
+[global]
+disableWidgetStateDuplicationWarning = true
