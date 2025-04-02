@@ -159,7 +159,7 @@ class Seo:
                 self.file_dict = upload.file_dict
             '''
             #st.write("") # FOR THE HIDE BUTTON
-            self.uploaded_file_seo = st.file_uploader("SEO Keywords (CSV) - SEO", type='csv', key="seo2")
+            self.uploaded_file_seo = st.file_uploader("SEO Keywords - SEMRush", type='csv', key="seo2")
             if self.uploaded_file_seo:
                 self.delete_sessions() 
                 try:
@@ -169,7 +169,7 @@ class Seo:
                     pass
             
             
-            self.uploaded_file = st.file_uploader("Traffic Channels (SEMRush) (CSV) - SEO", type='csv')
+            self.uploaded_file = st.file_uploader("Traffic Channels - SEMRush", type='csv')
             if self.uploaded_file:
                 self.delete_sessions() 
                 try:
@@ -179,7 +179,7 @@ class Seo:
                     pass
            
             st.write("") # FOR THE HIDE BUTTON
-            self.others = st.file_uploader("Traffic Acquisition (GA4) (CSV) - SEO", type='csv', key="seo5")
+            self.others = st.file_uploader("Traffic Acquisition - GA4", type='csv', key="seo5")
             if self.others:
                 self.delete_sessions()
                 try:
@@ -187,8 +187,8 @@ class Seo:
                 except Exception:
                     pass
 
-            self.page_index = st.text_input("Pages Indexed:", placeholder='Enter Pages Indexed')
-            self.bounce_rate = st.text_input("Bounce Rate:", placeholder='Enter Bounce Rate')
+            self.page_index = st.text_input("Pages Indexed - Google Search Console:", placeholder='Enter Pages Indexed')
+            self.bounce_rate = st.text_input("Bounce Rate - GA4:", placeholder='Enter Bounce Rate')
             
             followers = {
                 'Pages Indexed': self.page_index if self.page_index else 'N/A',
@@ -291,8 +291,9 @@ class Seo:
                             del st.session_state[df_seo]
                         for others in st.session_state.keys():
                             del st.session_state[others]
-
+                        print("done1")
                         st.session_state['analyzing'] = False    
+                         
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

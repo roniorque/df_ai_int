@@ -67,11 +67,13 @@ class Instagram:
             "Best of Breed Solution": [str(backlink) for backlink in number_of_backlinks]
         }
         df_output = pd.DataFrame(data)
+        '''
         with st.expander("AI Analysis", expanded=True, icon="🤖"):
             st.table(df_output.style.set_table_styles(
             [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
             {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
             ).set_properties(**{'text-align': 'center'}))
+        '''
 
         return output
       
@@ -123,7 +125,7 @@ class Instagram:
                 if self.instagram or self.instagram_er or self.instagram_pf:
                     try:
                         combined_text = ""
-                        with st.spinner('Analyzing...', show_time=True):
+                        with st.spinner('Instagram...', show_time=True):
                                 st.write('')
                                 try:
                                     combined_text += f"\nInstagram Followers: {self.instagram}"
@@ -154,7 +156,7 @@ class Instagram:
                                 for facebook_ad_campaign in st.session_state.keys():
                                     del st.session_state[facebook_ad_campaign]
 
-                                st.session_state['analyzing'] = False 
+                                
                     except AttributeError:
                         st.info("Please upload CSV or PDF files first.")
                         hide_button() 

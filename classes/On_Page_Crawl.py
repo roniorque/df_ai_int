@@ -75,7 +75,7 @@ class SeoOnCrawl:
     
     def row1(self):
             #st.write(self.data_src)
-            self.uploaded_files = st.file_uploader("Crawl File (SEO On Page)", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_backlink")
+            self.uploaded_files = st.file_uploader("Crawl File - ScreamingFrog:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_backlink")
             #self.gtmetrix = st.file_uploader("GTmetrix", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
             if self.uploaded_files:
                 upload.multiple_upload_file(self.uploaded_files)

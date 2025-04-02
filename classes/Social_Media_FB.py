@@ -68,11 +68,13 @@ class Facebook:
             "Best of Breed Solution": [str(backlink) for backlink in number_of_backlinks]
         }
         df_output = pd.DataFrame(data)
+        '''
         with st.expander("AI Analysis", expanded=True, icon="🤖"):
             st.table(df_output.style.set_table_styles(
             [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
             {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
             ).set_properties(**{'text-align': 'center'}))
+        '''
 
         return output
       
@@ -237,8 +239,8 @@ class Facebook:
                             
                             collect_telemetry(debug_info)
                             
-                            with st.expander("Debug information", icon="⚙"):
-                                st.write(debug_info)
+                            #with st.expander("Debug information", icon="⚙"):
+                            #    st.write(debug_info)
 
                             for df in st.session_state.keys():
                                 del st.session_state[df]
@@ -248,7 +250,7 @@ class Facebook:
                             st.session_state['analyzing'] = False 
                     
                 except AttributeError:
-                    st.info("Please upload CSV or PDF files first.")
+                   
                     hide_button() 
 
 if __name__ == "__main__":

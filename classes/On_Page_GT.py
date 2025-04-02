@@ -76,7 +76,7 @@ class SeoOnGT:
     def row1(self):
             #st.write(self.data_src)
             #self.uploaded_files = st.file_uploader("Upload Backlink List (PDF)", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on")
-            self.gtmetrix = st.file_uploader("GTmetrix", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
+            self.gtmetrix = st.file_uploader("GTmetrix:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
             '''
             if self.uploaded_files:
                 upload.multiple_upload_file(self.uploaded_files)
@@ -84,7 +84,14 @@ class SeoOnGT:
             '''
             if self.gtmetrix:
                 upload.upload_gt(self.gtmetrix)
-                
+
+            self.website_responsiveness = st.text_input("Website Responsiveness - Google PageSpeed Insight:", placeholder='Enter Website Responsiveness')
+            self.content_management_system = st.text_input("Content Management System - BuiltWith:", placeholder='Enter Content Management System')
+            self.SSL_certificate = st.text_input("SSL Certificate - BuiltWith:", placeholder='Enter SSL Certificate')
+            self.web_analytics = st.text_input("Web Analytics - BuiltWith:", placeholder='Enter Web Analytics')
+            self.client_relations_management_system = st.text_input("Client Relations Management System - BuiltWith:", placeholder='Enter Client Relations Management System')
+            self.lead_generation_mechanism = st.text_input("Lead Generation Mechanism - Business Context (Lead Generation & Lead Nurturing):", placeholder='Enter Lead Generation Mechanism')
+
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("AI Analyst Output: ")
@@ -116,6 +123,15 @@ class SeoOnGT:
                                     combined_text += "GTmetrix: {"+ f['content'] + "}\n"
                                 elif f['type'] == 'csv':
                                     combined_text += f['content'].to_csv(index=True) + "\n"
+                        except KeyError:
+                            pass
+                        try:
+                            combined_text += f"\nWebsite Responsiveness: {self.website_responsiveness}"
+                            combined_text += f"\nContent Management System: {self.content_management_system}%"
+                            combined_text += f"\nSSL Certificate: {self.SSL_certificate}"
+                            combined_text += f"\nWeb Analytics: {self.web_analytics}"
+                            combined_text += f"\nClient Relations Management System: {self.client_relations_management_system}"
+                            combined_text += f"\nLead Generation Mechanism: {self.lead_generation_mechanism}"
                         except KeyError:
                             pass
                         # OUTPUT FOR SEO ANALYST

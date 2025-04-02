@@ -60,17 +60,18 @@ class SeoOffPageAnalyst:
         }
 
         df_output = pd.DataFrame(data)
+        '''
         with st.expander("AI Analysis", expanded=True, icon="🤖"):
             st.table(df_output.style.set_table_styles(
                 [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
                 {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
             ).set_properties(**{'text-align': 'center'}))
-        
+        '''
         return output
         
     def row1(self):
             #st.write(self.data_src)
-            self.uploaded_files = st.file_uploader('Backlinks (SEO Off Page)', type=['pdf', 'csv'], accept_multiple_files=True, key="seo_off")
+            self.uploaded_files = st.file_uploader('Backlinks - SEMRush', type='csv', accept_multiple_files=True, key="seo_off")
             if self.uploaded_files:
                 upload.multiple_upload_file(self.uploaded_files)
                 
@@ -78,11 +79,8 @@ class SeoOffPageAnalyst:
             #st.write("") # FOR THE HIDE BUTTON
            
             st.session_state['analyzing'] = False
- 
             start_time = time.time()
-            if st.session_state['analyze'] == 'clicked':
-
-                if self.uploaded_files:
+            if self.uploaded_files and st.session_state['analyze'] == 'clicked':
                     combined_text = ""
                     with st.spinner('SEO Off Page Analyst...', show_time=True):
                         st.write('')
@@ -114,12 +112,11 @@ class SeoOffPageAnalyst:
                         
                         collect_telemetry(debug_info)
                         
-                        with st.expander("Debug information", icon="⚙"):
-                            st.write(debug_info)
-
+                        #with st.expander("Debug information", icon="⚙"):
+                        #    st.write(debug_info)
+                        print("done2")
                         st.session_state['analyzing'] = False
-                        st.session_state['analyze'] == ''
-                                   
+                                       
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

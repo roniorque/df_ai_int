@@ -19,7 +19,7 @@ st.write("# Digital Footprint AI Team")
 if 'nature' not in st.session_state:
     st.session_state['nature'] = ''
 if 'analyze' not in st.session_state:
-            st.session_state['analyze'] = ''
+            st.session_state['analyze'] = False
         
 def row1():
     col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
@@ -29,11 +29,17 @@ def row1():
                 f"{st.session_state.nature}",help="Name of business, nature of business, location, products/services" 
             )
         st.session_state.nature = txt
+        if 'analyze' not in st.session_state:
+            st.session_state['analyze'] = False
 
+        analyze_button = st.button("Analyze", st.session_state['analyze'])
+        if analyze_button:
+            st.session_state['analyze'] = 'clicked'
+        
     with col2:
         st.write("## Website Traffic")
         backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
-        backlinks = SeoBacklinks(os.getenv('MODEL_SEO_Analyst'))
+        #backlinks = SeoBacklinks(os.getenv('MODEL_SEO_Analyst'))
         keywords = Seo(os.getenv('MODEL_SEO_Analyst'))    
 
     with col3:
@@ -57,25 +63,12 @@ def row1():
         tiktok = Tiktok(os.getenv('MODEL_Social_Media_Analyst'))
 
     with col4:
-        st.write("## Website Performance")
+        st.write("## Website Structure")
         crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
         gtmetrix = SeoOnGT(os.getenv('MODEL_On_Page_Analyst'))
        
 
     return col1, col2, col3, col4
 
-def row2():
-    col1, col2, col3 = st.columns( gap="medium", spec=[0.73, 0.8, 0.03])
- 
-    with col2:
-        if 'analyze' not in st.session_state:
-            st.session_state['analyze'] = ''
-
-        analyze_button = st.button("Analyze", st.session_state['analyze'])
-        if analyze_button:
-            st.session_state['analyze'] = 'clicked'
-
-    return col1, col2, col3
-
 row1()
-row2()
+
