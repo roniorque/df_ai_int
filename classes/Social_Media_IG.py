@@ -103,6 +103,44 @@ class Instagram:
                     pass
                 return file_name
         
+    def process(self):
+        session = st.session_state.analyze
+        if (self.instagram or self.instagram_er or self.instagram_pf) and session == 'clicked':
+                        try:
+                            combined_text = ""
+                            with st.spinner('Instagram...', show_time=True):
+                                    st.write('')
+                                    try:
+                                        combined_text += f"\nInstagram Followers: {self.instagram}"
+                                        combined_text += f"\nInstagram Audience Engagement Rate: {self.instagram_er}%"
+                                        combined_text += f"\nInstagram Post Frequency: {self.instagram_pf}"
+                                    except KeyError:
+                                        pass
+
+                    
+                                    # OUTPUT FOR SEO ANALYST
+                                    payload_txt = {"question": combined_text}
+                                    #result = self.request_model(payload_txt)
+                                    
+                                    #end_time = time.time()
+                                    #time_lapsed = end_time - start_time
+                                    debug_info = {'data_field' : 'Instagram', 'result': combined_text}
+                                    '''
+                                    debug_info = {
+                                        #'analyst': self.analyst_name,
+                                        'url_uuid': self.model_url.split("-")[-1],
+                                        'time_lapsed': time_lapsed,
+                                        'payload': payload_txt,
+                                        'result': result,
+                                    }
+                                    '''
+                                    collect_telemetry(debug_info)
+
+                                    
+                        except AttributeError:
+                            st.info("Please upload CSV or PDF files first.")
+                            hide_button() 
+
     def row1(self):
             self.instagram = st.text_input("Followers:", placeholder='Enter Instagram Followers')
             self.instagram_er = st.text_input("Audience Engagement Rate:", placeholder='Enter Instagram Audience Engagement Rate')
@@ -119,48 +157,7 @@ class Instagram:
             st.write("") # FOR THE HIDE BUTTON'
             '''
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
-            start_time = time.time()
-            if st.session_state['analyze'] == 'clicked':
-                hide_button()
-                if self.instagram or self.instagram_er or self.instagram_pf:
-                    try:
-                        combined_text = ""
-                        with st.spinner('Instagram...', show_time=True):
-                                st.write('')
-                                try:
-                                    combined_text += f"\nInstagram Followers: {self.instagram}"
-                                    combined_text += f"\nInstagram Audience Engagement Rate: {self.instagram_er}%"
-                                    combined_text += f"\nInstagram Post Frequency: {self.instagram_pf}"
-                                except KeyError:
-                                    pass
-
-                
-                                # OUTPUT FOR SEO ANALYST
-                                payload_txt = {"question": combined_text}
-                                result = self.request_model(payload_txt)
-                                
-                                end_time = time.time()
-                                time_lapsed = end_time - start_time
-                                debug_info = {
-                                    #'analyst': self.analyst_name,
-                                    'url_uuid': self.model_url.split("-")[-1],
-                                    'time_lapsed': time_lapsed,
-                                    'payload': payload_txt,
-                                    'result': result,
-                                }
-                                
-                                collect_telemetry(debug_info)
-
-                                for df in st.session_state.keys():
-                                    del st.session_state[df]
-                                for facebook_ad_campaign in st.session_state.keys():
-                                    del st.session_state[facebook_ad_campaign]
-
-                                
-                    except AttributeError:
-                        st.info("Please upload CSV or PDF files first.")
-                        hide_button() 
-
+            self.process()
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
 

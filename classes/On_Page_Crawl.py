@@ -64,32 +64,19 @@ class SeoOnCrawl:
             "Remarks": [str(footprint) for footprint in remarks],
         }
         df_output = pd.DataFrame(data)
+        '''
         with st.expander("AI Analysis", expanded=True, icon="🤖"):
             st.table(df_output.style.set_table_styles(
                 [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
                 {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
             ).set_properties(**{'text-align': 'center'}))
-
+        '''
 
         return output
     
-    def row1(self):
-            #st.write(self.data_src)
-            self.uploaded_files = st.file_uploader("Crawl File - ScreamingFrog:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_backlink")
-            #self.gtmetrix = st.file_uploader("GTmetrix", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
-            if self.uploaded_files:
-                upload.multiple_upload_file(self.uploaded_files)
-                self.file_dict = upload.file_dict
-            #if self.gtmetrix:
-            #   upload.upload_gt(self.gtmetrix)
-                
-            #st.write("") # FOR THE HIDE BUTTON
-            #st.write("") # FOR THE HIDE BUTTON
-            #st.write("AI Analyst Output: ")
-            st.session_state['analyzing'] = False
-            #st.write("") # FOR THE HIDE BUTTON
-            
-            if st.session_state['analyze'] == 'clicked':
+    def process(self):
+        session = st.session_state.analyze
+        if session == 'clicked':
                 start_time = time.time()
                 if self.uploaded_files:
                     combined_text = ""
@@ -118,35 +105,51 @@ class SeoOnCrawl:
                         '''
                         # OUTPUT FOR SEO ANALYST
                         payload_txt = {"question": combined_text}
-                        result = self.request_model(payload_txt)
-                        end_time = time.time()
-                        time_lapsed = end_time - start_time
+                        #result = self.request_model(payload_txt)
+                        #end_time = time.time()
+                        #time_lapsed = end_time - start_time
+                        debug_info = {'data_field' : 'Crawl', 'result': combined_text}
+                        '''
                         debug_info = {#'analyst': self.analyst_name,
                                       'url_uuid': self.model_url.split("-")[-1],
                                       'time_lapsed' : time_lapsed, 
                                     'crawl_file': [file.name for file in self.uploaded_files] if self.uploaded_files else ['Not available'],
                                       #'gt_metrix': [file.name for file in self.gtmetrix] if self.gtmetrix else ['Not available'],
                                       'payload': payload_txt, 
-                                      'result': result}
+                                      'result': result}'
+                        '''
                         
                         collect_telemetry(debug_info)
                         
                             
-                        with st.expander("Debug information", icon="⚙"):
-                            st.write(debug_info)
+                        #with st.expander("Debug information", icon="⚙"):
+                        #    st.write(debug_info)
 
 
                         st.session_state['analyzing'] = False
 
-                        for df_seo in st.session_state.keys():
-                            del st.session_state[df_seo]
                         try:
                             self.file_dict.popitem()
                         except KeyError:
                             pass
-                        if 'analyze' not in st.session_state:
-                            st.session_state['analyze'] = ''
-                        st.session_state['analyze'] == ''
+                        
+    def row1(self):
+            #st.write(self.data_src)
+            self.uploaded_files = st.file_uploader("Crawl File - ScreamingFrog:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_backlink")
+            #self.gtmetrix = st.file_uploader("GTmetrix", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
+            if self.uploaded_files:
+                upload.multiple_upload_file(self.uploaded_files)
+                self.file_dict = upload.file_dict
+            #if self.gtmetrix:
+            #   upload.upload_gt(self.gtmetrix)
+                
+            #st.write("") # FOR THE HIDE BUTTON
+            #st.write("") # FOR THE HIDE BUTTON
+            #st.write("AI Analyst Output: ")
+            st.session_state['analyzing'] = False
+            #st.write("") # FOR THE HIDE BUTTON
+            
+            self.process()
      
 
 if __name__ == "__main__":

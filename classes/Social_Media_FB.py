@@ -105,23 +105,7 @@ class Facebook:
         except UnboundLocalError:
             return facebook_post_frequency
 
-    def linkedin_content_metrics(self, linkedin_content_metrics):
-        # Avg. engagement rate
-        try:
-            linkedin_engagement_rate = linkedin_content_metrics['Engagement rate (organic)'].mean().round(2)
-        except Exception:
-            new_header = linkedin_content_metrics.iloc[0] #grab the first row for the header
-            linkedin_content_metrics = linkedin_content_metrics[1:] #take the data less the header row
-            linkedin_content_metrics.columns = new_header #set the header row as the df header
-            linkedin_content_metrics['Engagement rate (organic)'] = pd.to_numeric(linkedin_content_metrics['Engagement rate (organic)'], errors='coerce')
-            linkedin_engagement_rate = linkedin_content_metrics['Engagement rate (organic)'].mean().round(2)
-        # Post Frequency
-        
-        st.session_state['linkedin_engagement_rate'] = linkedin_engagement_rate
-        
-        return linkedin_engagement_rate
     
-    def linkedin_content_post(self, linkedin_content_post):
         try:
             linkedin_post_frequency = linkedin_content_post[~linkedin_content_post['Post title'].isna()].shape[0]
         except Exception:
@@ -154,39 +138,19 @@ class Facebook:
                 except Exception:
                     pass
                 return file_name
-        
-    def row1(self):
-            self.facebooks = st.number_input('Followers:', min_value=1, max_value=99999999, value=None, step=1, placeholder='Enter Followers')
-            self.facebook_rr = st.text_input("Review Rate:", placeholder='Enter Review Rate')
-            
-            followers = {
-                'Facebook Followers': self.facebooks if self.facebooks else 'N/A',
-                'Facebook Review Rate': self.facebook_rr if self.facebook_rr else 'N/A',
-            }
 
-            fb_organic_post = self.file_upload("fb_post", "Organic Post CSV", "facebook_organic_post")
-            fb_ads_campaign = self.file_upload("fb_campaign", "Ads Campaign CSV", "facebook_ad_campaign")
-            
-            fb_organic_post
-            fb_ads_campaign
-           
-            '''
-            st.write("") # FOR THE HIDE BUTTON
-            st.write("") # FOR THE HIDE BUTTON
-            st.write("AI Analyst Output: ")
-            st.session_state['analyzing'] = False
-            st.write("") # FOR THE HIDE BUTTON
-           '''
-            start_time = time.time()
-            if st.session_state['analyze'] == 'clicked':
+    def process(self):  
+        start_time = time.time()
+        session = st.session_state.analyze
+        if session == 'clicked':
                 hide_button()
                 try:
-                    if (fb_organic_post and fb_organic_post.name) or (fb_ads_campaign and fb_ads_campaign.name):
+                    if (self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name):
                         combined_text = ""
                         with st.spinner('Social Media Analyst...', show_time=True):
                             st.write('')
                             # INITIALIZING SESSIONS
-                            combined_text += f"Client Summary: {st.session_state.nature}\n"
+                            #combined_text += f"Client Summary: {st.session_state.nature}\n"
                             try: # FACEBOOK
                                 try: # ORGANIC POST
                                     combined_text += f"\nFacebook Followers: {self.facebooks}"
@@ -223,10 +187,12 @@ class Facebook:
             
                             # OUTPUT FOR SEO ANALYST
                             payload_txt = {"question": combined_text}
-                            result = self.request_model(payload_txt)
+                            #result = self.request_model(payload_txt)
                             
                             end_time = time.time()
                             time_lapsed = end_time - start_time
+                            debug_info = {'data_field' : 'Facebook', 'result': combined_text}
+                            '''
                             debug_info = {
                                 'analyst': self.analyst_name,
                                 'url_uuid': self.model_url.split("-")[-1],
@@ -236,22 +202,46 @@ class Facebook:
                                 'payload': payload_txt,
                                 'result': result,
                             }
-                            
+                            '''
                             collect_telemetry(debug_info)
                             
                             #with st.expander("Debug information", icon="⚙"):
                             #    st.write(debug_info)
 
-                            for df in st.session_state.keys():
-                                del st.session_state[df]
-                            for facebook_ad_campaign in st.session_state.keys():
-                                del st.session_state[facebook_ad_campaign]
+                            
+                            #del st.session_state[df]
+                            #del st.session_state[facebook_ad_campaign]
 
                             st.session_state['analyzing'] = False 
                     
                 except AttributeError:
                    
                     hide_button() 
+
+    def row1(self):
+            self.facebooks = st.number_input('Followers:', min_value=1, max_value=99999999, value=None, step=1, placeholder='Enter Followers')
+            self.facebook_rr = st.text_input("Review Rate:", placeholder='Enter Review Rate')
+            
+            followers = {
+                'Facebook Followers': self.facebooks if self.facebooks else 'N/A',
+                'Facebook Review Rate': self.facebook_rr if self.facebook_rr else 'N/A',
+            }
+
+            self.fb_organic_post = self.file_upload("fb_post", "Organic Post CSV", "facebook_organic_post")
+            self.fb_ads_campaign = self.file_upload("fb_campaign", "Ads Campaign CSV", "facebook_ad_campaign")
+            
+            self.fb_organic_post
+            self.fb_ads_campaign
+           
+            '''
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("AI Analyst Output: ")
+            st.session_state['analyzing'] = False
+            st.write("") # FOR THE HIDE BUTTON
+           '''
+            self.process()
+            
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

@@ -10,6 +10,7 @@ from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
+import asyncio
 
 class SeoOffPageAnalyst:
     def __init__(self, model_url):
@@ -28,7 +29,6 @@ class SeoOffPageAnalyst:
 
         # AGENT NAME
         #st.header(self.analyst_name)
-
     
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -68,26 +68,21 @@ class SeoOffPageAnalyst:
             ).set_properties(**{'text-align': 'center'}))
         '''
         return output
-        
-    def row1(self):
-            #st.write(self.data_src)
-            self.uploaded_files = st.file_uploader('Backlinks - SEMRush', type='csv', accept_multiple_files=True, key="seo_off")
-            if self.uploaded_files:
-                upload.multiple_upload_file(self.uploaded_files)
-                
-            #st.write("") # FOR THE HIDE BUTTON
-            #st.write("") # FOR THE HIDE BUTTON
-           
-            st.session_state['analyzing'] = False
-            start_time = time.time()
-            if self.uploaded_files and st.session_state['analyze'] == 'clicked':
+    
+    def process(self):
+         print("init off page")
+         start_time = time.time()
+         session = st.session_state['analyze']
+         if self.uploaded_files and session == 'clicked':
                     combined_text = ""
                     with st.spinner('SEO Off Page Analyst...', show_time=True):
                         st.write('')
                         for file_info in st.session_state['uploaded_files'].values():
+                            '''
                             if file_info['type'] == 'pdf':
                                 combined_text += file_info['content'] + "\n"
-                            elif file_info['type'] == 'csv':                                    
+                            '''
+                            if file_info['type'] == 'csv':                                    
                                 # Load CSV
                                 df = pd.read_csv(StringIO(file_info['content'].to_csv(index=True)))
                                 
@@ -98,24 +93,37 @@ class SeoOffPageAnalyst:
                                 df['Source Domain'] = df['Source url'].apply(lambda x: urlparse(x).netloc)
                                 unique_domains = df['Source Domain'].nunique()
                                     
-                                combined_text += f"Total rows: {num_rows}\n"
+                                combined_text += f"Total Backlinks Count: {num_rows}\n"
                                 combined_text += f"Referring Domain: {unique_domains}"
                         
                         # OUTPUT FOR SEO ANALYST
                         payload_txt = {"question": combined_text}
-                        result = self.request_model(payload_txt)
+                        #result = self.request_model(payload_txt)
                         
-                        end_time = time.time()
-                        time_lapsed = end_time - start_time
+                        #end_time = time.time()
+                        #time_lapsed = end_time - start_time
                         
-                        debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
-                        
+                        debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
+                        #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
                         collect_telemetry(debug_info)
                         
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
                         print("done2")
                         st.session_state['analyzing'] = False
+                      
+    def row1(self):
+            #st.write(self.data_src)
+            self.uploaded_files = st.file_uploader('Backlinks - SEMRush', type='csv', accept_multiple_files=True, key="seo_off")
+            if self.uploaded_files:
+                upload.multiple_upload_file(self.uploaded_files)
+                
+            #st.write("") # FOR THE HIDE BUTTON
+            #st.write("") # FOR THE HIDE BUTTON
+           
+            st.session_state['analyzing'] = False
+            
+            self.process()
                                        
 
 if __name__ == "__main__":

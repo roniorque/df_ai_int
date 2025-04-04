@@ -7,7 +7,7 @@ class uploadFile:
     def __init__(self):
         self.file_dict = {}
         self.file_gt = {}
-
+    
     def multiple_upload_file(self, uploaded_files):
         for _ in range(len(self.file_dict)):
             self.file_dict.popitem() 

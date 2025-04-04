@@ -67,12 +67,13 @@ class Tiktok:
             "Best of Breed Solution": [str(backlink) for backlink in number_of_backlinks]
         }
         df_output = pd.DataFrame(data)
+        '''
         with st.expander("AI Analysis", expanded=True, icon="🤖"):
             st.table(df_output.style.set_table_styles(
             [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
             {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
             ).set_properties(**{'text-align': 'center'}))
-
+        '''
         return output
       
     def detect_encoding(self, uploaded_file):
@@ -100,7 +101,48 @@ class Tiktok:
                 except Exception:
                     pass
                 return file_name
-        
+    def process(self):
+        session = st.session_state.analyze
+        if (self.tiktok_f or self.tiktok_er or self.tiktok_pf) and session == 'clicked':
+                    try:
+                        combined_text = ""
+                        with st.spinner('Tiktok...', show_time=True):
+                                st.write('')
+                                # INITIALIZING SESSIONS
+                                #combined_text += f"Client Summary: {st.session_state.nature}\n"
+                                try:
+                                    combined_text += f"\nTiktok Followers: {self.tiktok_f}"
+                                    combined_text += f"\nTiktok Audience Engagement Rate: {self.tiktok_er}%"
+                                    combined_text += f"\nTiktok Post Frequency: {self.tiktok_pf}"
+                                except KeyError:
+                                    pass
+                
+                                # OUTPUT FOR SEO ANALYST
+                                payload_txt = {"question": combined_text}
+                                #result = self.request_model(payload_txt)
+                                
+                                #end_time = time.time()
+                                #time_lapsed = end_time - start_time
+                                debug_info = {'data_field' : 'Tiktok', 'result': combined_text}
+                                '''
+                                debug_info = {
+                                    #'analyst': self.analyst_name,
+                                    'url_uuid': self.model_url.split("-")[-1],
+                                    'time_lapsed': time_lapsed,
+                                    'payload': payload_txt,
+                                    'result': result,
+                                }
+                                '''
+                                collect_telemetry(debug_info)
+                                
+                                #with st.expander("Debug information", icon="⚙"):
+                                #    st.write(debug_info)
+
+                                st.session_state['analyzing'] = False 
+                    except AttributeError:
+                        st.info("Please upload CSV or PDF files first.")
+                        hide_button() 
+
     def row1(self):
             self.tiktok_f = st.text_input("Followers:", placeholder='Enter Tiktok Followers')
             self.tiktok_er = st.text_input("Audience Engagement Rate:", placeholder='Enter Tiktok Audience Engagement Rate')
@@ -121,54 +163,8 @@ class Tiktok:
             st.write("") # FOR THE HIDE BUTTON'
             '''
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
-            start_time = time.time()
-            if 'analyze' not in st.session_state:
-                st.session_state['analyze'] = ''
-            if st.session_state['analyze'] == 'clicked':
-                hide_button()
-                if self.tiktok_f or self.tiktok_er or self.tiktok_pf:
-                    try:
-                        combined_text = ""
-                        with st.spinner('Tiktok...', show_time=True):
-                                st.write('')
-                                # INITIALIZING SESSIONS
-                                combined_text += f"Client Summary: {st.session_state.nature}\n"
-                                try:
-                                    combined_text += f"\nTiktok Followers: {self.tiktok_f}"
-                                    combined_text += f"\nTiktok Audience Engagement Rate: {self.tiktok_er}%"
-                                    combined_text += f"\nTiktok Post Frequency: {self.tiktok_pf}"
-                                except KeyError:
-                                    pass
-                
-                                # OUTPUT FOR SEO ANALYST
-                                payload_txt = {"question": combined_text}
-                                result = self.request_model(payload_txt)
-                                
-                                end_time = time.time()
-                                time_lapsed = end_time - start_time
-                                debug_info = {
-                                    #'analyst': self.analyst_name,
-                                    'url_uuid': self.model_url.split("-")[-1],
-                                    'time_lapsed': time_lapsed,
-                                    'payload': payload_txt,
-                                    'result': result,
-                                }
-                                
-                                collect_telemetry(debug_info)
-                                
-                                #with st.expander("Debug information", icon="⚙"):
-                                #    st.write(debug_info)
-
-                                for df in st.session_state.keys():
-                                    del st.session_state[df]
-                                for facebook_ad_campaign in st.session_state.keys():
-                                    del st.session_state[facebook_ad_campaign]
-
-                                st.session_state['analyzing'] = False 
-                    except AttributeError:
-                        st.info("Please upload CSV or PDF files first.")
-                        hide_button() 
-
+            self.process()
+            
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
 

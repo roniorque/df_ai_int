@@ -146,7 +146,129 @@ class Seo:
             del st.session_state['referral_traffic']
         except KeyError:
             pass
+    
+    def process (self):
+        start_time = time.time()
+        
+        session = st.session_state.analyze
+        print(session)
+        if (self.uploaded_file or self.others or self.uploaded_file_seo) and  session == 'clicked':
+                    combined_text = ""
+                    seo_keywords = ""
+                    traffic_channels = ""
+                    traffic_aqcuisition = ""
+                    pages_index = ""
+                    bounce_rate = ""
+                    with st.spinner('Seo Analyst...', show_time=True):
+                        st.write('')
+                        
+                        # INITIALIZING SESSIONS
+                        pages_index += f"Pages Indexed: {self.page_index}\n"
+                        bounce_rate += f"Bounce Rate: {self.bounce_rate}\n"
+                        '''
+                        try:
+                            backlink_files = self.file_dict
+                            combined_text += f"Number of backlinks {backlink_files}\n\n"
+                        except KeyError:
+                            pass
+                        '''
+                        try:
+                            df_traffic = st.session_state['df_traffic']
+                            self.traffic_files(df_traffic)
 
+                            organic_traffic = st.session_state['organic_traffic']
+                            paid_traffic = st.session_state['paid_traffic']
+                            direct_traffic = st.session_state['direct_traffic']
+                            referral_traffic = st.session_state['referral_traffic']
+
+
+
+                            traffic_channels += f"\nOrganic Traffic: {organic_traffic}"
+                            traffic_channels += f"\nPaid Traffic: {paid_traffic}"
+                            traffic_channels += f"\nDirect Traffic: {direct_traffic}"
+                            traffic_channels += f"\nReferral Traffic: {referral_traffic}"
+                            traffic_channels += df_traffic.to_csv(index=True)
+                            
+                        except KeyError:
+                            pass
+                        
+                        try:
+                            df_seo = st.session_state['df_seo']
+                            self.keyword_ranking(df_seo)
+                            keyword_ranking = st.session_state['keyword_ranking']    
+                            seo_keywords += f"\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
+                            seo_keywords += f"\nKeyword Ranking Top 100: {keyword_ranking['Keyword_top_100']}\n\n"
+                            
+                            seo_keywords += df_seo.to_csv(index=True)
+                        except KeyError:
+                            pass
+                        
+                        try:
+                            others = st.session_state['others']
+                            self.ga4_traffic(others)
+                            ga4_paid_social = st.session_state['ga4_paid_social']
+                            ga4_organic_traffic = st.session_state['ga4_organic_traffic']
+                            ga4_direct_traffic = st.session_state['ga4_direct_traffic']
+                            ga4_referral_traffic = st.session_state['ga4_referral_traffic']
+
+                            traffics = ga4_direct_traffic + ga4_organic_traffic + ga4_paid_social + ga4_referral_traffic
+                            
+                            traffic_aqcuisition += f"Traffics: {traffics}"
+                            traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
+                        except KeyError:
+                            pass
+
+                        # OUTPUT FOR SEO ANALYST
+                        payload_txt_seo_keywords = {"question": seo_keywords}
+                        payload_txt_traffic_channels = {"question": traffic_channels}
+                        payload_txt_traffic_aqcuisition = {"question": traffic_aqcuisition}
+                        payload_txt_pages_index = {"question": pages_index}
+                        payload_txt_bounce_rate = {"question": bounce_rate}
+
+
+                        #result = self.request_model(payload_txt)
+                        #end_time = time.time()
+                        #time_lapsed = end_time - start_time
+                        debug_info_seo_keywords = {'data_field' : 'SEO Keywords', 'result': seo_keywords}
+                        debug_info_traffic_channels = {'data_field' : 'Traffic Channels', 'result': traffic_channels}
+                        debug_info_traffic_aqcuisition = {'data_field' : 'Traffic Acquisition', 'result': traffic_aqcuisition}
+                        debug_info_pages_index = {'data_field' : 'Pages Indexed', 'result': pages_index}
+                        debug_info_bounce_rate = {'data_field' : 'Bounce Rate', 'result': bounce_rate}
+
+                        '''
+                        debug_info = {
+                            #'analyst': self.analyst_name,
+                            'url_uuid': self.model_url.split("-")[-1],
+                            'time_lapsed': time_lapsed,
+                            #'backlink_files': [*st.session_state['uploaded_files']],
+                            #'seo_file': [self.uploaded_file_seo.name] if self.uploaded_file_seo else ['Not available'],
+                            'payload': payload_txt,
+                            'result': result,
+                        }
+                        '''
+                        if self.bounce_rate:
+                            collect_telemetry(debug_info_bounce_rate)
+                        if self.page_index:
+                            collect_telemetry(debug_info_pages_index)
+                        if self.others:
+                            collect_telemetry(debug_info_traffic_aqcuisition)
+                        if self.uploaded_file:
+                            collect_telemetry(debug_info_traffic_channels)
+                        if self.uploaded_file_seo:
+                            collect_telemetry(debug_info_seo_keywords)
+                        
+                        #with st.expander("Debug information", icon="⚙"):
+                        #    st.write(debug_info)
+
+                        
+                        #del st.session_state[df_traffic]
+                        
+                        #del st.session_state[df_seo]
+                        
+                        #del st.session_state[others]
+
+                        st.session_state['analyzing'] = False    
+             
     def row1(self):
             #st.write("") # FOR SPACINGs
             
@@ -164,7 +286,7 @@ class Seo:
                 self.delete_sessions() 
                 try:
                     encoding_seo = self.detect_encoding(self.uploaded_file_seo)
-                    st.session_state['df_seo'] = pd.read_csv(self.uploaded_file_seo, encoding=encoding_seo, low_memory=False, key="seo3")
+                    st.session_state['df_seo'] = pd.read_csv(self.uploaded_file_seo, encoding=encoding_seo, low_memory=False)
                 except Exception:
                     pass
             
@@ -174,14 +296,14 @@ class Seo:
                 self.delete_sessions() 
                 try:
                     encoding = self.detect_encoding(self.uploaded_file)
-                    st.session_state['df_traffic'] = pd.read_csv(self.uploaded_file, encoding=encoding, low_memory=False, key="seo4")
+                    st.session_state['df_traffic'] = pd.read_csv(self.uploaded_file, encoding=encoding, low_memory=False)
                 except Exception:
                     pass
            
             st.write("") # FOR THE HIDE BUTTON
             self.others = st.file_uploader("Traffic Acquisition - GA4", type='csv', key="seo5")
             if self.others:
-                self.delete_sessions()
+                
                 try:
                     st.session_state['others'] = pd.read_csv(self.others, skiprows=9)
                 except Exception:
@@ -201,99 +323,8 @@ class Seo:
             st.session_state['analyzing'] = False
             #st.write("") # FOR THE HIDE BUTTON
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
-            start_time = time.time()
-            if st.session_state['analyze'] == 'clicked':
-                hide_button()
-                if self.uploaded_file or self.others or self.uploaded_file_seo:
-                    combined_text = ""
-                    with st.spinner('Seo Analyst...', show_time=True):
-                        st.write('')
-                        
-                        # INITIALIZING SESSIONS
-                        combined_text += f"Pages Indexed: {self.page_index}\n"
-                        combined_text += f"Bounce Rate: {self.bounce_rate}\n"
-                        '''
-                        try:
-                            backlink_files = self.file_dict
-                            combined_text += f"Number of backlinks {backlink_files}\n\n"
-                        except KeyError:
-                            pass
-                        '''
-                        try:
-                            df_traffic = st.session_state['df_traffic']
-                            self.traffic_files(df_traffic)
-
-                            organic_traffic = st.session_state['organic_traffic']
-                            paid_traffic = st.session_state['paid_traffic']
-                            direct_traffic = st.session_state['direct_traffic']
-                            referral_traffic = st.session_state['referral_traffic']
-
-                            combined_text += df_traffic.to_csv(index=True)
-
-                            combined_text += f"\nOrganic Traffic: {organic_traffic}"
-                            combined_text += f"\nPaid Traffic: {paid_traffic}"
-                            combined_text += f"\nDirect Traffic: {direct_traffic}"
-                            combined_text += f"\nReferral Traffic: {referral_traffic}"
-                            
-                        except KeyError:
-                            pass
-                        
-                        try:
-                            df_seo = st.session_state['df_seo']
-                            self.keyword_ranking(df_seo)
-                            keyword_ranking = st.session_state['keyword_ranking']    
-                            combined_text += f"\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
-                            combined_text += f"\nKeyword Ranking Top 100: {keyword_ranking['Keyword_top_100']}\n\n"
-                            
-                            combined_text += df_seo.to_csv(index=True)
-                        except KeyError:
-                            pass
-                        
-                        try:
-                            others = st.session_state['others']
-                            self.ga4_traffic(others)
-                            ga4_paid_social = st.session_state['ga4_paid_social']
-                            ga4_organic_traffic = st.session_state['ga4_organic_traffic']
-                            ga4_direct_traffic = st.session_state['ga4_direct_traffic']
-                            ga4_referral_traffic = st.session_state['ga4_referral_traffic']
-
-                            traffics = ga4_direct_traffic + ga4_organic_traffic + ga4_paid_social + ga4_referral_traffic
-                            
-                            combined_text += f"Traffics: {traffics}"
-                            combined_text += f"Paid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
-                        except KeyError:
-                            pass
-                        
-
-                        # OUTPUT FOR SEO ANALYST
-                        payload_txt = {"question": combined_text}
-                        result = self.request_model(payload_txt)
-                        end_time = time.time()
-                        time_lapsed = end_time - start_time
-                        debug_info = {
-                            #'analyst': self.analyst_name,
-                            'url_uuid': self.model_url.split("-")[-1],
-                            'time_lapsed': time_lapsed,
-                            #'backlink_files': [*st.session_state['uploaded_files']],
-                            #'seo_file': [self.uploaded_file_seo.name] if self.uploaded_file_seo else ['Not available'],
-                            'payload': payload_txt,
-                            'result': result,
-                        }
-                        
-                        collect_telemetry(debug_info)
-                            
-                        with st.expander("Debug information", icon="⚙"):
-                            st.write(debug_info)
-
-                        for df_traffic in st.session_state.keys():
-                            del st.session_state[df_traffic]
-                        for df_seo in st.session_state.keys():
-                            del st.session_state[df_seo]
-                        for others in st.session_state.keys():
-                            del st.session_state[others]
-                        print("done1")
-                        st.session_state['analyzing'] = False    
-                         
+            
+            self.process()
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
