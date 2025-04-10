@@ -39,6 +39,8 @@ class Facebook:
         except Exception:
             pass
         '''
+        if 'fb_upload' not in st.session_state:
+            st.session_state['fb_upload'] = ''
     
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -142,7 +144,7 @@ class Facebook:
     def process(self):  
         start_time = time.time()
         session = st.session_state.analyze
-        if ((self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name) or self.facebooks or self.facebook_rr) and session == 'clicked':
+        if ((self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name) or (self.facebooks) or (self.facebook_rr)) and session == 'clicked':
                 try:
                         combined_text = ""
                         with st.spinner('Social Media Analyst...', show_time=True):
@@ -201,7 +203,10 @@ class Facebook:
                                 'result': result,
                             }
                             '''
+                            
+                            st.session_state['fb_upload'] = 'uploaded'
                             collect_telemetry(debug_info)
+                            combined_text = ""
                             
                             #with st.expander("Debug information", icon="⚙"):
                             #    st.write(debug_info)

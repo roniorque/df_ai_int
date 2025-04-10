@@ -38,6 +38,8 @@ class Instagram:
         except Exception:
             pass
         '''
+        if 'ig_upload' not in st.session_state:
+            st.session_state['ig_upload'] = ''
 
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -135,6 +137,8 @@ class Instagram:
                                     }
                                     '''
                                     collect_telemetry(debug_info)
+                                    st.session_state['ig_upload'] = 'uploaded'
+                                    
 
                                     
                         except AttributeError:

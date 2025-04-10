@@ -38,6 +38,8 @@ class Twitter:
         except Exception:
             pass
         '''
+        if 'twitter_upload' not in st.session_state:
+            st.session_state['twitter_upload'] = ''
 
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -149,7 +151,7 @@ class Twitter:
                                 }
                                 '''
                                 collect_telemetry(debug_info)
-
+                                st.session_state['twitter_upload'] = 'uploaded'
                                 st.session_state['analyzing'] = False 
                     except AttributeError:
                         st.info("Please upload CSV or PDF files first.")

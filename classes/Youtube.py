@@ -38,6 +38,8 @@ class YouTube:
         except Exception:
             pass
         '''
+        if 'youtube_upload' not in st.session_state:
+            st.session_state['youtube_upload'] = ''
 
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -104,7 +106,7 @@ class YouTube:
         
     def process(self):
         session = st.session_state.analyze
-        if (self.youtube or self.youtube_er or self.youtube_pf) and session == 'clicked':
+        if ((self.youtube or self.youtube_er or self.youtube_pf) and session) == 'clicked':
                     try:
                         combined_text = ""
                         with st.spinner('Youtube...', show_time=True):
@@ -138,6 +140,7 @@ class YouTube:
                                 }
                                 '''
                                 collect_telemetry(debug_info)
+                                st.session_state['youtube_upload'] = 'uploaded'
                                 
                                 #with st.expander("Debug information", icon="⚙"):
                                 #    st.write(debug_info)

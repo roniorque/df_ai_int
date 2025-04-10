@@ -19,7 +19,7 @@ def collect_telemetry(data):
         return
 
     try:
-        '''
+        
         # Get the current UTC time
         utc_now = datetime.now(timezone.utc)
 
@@ -29,7 +29,7 @@ def collect_telemetry(data):
         # Convert the UTC time to GMT+8
         timestamp = utc_now.astimezone(gmt_plus_8).isoformat()
         data['timestamp'] = timestamp
-        '''
+        
         client = MongoClient(mongodb_uri)
         db = client.get_database()  # Use the default database specified in the URI
         collection = db["df_data"]  # Replace "telemetry" with your desired collection name

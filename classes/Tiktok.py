@@ -38,6 +38,8 @@ class Tiktok:
         except Exception:
             pass
         '''
+        if 'tiktok_upload' not in st.session_state:
+            st.session_state['tiktok_upload'] = ''
 
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -101,6 +103,7 @@ class Tiktok:
                 except Exception:
                     pass
                 return file_name
+    
     def process(self):
         session = st.session_state.analyze
         if (self.tiktok_f or self.tiktok_er or self.tiktok_pf) and session == 'clicked':
@@ -134,6 +137,7 @@ class Tiktok:
                                 }
                                 '''
                                 collect_telemetry(debug_info)
+                                st.session_state['tiktok_upload'] = 'uploaded'
                                 
                                 #with st.expander("Debug information", icon="⚙"):
                                 #    st.write(debug_info)

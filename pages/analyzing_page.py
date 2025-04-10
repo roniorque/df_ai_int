@@ -6,18 +6,16 @@ from classes.response_off import SeoOffPageAnalyst
 from classes.response_on_page import SeoOn
 from classes.response_website_and_tools import WebsiteAndTools
 from classes.response_seo import Seo
+from classes.response_social_media import SocialMedia
 
 def run_analysis():
-    # Retrieve uploaded files from session state
-    off_page_file = st.session_state.get('off_page_file_uploaded')
-    gt_file = st.session_state.get('GT_file_uploaded')
-    website_and_tools = st.session_state.get('website_and_tools')
-    seo = st.session_state.get('seo')
+    
     # Placeholders for status updates
     off_page_status = st.empty()
     on_page_status = st.empty()
     website_and_tools_status = st.empty()
     seo_status = st.empty()
+    social_media_status = st.empty()
     # Function to run SEO Off Page Analysis
     def run_off_page_analysis():
         try:
@@ -59,29 +57,43 @@ def run_analysis():
             seo_status.error(f"SEO Analysis failed: {e}")
             return None
         
+    def run_social_media_analysis():
+        try:
+            social_media_status.info("Starting Social Media Analysis...")
+            result = SocialMedia(os.getenv('MODEL_Social_Media_Analyst'))
+            social_media_status.success("Social Media Analysis completed successfully.")
+            return result
+        except Exception as e:
+            social_media_status.error(f"Social Media Analysis failed: {e}")
+            return None
+        
     # Create threads for concurrent execution
     off_page_thread = threading.Thread(target=run_off_page_analysis)
     on_page_thread = threading.Thread(target=run_on_page_analysis)
     website_and_tools_thread = threading.Thread(target=run_website_and_tools_analysis)
     seo_thread = threading.Thread(target=run_seo_analysis)
+    social_media_thread = threading.Thread(target=run_social_media_analysis)
 
     # Attach Streamlit context to threads
     add_script_run_ctx(off_page_thread)
     add_script_run_ctx(on_page_thread)
     add_script_run_ctx(website_and_tools_thread)
     add_script_run_ctx(seo_thread)
+    add_script_run_ctx(social_media_thread)
 
     # Start threads
     off_page_thread.start()
     on_page_thread.start()
     website_and_tools_thread.start()
     seo_thread.start()
+    social_media_thread.start()
 
     # Wait for threads to complete
     off_page_thread.join()
     on_page_thread.join()
     website_and_tools_thread.join()
     seo_thread.join()
+    social_media_thread.join()
 
 # Execute the analysis
 run_analysis()

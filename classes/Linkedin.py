@@ -38,6 +38,8 @@ class Linkedin:
         except Exception:
             pass
         '''
+        if 'linkedin_upload' not in st.session_state:
+            st.session_state['linkedin_upload'] = ''
 
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
@@ -187,6 +189,7 @@ class Linkedin:
                             }
                             '''
                             collect_telemetry(debug_info)
+                            st.session_state['linkedin_upload'] = 'uploaded'
                             
                             #with st.expander("Debug information", icon="⚙"):
                             #    st.write(debug_info)
