@@ -277,7 +277,7 @@ class WebsiteAndTools:
             self.mobile_responsiveness = st.text_input("Mobile Responsiveness - GTMetrix:", placeholder='Enter Mobile Responsiveness')
             self.desktop_loading_speed = st.text_input("Desktop Loading Speed - GTMetrix:", placeholder='Enter Desktop Loading Speed')
             self.mobile_loading_speed = st.text_input("Mobile Loading Speed - GTMetrix:", placeholder='Enter Mobile Loading Speed')
-            self.web_analytics = st.text_input("Web Analytics - BuiltWith:", placeholder='Enter Web Analytics')
+            self.web_analytics = st.text_input("Web Analytics - BuiltWith (GA4):", placeholder='Enter Web Analytics')
             self.client_relations_management_system = st.text_input("Client Relations Management System - BuiltWith:", placeholder='Enter Client Relations Management System')
             self.lead_generation_mechanism = st.text_input("Lead Generation Mechanism - Business Context (Lead Generation & Lead Nurturing):", placeholder='Enter Lead Generation Mechanism')
 

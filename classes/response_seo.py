@@ -145,38 +145,44 @@ class Seo:
                         st.write('')
                         headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}
                         payload = ""
+                        count = 0
                         try:
+                            session_traffic_aqcuisition = st.session_state['df_seo']
                             payload += self.fetch_data("SEO Keywords")
+                            count += 1
                         except Exception as e:
                             pass
                         try:
+                            session_traffic_channels = st.session_state['df_traffic']
                             payload += self.fetch_data("Traffic Channels")
+                            count += 1
                         except Exception as e:
                             pass
                         try:
+                            session_others = st.session_state['others']
                             payload += self.fetch_data("Traffic Acquisition")
+                            count += 1
                         except Exception as e:
                             pass
                         try:
+                            session_page_index = st.session_state['pages_index']
                             payload += self.fetch_data("Pages Indexed")
+                            count += 1
                         except Exception as e:
                             pass
                         try:
+                            session_bounce_rate = st.session_state['bounce_rate']
                             payload += self.fetch_data("Bounce Rate")
+                            count += 1
                         except Exception as e:
                             pass
                         try:
                             payload += self.fetch_backlinks("Backlinks")
+                            count += 1
                         except Exception as e:
                             pass
-
                         try:
-                            session_bounce_rate = st.session_state['bounce_rate']
-                            session_page_index = st.session_state['pages_index']
-                            session_others = st.session_state['others']
-                            session_traffic_channels = st.session_state['df_traffic']
-                            session_traffic_aqcuisition = st.session_state['df_seo']
-                            if session_bounce_rate or session_page_index or session_others or session_traffic_aqcuisition or session_traffic_channels == 'uploaded':
+                            if count >= 1:
                                 payload_txt = {"input_value": payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)
                                 debug_info = {'data_field' : 'SEO Analyst', 'result': payload_txt_model}
@@ -187,6 +193,7 @@ class Seo:
                                 st.session_state['others'] = ''
                                 st.session_state['df_traffic'] = ''
                                 st.session_state['df_seo'] = ''
+                                count = 0
                         except Exception as e:
                             pass
                         st.session_state['analyzing'] = False    

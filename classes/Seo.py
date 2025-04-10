@@ -196,6 +196,8 @@ class Seo:
                             traffic_channels += f"\nReferral Traffic: {referral_traffic}"
                             traffic_channels += df_traffic.to_csv(index=True)
                             
+                        except AttributeError:
+                            pass
                         except KeyError:
                             pass
                         
@@ -207,6 +209,8 @@ class Seo:
                             seo_keywords += f"\nKeyword Ranking Top 100: {keyword_ranking['Keyword_top_100']}\n\n"
                             
                             seo_keywords += df_seo.to_csv(index=True)
+                        except AttributeError:
+                            pass
                         except KeyError:
                             pass
                         
@@ -223,6 +227,8 @@ class Seo:
                             traffic_aqcuisition += f"Traffics: {traffics}"
                             traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
                         except KeyError:
+                            pass
+                        except TypeError:
                             pass
 
                         # OUTPUT FOR SEO ANALYST
