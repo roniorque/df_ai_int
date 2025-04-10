@@ -108,7 +108,7 @@ class DigitalFootprintDashboard:
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
-        self.run_analysis()
+        await self.run_analysis()
 
 # Main execution
 if __name__ == "__main__":

@@ -151,7 +151,6 @@ class Seo:
         start_time = time.time()
         
         session = st.session_state.analyze
-        print(session)
         if (self.uploaded_file or self.others or self.uploaded_file_seo) and  session == 'clicked':
                     combined_text = ""
                     seo_keywords = ""

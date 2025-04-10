@@ -70,7 +70,6 @@ class SeoOffPageAnalyst:
         return output
     
     def process(self):
-         print("init off page")
          start_time = time.time()
          session = st.session_state['analyze']
          if self.uploaded_files and session == 'clicked':
@@ -109,7 +108,6 @@ class SeoOffPageAnalyst:
                         
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
-                        print("done2")
                         st.session_state['analyzing'] = False
                       
     def row1(self):
