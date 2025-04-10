@@ -9,7 +9,7 @@ from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
 
-class SeoOnGT:
+class WebsiteAndTools:
     def __init__(self, model_url):
         self.uploaded_files = []
         self.file_dict = {}
@@ -39,7 +39,26 @@ class SeoOnGT:
                 st.switch_page("./pages/home.py")
         except Exception:
             pass'''
-    
+        if 'website_responsiveness' not in st.session_state:
+            st.session_state['website_responsiveness'] = ''
+        if 'content_management_system' not in st.session_state:
+            st.session_state['content_management_system'] = ''
+        if 'SSL_certificate' not in st.session_state:
+            st.session_state['SSL_certificate'] = ''
+        if 'mobile_responsiveness' not in st.session_state:
+            st.session_state['mobile_responsiveness'] = ''
+        if 'desktop_loading_speed' not in st.session_state:
+            st.session_state['desktop_loading_speed'] = ''
+        if 'mobile_loading_speed' not in st.session_state:
+            st.session_state['mobile_loading_speed'] = ''
+        if 'web_analytics' not in st.session_state:
+            st.session_state['web_analytics'] = ''
+        if 'client_relations_management_system' not in st.session_state:
+            st.session_state['client_relations_management_system'] = ''
+        if 'lead_generation_mechanism' not in st.session_state:
+            st.session_state['lead_generation_mechanism'] = ''
+        
+        
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
         response.raise_for_status()
@@ -77,8 +96,7 @@ class SeoOnGT:
     def process(self):
                 session = st.session_state.analyze
                 start_time = time.time()
-                if (self.website_responsiveness or self.content_management_system or self.SSL_certificate or self.web_analytics or self.client_relations_management_system or self.lead_generation_mechanism or self.first_meaningful_paint or self.mobile_responsiveness or self.mobile_loading_speed or self.desktop_loading_speed) and session == 'clicked':
-                    combined_text = ""
+                if (self.website_responsiveness or self.content_management_system or self.SSL_certificate or self.web_analytics or self.client_relations_management_system or self.lead_generation_mechanism or self.mobile_responsiveness or self.mobile_loading_speed or self.desktop_loading_speed) and session == 'clicked':
                     website_responsiveness = ""
                     content_management_system = ""
                     SSL_certificate = ""
@@ -88,7 +106,6 @@ class SeoOnGT:
                     web_analytics = ""
                     client_relations_management_system = ""
                     mobile_loading_speed = ""
-                    first_meaningful_paint = ""
                     lead_generation_mechanism = ""
                     with st.spinner('SEO On Page Analyst...', show_time=True):
                         st.write('')
@@ -104,28 +121,55 @@ class SeoOnGT:
                                         pass
                         except KeyError:
                             pass
-                        '''
+                            
                         try: 
                             for f in st.session_state['uploaded_gt'].values():
                                 if f['type'] == 'pdf':
-                                    combined_text += "GTmetrix: {"+ f['content'] + "}\n"
+                                    crawl_file += "GTmetrix: {"+ f['content'] + "}\n"
                                 elif f['type'] == 'csv':
-                                    combined_text += f['content'].to_csv(index=True) + "\n"
+                                    crawl_file += f['content'].to_csv(index=True) + "\n"
+                        except KeyError:
+                            pass
+                        '''
+                        try:
+                            website_responsiveness += f"\nWebsite Responsiveness: {self.website_responsiveness}"
                         except KeyError:
                             pass
                         try:
-                            website_responsiveness += f"\nWebsite Responsiveness: {self.website_responsiveness}"
-                            content_management_system += f"\nContent Management System: {self.content_management_system}%"
+                            content_management_system += f"\nContent Management System: {self.content_management_system}"
+                        except KeyError:
+                            pass
+                        try:
                             SSL_certificate += f"\nSSL Certificate: {self.SSL_certificate}"
+                        except KeyError:
+                            pass
+                        try:
                             mobile_responsiveness += f"\nMobile Responsiveness: {self.mobile_responsiveness}"
+                        except KeyError:
+                            pass
+                        try:
                             desktop_loading_speed += f"\nDesktop Loading Speed: {self.desktop_loading_speed}"
+                        except KeyError:
+                            pass
+                        try:
                             mobile_loading_speed += f"\nMobile Loading Speed: {self.mobile_loading_speed}"
-                            first_meaningful_paint += f"\nFirst Meaningful Paint: {self.first_meaningful_paint}"
+                        except KeyError:
+                            pass
+                        try:
                             web_analytics += f"\nWeb Analytics: {self.web_analytics}"
+
+                        except KeyError:
+                            pass
+                        try:
                             client_relations_management_system += f"\nClient Relations Management System: {self.client_relations_management_system}"
+                        except KeyError:
+                            pass
+                        try:
                             lead_generation_mechanism += f"\nLead Generation Mechanism: {self.lead_generation_mechanism}"
                         except KeyError:
                             pass
+
+                        
                         # OUTPUT FOR WEBSITE RESPONSIVENESS
                         payload_txt_website_responsiveness = {"question": website_responsiveness}
                         #result_website_responsiveness = self.request_model(website_responsiveness)
@@ -151,19 +195,17 @@ class SeoOnGT:
                         #result_lead_generation_mechanism = self.request_model(lead_generation_mechanism)
 
                         # OUTPUT FOR SEO ANALYST
-                        payload_txt = {"question": combined_text}
+                        #payload_txt = {"question": combined_text}
                         #result = self.request_model(payload_txt)
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
 
-                        debug_info = {'data_field' : 'GT Metrix', 'result': combined_text}
                         debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness', 'result': website_responsiveness}
                         debug_info_content_management_system = {'data_field' : 'Content Management System', 'result': content_management_system}
                         debug_info_SSL_certificate = {'data_field' : 'SSL Certificate', 'result': SSL_certificate}
                         debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness', 'result': mobile_responsiveness}
                         debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed', 'result': desktop_loading_speed}
                         debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
-                        debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
                         debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
                         debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
                         debug_info_lead_generation_mechanism = {'data_field' : 'Lead Generation Mechanism', 'result': lead_generation_mechanism}
@@ -180,24 +222,31 @@ class SeoOnGT:
                             collect_telemetry(debug_info)
                         '''
                         if self.website_responsiveness:
+                            st.session_state['website_responsiveness'] = 'uploaded'
                             collect_telemetry(debug_info_website_responsiveness)
                         if self.content_management_system:
+                            st.session_state['content_management_system'] = 'uploaded'
                             collect_telemetry(debug_info_content_management_system)
                         if self.SSL_certificate:
+                            st.session_state['SSL_certificate'] = 'uploaded'
                             collect_telemetry(debug_info_SSL_certificate)
                         if self.mobile_responsiveness:
+                            st.session_state['mobile_responsiveness'] = 'uploaded'
                             collect_telemetry(debug_info_mobile_responsiveness)
                         if self.desktop_loading_speed:
+                            st.session_state['desktop_loading_speed'] = 'uploaded'
                             collect_telemetry(debug_info_desktop_loading_speed)
                         if self.mobile_loading_speed:
+                            st.session_state['mobile_loading_speed'] = 'uploaded'
                             collect_telemetry(debug_info_mobile_loading_speed)
-                        if self.first_meaningful_paint:
-                            collect_telemetry(debug_info_first_meaningful_paint)
                         if self.web_analytics:
+                            st.session_state['web_analytics'] = 'uploaded'
                             collect_telemetry(debug_info_web_analytics)
                         if self.client_relations_management_system:
+                            st.session_state['client_relations_management_system'] = 'uploaded'
                             collect_telemetry(debug_info_client_relations_management_system)
                         if self.lead_generation_mechanism:
+                            st.session_state['lead_generation_mechanism'] = 'uploaded'
                             collect_telemetry(debug_info_lead_generation_mechanism)
                             
                         #with st.expander("Debug information", icon="⚙"):
@@ -205,9 +254,6 @@ class SeoOnGT:
 
 
                         st.session_state['analyzing'] = False
-
-                        for df_seo in st.session_state.keys():
-                            del st.session_state[df_seo]
                         try:
                             self.file_dict.popitem()
                         except KeyError:
@@ -233,7 +279,6 @@ class SeoOnGT:
             self.mobile_loading_speed = st.text_input("Mobile Loading Speed - GTMetrix:", placeholder='Enter Mobile Loading Speed')
             self.web_analytics = st.text_input("Web Analytics - BuiltWith:", placeholder='Enter Web Analytics')
             self.client_relations_management_system = st.text_input("Client Relations Management System - BuiltWith:", placeholder='Enter Client Relations Management System')
-            self.first_meaningful_paint = st.text_input("First Meaningful Paint - GTMetrix:", placeholder='Enter First Meaningful Paint')
             self.lead_generation_mechanism = st.text_input("Lead Generation Mechanism - Business Context (Lead Generation & Lead Nurturing):", placeholder='Enter Lead Generation Mechanism')
 
             #st.write("") # FOR THE HIDE BUTTON
@@ -242,9 +287,6 @@ class SeoOnGT:
             st.session_state['analyzing'] = False
             #st.write("") # FOR THE HIDE BUTTON
             self.process()
-            
-            
-      
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

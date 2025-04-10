@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 from classes.Off_Page import SeoOffPageAnalyst
-from classes.On_Page_GT import SeoOnGT
+from classes.On_Page import SeoOn
 from classes.On_Page_Crawl import SeoOnCrawl
 from classes.Seo_Backlinks import SeoBacklinks
 from classes.Seo import Seo
@@ -11,8 +11,10 @@ from classes.Twitter import Twitter
 from classes.Youtube import YouTube
 from classes.Linkedin import Linkedin
 from classes.Tiktok import Tiktok
+from classes.website_and_tools import WebsiteAndTools
 import asyncio
 import time
+from helper.upload_button import hide_button, unhide_button
 
 class DigitalFootprintDashboard:
     def __init__(self):
@@ -31,10 +33,6 @@ class DigitalFootprintDashboard:
             st.session_state['nature'] = ''
         if 'analyze' not in st.session_state:
             st.session_state['analyze'] = ''
-        if 'seo' not in st.session_state:
-            st.session_state['seo'] = ''
-        if 'twitter' not in st.session_state:
-            st.session_state['twitter'] = ''
     
     async def create_row1(self):
         """Create the first row with four columns"""
@@ -48,16 +46,19 @@ class DigitalFootprintDashboard:
             )
             st.session_state.nature = txt
 
-            analyze_button = st.button("Analyze", st.session_state['analyze'])
-            if analyze_button == True:
+            upload_file_button = st.button("Upload File", st.session_state['analyze'])
+            if upload_file_button == True:
                 st.session_state["analyze"] = 'clicked'
-                st.session_state['seo'] = 'clicked'
-                st.session_state['twitter'] = 'clicked'
+                unhide_button()
             else:
                 st.session_state["analyze"] = ''
-                st.session_state['seo'] = ''
-                st.session_state['twitter'] = ''
-            
+
+            analyze_button = st.button("Analyze")
+            if analyze_button == True:
+                st.switch_page("pages/analyzing_page.py")
+            else:
+                hide_button()
+     
         with col2:
             st.write("## Website Traffic")
             self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
@@ -85,8 +86,9 @@ class DigitalFootprintDashboard:
 
         with col4:
             st.write("## Website Structure")
-            self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
-            self.gtmetrix = SeoOnGT(os.getenv('MODEL_On_Page_Analyst'))
+            #self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
+            self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
+            self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
 
         return col1, col2, col3, col4
 
@@ -101,14 +103,13 @@ class DigitalFootprintDashboard:
             self.youtube.process(), 
             self.linkedin.process(), 
             self.tiktok.process(), 
-            self.crawl.process()
         )
         st.session_state.analyze = False
 
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
-        await self.run_analysis()
+        #self.run_analysis()
 
 # Main execution
 if __name__ == "__main__":

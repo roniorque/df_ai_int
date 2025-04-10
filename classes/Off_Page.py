@@ -11,6 +11,7 @@ from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
 import asyncio
+import json
 
 class SeoOffPageAnalyst:
     def __init__(self, model_url):
@@ -29,45 +30,20 @@ class SeoOffPageAnalyst:
 
         # AGENT NAME
         #st.header(self.analyst_name)
+        if 'off_page_file_uploaded' not in st.session_state:
+            st.session_state['off_page_file_uploaded'] = ''
     
-    def request_model(self, payload_txt):
-        response = requests.post(self.model_url, json=payload_txt)
+    def request_model(self, payload_txt, headers):
+        response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()
         output = response.json()
+        text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
+        text = json.loads(text)
         
-        categories = []
-        remarks = []
-        count = []
+        backlinks = text[0]
+        referring_domains = text[1]
 
-        for key, value in output.items():
-            if key == 'json':
-                for item in value:
-                    categories.append(item.get('elements', 'N/A').replace('_', ' ').title())
-                    remarks.append(item.get('remarks', 'N/A'))
-                    count.append(item.get('count', 'N/A'))
-
-        output = ""
-        for i in range(len(categories)):
-            output += f"\n\n---\n **Category:** {categories[i]}"
-            output += f"\n\n **Remarks:** {remarks[i]}\n\n"
-            output += f"**Count:** {count[i]}"
-        
-        data = {
-            "": [str(category) for category in categories],
-            "Count": [str(count) for count in count],
-            "Remarks": [str(remark) for remark in remarks]
-            
-        }
-
-        df_output = pd.DataFrame(data)
-        '''
-        with st.expander("AI Analysis", expanded=True, icon="🤖"):
-            st.table(df_output.style.set_table_styles(
-                [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
-                {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
-            ).set_properties(**{'text-align': 'center'}))
-        '''
-        return output
+        return text
     
     def process(self):
          start_time = time.time()
@@ -81,6 +57,7 @@ class SeoOffPageAnalyst:
                             if file_info['type'] == 'pdf':
                                 combined_text += file_info['content'] + "\n"
                             '''
+                        try:
                             if file_info['type'] == 'csv':                                    
                                 # Load CSV
                                 df = pd.read_csv(StringIO(file_info['content'].to_csv(index=True)))
@@ -94,22 +71,29 @@ class SeoOffPageAnalyst:
                                     
                                 combined_text += f"Total Backlinks Count: {num_rows}\n"
                                 combined_text += f"Referring Domain: {unique_domains}"
-                        
+                                st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
+                        except KeyError:
+                            st.info("Incorrect CSV format. Please upload a valid CSV file.")
                         # OUTPUT FOR SEO ANALYST
                         payload_txt = {"question": combined_text}
-                        #result = self.request_model(payload_txt)
+                        headers = {
+                            "Content-Type": "application/json",
+                            "x-api-key": f"{os.getenv('x-api-key')}"
+                        }
+                        #result = self.request_model(payload_txt, headers)
                         
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
                         
-                        debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
+                        debug_info = {'data_field' : 'Backlinks', 'result': payload_txt}
                         #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
                         collect_telemetry(debug_info)
+                        
+                        st.session_state["off_page_file_uploaded"] = 'uploaded'
                         
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
                         st.session_state['analyzing'] = False
-                      
     def row1(self):
             #st.write(self.data_src)
             self.uploaded_files = st.file_uploader('Backlinks - SEMRush', type='csv', accept_multiple_files=True, key="seo_off")

@@ -142,10 +142,8 @@ class Facebook:
     def process(self):  
         start_time = time.time()
         session = st.session_state.analyze
-        if session == 'clicked':
-                hide_button()
+        if ((self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name) or self.facebooks or self.facebook_rr) and session == 'clicked':
                 try:
-                    if (self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name):
                         combined_text = ""
                         with st.spinner('Social Media Analyst...', show_time=True):
                             st.write('')

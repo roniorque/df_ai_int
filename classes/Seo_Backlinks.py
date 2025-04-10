@@ -291,12 +291,7 @@ class SeoBacklinks:
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
 
-                        for df_traffic in st.session_state.keys():
-                            del st.session_state[df_traffic]
-                        for df_seo in st.session_state.keys():
-                            del st.session_state[df_seo]
-                        for others in st.session_state.keys():
-                            del st.session_state[others]
+
 
                         st.session_state['analyzing'] = False      
 

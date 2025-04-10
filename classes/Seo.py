@@ -40,7 +40,17 @@ class Seo:
                 st.switch_page("./pages/home.py")
         except Exception:
             pass'''
-    
+        if 'bounce_rate' not in st.session_state:
+            st.session_state['bounce_rate'] = ''
+        if 'page_index' not in st.session_state:
+            st.session_state['page_index'] = ''
+        if 'others' not in st.session_state:
+            st.session_state['others'] = ''
+        if 'df_traffic' not in st.session_state:
+            st.session_state['df_traffic'] = ''
+        if 'df_seo' not in st.session_state:
+            st.session_state['df_seo'] = ''
+           
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
         response.raise_for_status()
@@ -149,9 +159,9 @@ class Seo:
     
     def process (self):
         start_time = time.time()
-        
+
         session = st.session_state.analyze
-        if (self.uploaded_file or self.others or self.uploaded_file_seo) and  session == 'clicked':
+        if ((self.uploaded_file or self.others or self.uploaded_file_seo) or (self.page_index or self.bounce_rate)) and  session == 'clicked':
                     combined_text = ""
                     seo_keywords = ""
                     traffic_channels = ""
@@ -179,8 +189,6 @@ class Seo:
                             paid_traffic = st.session_state['paid_traffic']
                             direct_traffic = st.session_state['direct_traffic']
                             referral_traffic = st.session_state['referral_traffic']
-
-
 
                             traffic_channels += f"\nOrganic Traffic: {organic_traffic}"
                             traffic_channels += f"\nPaid Traffic: {paid_traffic}"
@@ -225,7 +233,7 @@ class Seo:
                         payload_txt_bounce_rate = {"question": bounce_rate}
 
 
-                        #result = self.request_model(payload_txt)
+                        #result = self.request_model(payload_txt_seo_keywords)
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
                         debug_info_seo_keywords = {'data_field' : 'SEO Keywords', 'result': seo_keywords}
@@ -246,14 +254,19 @@ class Seo:
                         }
                         '''
                         if self.bounce_rate:
+                            st.session_state['bounce_rate'] = 'uploaded'
                             collect_telemetry(debug_info_bounce_rate)
                         if self.page_index:
+                            st.session_state['pages_index'] = 'uploaded'
                             collect_telemetry(debug_info_pages_index)
                         if self.others:
+                            st.session_state['others'] = 'uploaded'
                             collect_telemetry(debug_info_traffic_aqcuisition)
                         if self.uploaded_file:
+                            st.session_state['df_traffic'] = 'uploaded'
                             collect_telemetry(debug_info_traffic_channels)
                         if self.uploaded_file_seo:
+                            st.session_state['df_seo'] = 'uploaded'
                             collect_telemetry(debug_info_seo_keywords)
                         
                         #with st.expander("Debug information", icon="⚙"):

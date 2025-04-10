@@ -9,7 +9,7 @@ from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
 import pandas as pd
 
-class SeoOnCrawl:
+class SeoOn:
     def __init__(self, model_url):
         self.uploaded_files = []
         self.file_dict = {}
@@ -39,7 +39,11 @@ class SeoOnCrawl:
                 st.switch_page("./pages/home.py")
         except Exception:
             pass'''
-    
+        if 'crawl_file' not in st.session_state:
+            st.session_state['crawl_file'] = ''
+        if 'first_meaningful_paint' not in st.session_state:
+            st.session_state['first_meaningful_paint'] = ''
+
     def request_model(self, payload_txt):
         response = requests.post(self.model_url, json=payload_txt)
         response.raise_for_status()
@@ -75,11 +79,14 @@ class SeoOnCrawl:
         return output
     
     def process(self):
-        session = st.session_state.analyze
-        if self.uploaded_files and session == 'clicked':
-                    combined_text = ""
+                session = st.session_state.analyze
+                start_time = time.time()
+                if (self.first_meaningful_paint or self.uploaded_files) and session == 'clicked':
+                    first_meaningful_paint = ""
+                    crawl_file = ""
                     with st.spinner('SEO On Page Analyst...', show_time=True):
                         st.write('')
+                        '''
                         try:
                             for file_info in st.session_state['uploaded_files'].values():
                                 if file_info['type'] == 'pdf':
@@ -91,41 +98,46 @@ class SeoOnCrawl:
                                         pass
                         except KeyError:
                             pass
-                        '''
+                            
                         try: 
                             for f in st.session_state['uploaded_gt'].values():
                                 if f['type'] == 'pdf':
-                                    combined_text += "GTmetrix: {"+ f['content'] + "}\n"
+                                    crawl_file += "GTmetrix: {"+ f['content'] + "}\n"
                                 elif f['type'] == 'csv':
-                                    combined_text += f['content'].to_csv(index=True) + "\n"
+                                    crawl_file += f['content'].to_csv(index=True) + "\n"
                         except KeyError:
                             pass
-                        '''
-                        # OUTPUT FOR SEO ANALYST
-                        payload_txt = {"question": combined_text}
-                        #result = self.request_model(payload_txt)
-                        #end_time = time.time()
-                        #time_lapsed = end_time - start_time
-                        debug_info = {'data_field' : 'Crawl', 'result': combined_text}
-                        '''
-                        debug_info = {#'analyst': self.analyst_name,
-                                      'url_uuid': self.model_url.split("-")[-1],
-                                      'time_lapsed' : time_lapsed, 
-                                    'crawl_file': [file.name for file in self.uploaded_files] if self.uploaded_files else ['Not available'],
-                                      #'gt_metrix': [file.name for file in self.gtmetrix] if self.gtmetrix else ['Not available'],
-                                      'payload': payload_txt, 
-                                      'result': result}'
-                        '''
+                       '''
+                        try:
+                            for file_info in st.session_state['uploaded_files'].values():
+                                if file_info['type'] == 'pdf':
+                                    crawl_file += file_info['content'] + "\n"
+                                elif file_info['type'] == 'csv':
+                                    try:
+                                        crawl_file += "CrawlFile CSV: {"+ file_info['content'].to_csv(index=True) + "\n"
+                                    except AttributeError:
+                                        pass
+                        except KeyError:
+                            pass
+                        try:
+                            first_meaningful_paint += f"\nFirst Meaningful Paint: {self.first_meaningful_paint}"
+                        except KeyError:
+                            pass
                         
-                        collect_telemetry(debug_info)
-                        
+                        debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
+                        debug_info_crawl_file = {'data_field' : 'Crawl File', 'result': crawl_file}
+
+                        if self.first_meaningful_paint:
+                            st.session_state['first_meaningful_paint'] = 'uploaded'
+                            collect_telemetry(debug_info_first_meaningful_paint)
+                        if self.uploaded_files:
+                            st.session_state['crawl_file'] = 'uploaded'
+                            collect_telemetry(debug_info_crawl_file)
                             
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
 
-
                         st.session_state['analyzing'] = False
-
                         try:
                             self.file_dict.popitem()
                         except KeyError:
@@ -133,22 +145,34 @@ class SeoOnCrawl:
                         
     def row1(self):
             #st.write(self.data_src)
-            self.uploaded_files = st.file_uploader("Crawl File - ScreamingFrog:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_backlink")
+            #self.uploaded_files = st.file_uploader("Upload Backlink List (PDF)", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on")
+            #self.gtmetrix = st.file_uploader("GTmetrix:", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
+            '''
+            if self.uploaded_files:
+                upload.multiple_upload_file(self.uploaded_files)
+                self.file_dict = upload.file_dict
+            
+            if self.gtmetrix:
+                upload.upload_gt(self.gtmetrix)
+            '''
+            self.uploaded_files = st.file_uploader("Crawl File - ScreamingFrog:", type=['pdf', 'csv'], accept_multiple_files=True)
             #self.gtmetrix = st.file_uploader("GTmetrix", type=['pdf', 'csv'], accept_multiple_files=True, key="seo_on_gt")
             if self.uploaded_files:
                 upload.multiple_upload_file(self.uploaded_files)
                 self.file_dict = upload.file_dict
-            #if self.gtmetrix:
-            #   upload.upload_gt(self.gtmetrix)
-                
+
+            self.first_meaningful_paint = st.text_input("First Meaningful Paint - GTMetrix:", placeholder='Enter First Meaningful Paint')
+           
+
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("AI Analyst Output: ")
             st.session_state['analyzing'] = False
             #st.write("") # FOR THE HIDE BUTTON
-            
             self.process()
-     
+            
+            
+      
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")

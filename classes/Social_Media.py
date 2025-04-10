@@ -330,10 +330,6 @@ class SocialMediaAnalyst:
                             with st.expander("Debug information", icon="⚙"):
                                 st.write(debug_info)
 
-                            for df in st.session_state.keys():
-                                del st.session_state[df]
-                            for facebook_ad_campaign in st.session_state.keys():
-                                del st.session_state[facebook_ad_campaign]
 
                             st.session_state['analyzing'] = False 
                     else:
