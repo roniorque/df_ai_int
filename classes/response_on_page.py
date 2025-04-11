@@ -60,7 +60,13 @@ class SeoOn:
         myclient = MongoClient(mongodb_uri)
         mydb = myclient.get_database()
         mycol = mydb["df_data"]
-        x = mycol.find_one({"data_field": data_field})
+        
+        # Sort by timestamp field in descending order
+        x = mycol.find_one(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  
+        )
+        
         x = x["result"]
         return x
 
@@ -68,54 +74,18 @@ class SeoOn:
                 with st.spinner('SEO On Page...', show_time=True):
                         st.write('')
                         # OUTPUT FOR SEO ANALYST
-                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}
-                        payload = ""
-                        try:
-                             payload += self.fetch_data("First Meaningful Paint")
-                        except Exception as e:
-                            pass
-                        try:
-                             payload += self.fetch_data("Crawl File")
-                        except Exception as e:
-                            pass
-
-                        try:
-                            session_first_meaningful_paint = st.session_state['first_meaningful_paint']
-                            session_crawl_file = st.session_state['crawl_file']
-                            if session_first_meaningful_paint or session_crawl_file == 'uploaded':
-                                payload_txt = {"input_value": payload, "output_type": "text", "input_type": "chat"}
+                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}                                  
+                        try:                          
+                                payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)
                                 debug_info = {'data_field' : 'On Page Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
 
                                 st.session_state['first_meaningful_paint'] = ''
                                 st.session_state['crawl_file'] = ''
+                                count = 0
                         except Exception as e:
                              pass
-
-                        #end_time = time.time()
-                        #time_lapsed = end_time - start_time
-
-                        #debug_info = {'data_field' : 'GT Metrix', 'result': result}
-                        
-                        
-                        '''
-                        debug_info = {#'analyst': self.analyst_name,
-                                      'url_uuid': self.model_url.split("-")[-1],
-                                      'time_lapsed' : time_lapsed, 
-                                    'crawl_file': [file.name for file in self.uploaded_files] if self.uploaded_files else ['Not available'],
-                                      'gt_metrix': [file.name for file in self.gtmetrix] if self.gtmetrix else ['Not available'],
-                                      'payload': payload_txt, 
-                                      'result': result}
-                        
-                        if self.gtmetrix:
-                            collect_telemetry(debug_info)
-                        '''
- 
-                            
-                        #with st.expander("Debug information", icon="⚙"):
-                        #    st.write(debug_info)
-                        
 
                         st.session_state['analyzing'] = False
                         try:
@@ -124,13 +94,25 @@ class SeoOn:
                             pass
                         
     def row1(self):
-           
-            #st.write("") # FOR THE HIDE BUTTON
-            #st.write("") # FOR THE HIDE BUTTON
-            #st.write("AI Analyst Output: ")
             st.session_state['analyzing'] = False
-            #st.write("") # FOR THE HIDE BUTTON
-            self.process()
+            self.payload = ""
+            count = 0
+            try:
+                session_first_meaningful_paint = st.session_state['first_meaningful_paint']
+                if session_first_meaningful_paint == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("First Meaningful Paint")
+            except Exception as e:
+                pass
+            try:
+                session_crawl_file = st.session_state['crawl_file']
+                if session_crawl_file == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Crawl File")
+            except Exception as e:
+                pass
+            if count >= 1:
+                self.process()
                  
 
 if __name__ == "__main__":

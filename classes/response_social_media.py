@@ -71,7 +71,7 @@ class SocialMedia:
         # Sort by timestamp field in descending order
         x = mycol.find_one(
             {"data_field": data_field},
-            sort=[("timestamp", -1)]  # -1 means descending order
+            sort=[("timestamp", -1)]  
         )
         
         x = x["result"]
@@ -81,55 +81,9 @@ class SocialMedia:
                     with st.spinner('Social Media Analyst...', show_time=True):
                             st.write('')
 
-                            headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}
-                            payload = ""
-                            
+                            headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}              
                             try:
-                                session_fb = st.session_state['fb_upload']
-                                if session_fb == 'uploaded':
-                                    payload += self.fetch_data("Facebook")
-         
-                            except Exception as e:
-                                pass
-                            try:
-                                session_ig = st.session_state['ig_upload']
-                                if session_ig == 'uploaded':
-                                    print("running ig")
-                                    payload += self.fetch_data("Instagram")
-
-                            except Exception as e:
-                                pass
-                            try:
-                                session_twitter = st.session_state['twitter_upload']
-                                if session_twitter == 'uploaded':
-                                    payload += self.fetch_data("Twitter")
-
-                            except Exception as e:
-                                pass
-                            try:
-                                session_yt = st.session_state['youtube_upload']
-                                if session_yt == 'uploaded':
-                                    payload += self.fetch_data("YouTube")
-
-                            except Exception as e:
-                                pass
-                            try:
-                                session_linkedin = st.session_state['linkedin_upload']
-                                if session_linkedin == 'uploaded':
-                                    payload += self.fetch_data("Linkedin")
-                        
-                            except Exception as e:
-                                pass
-                            try:
-                                session_tiktok = st.session_state['tiktok_upload']
-                                if session_tiktok == 'uploaded':
-                                    payload += self.fetch_data("Tiktok")
-
-                            except Exception as e:
-                                pass
-                            try:
-                                 if session_fb or session_ig or session_twitter or session_yt or session_linkedin or session_tiktok == 'uploaded':
-                                        payload_txt = {"input_value": payload, "output_type": "text", "input_type": "chat"}
+                                        payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                         payload_txt_model = self.request_model(payload_txt, headers)
                                         debug_info = {'data_field' : 'Social Media Analyst', 'result': payload_txt_model}
                                         upload_response(debug_info)
@@ -140,13 +94,58 @@ class SocialMedia:
                                         st.session_state['youtube_upload'] = ''
                                         st.session_state['linkedin_upload'] = ''
                                         st.session_state['tiktok_upload'] = ''
+                                        count = 0
                                         
                             except Exception as e:
                                  pass
-                                      
-                           
+                                                         
     def row1(self):
-            self.process()
+            self.payload = ""
+            count = 0                           
+            try:
+                session_fb = st.session_state['fb_upload']
+                if session_fb == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Facebook")        
+            except Exception as e:
+                pass
+            try:
+                session_ig = st.session_state['ig_upload']
+                if session_ig == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Instagram")
+            except Exception as e:
+                pass
+            try:
+                session_twitter = st.session_state['twitter_upload']
+                if session_twitter == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Twitter")
+            except Exception as e:
+                pass
+            try:
+                session_yt = st.session_state['youtube_upload']
+                if session_yt == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("YouTube")
+            except Exception as e:
+                pass
+            try:
+                session_linkedin = st.session_state['linkedin_upload']
+                if session_linkedin == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Linkedin")           
+            except Exception as e:
+                pass
+            try:
+                session_tiktok = st.session_state['tiktok_upload']
+                if session_tiktok == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Tiktok")
+            except Exception as e:
+                pass
+            if count >= 1:
+                self.process()
             
 
 if __name__ == "__main__":

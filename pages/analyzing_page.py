@@ -9,7 +9,6 @@ from classes.response_seo import Seo
 from classes.response_social_media import SocialMedia
 
 def run_analysis():
-    
     # Placeholders for status updates
     off_page_status = st.empty()
     on_page_status = st.empty()

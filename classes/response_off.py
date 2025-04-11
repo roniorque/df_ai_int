@@ -32,6 +32,7 @@ class SeoOffPageAnalyst:
 
         # AGENT NAME
         #st.header(self.analyst_name)
+    
     def request_model(self, payload_txt, headers):
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()

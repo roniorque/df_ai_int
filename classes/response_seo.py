@@ -48,6 +48,7 @@ class Seo:
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()
         output = response.json()
+        #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         text = json.loads(text)
         #st.write(text)
@@ -67,7 +68,13 @@ class Seo:
         myclient = MongoClient(mongodb_uri)
         mydb = myclient.get_database()
         mycol = mydb["df_data"]
-        x = mycol.find_one({"data_field": data_field})
+        
+        # Sort by timestamp field in descending order
+        x = mycol.find_one(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  
+        )
+        
         x = x["result"]
         return x
     
@@ -143,47 +150,9 @@ class Seo:
     def process (self):    
         with st.spinner('Seo Analyst...', show_time=True):
                         st.write('')
-                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}
-                        payload = ""
-                        count = 0
+                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}         
                         try:
-                            session_traffic_aqcuisition = st.session_state['df_seo']
-                            payload += self.fetch_data("SEO Keywords")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            session_traffic_channels = st.session_state['df_traffic']
-                            payload += self.fetch_data("Traffic Channels")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            session_others = st.session_state['others']
-                            payload += self.fetch_data("Traffic Acquisition")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            session_page_index = st.session_state['pages_index']
-                            payload += self.fetch_data("Pages Indexed")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            session_bounce_rate = st.session_state['bounce_rate']
-                            payload += self.fetch_data("Bounce Rate")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            payload += self.fetch_backlinks("Backlinks")
-                            count += 1
-                        except Exception as e:
-                            pass
-                        try:
-                            if count >= 1:
-                                payload_txt = {"input_value": payload, "output_type": "text", "input_type": "chat"}
+                                payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)
                                 debug_info = {'data_field' : 'SEO Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
@@ -202,8 +171,57 @@ class Seo:
             st.session_state['analyzing'] = False
             #st.write("") # FOR THE HIDE BUTTON
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
+            self.payload = ""  
+            count = 0
+            try:
+                session_traffic_aqcuisition = st.session_state['df_seo']
+                if session_traffic_aqcuisition == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("SEO Keywords")
+                
+            except Exception as e:
+                pass
+            try:
+                session_traffic_channels = st.session_state['df_traffic']
+                if session_traffic_channels == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Traffic Channels")
+            except Exception as e:
+                pass
+            try:
+                session_others = st.session_state['others']
+                if session_others == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Traffic Acquisition")
+                
+            except Exception as e:
+                pass
+            try:
+                session_page_index = st.session_state['pages_index']
+                if session_page_index == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Pages Indexed")            
+            except Exception as e:
+                pass
+            try:
+                session_bounce_rate = st.session_state['bounce_rate']
+                if session_bounce_rate == 'uploaded':
+                    print("run")
+                    count += 1
+                    self.payload += self.fetch_data("Bounce Rate")                 
+            except Exception as e:
+                pass
+            try:
+                session_backlinks = st.session_state["off_page_file_uploaded"] 
+                if session_backlinks == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_backlinks("Backlinks") 
+            except Exception as e:
+                pass
+
+            if count >= 1:
+                self.process()
             
-            self.process()
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
