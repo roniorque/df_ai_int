@@ -92,13 +92,12 @@ def run_analysis():
     on_page_thread.join()
     website_and_tools_thread.join()
     seo_thread.join()
+    social_media_thread.join()
+    
     st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
     if st.button("View Results"):
         st.switch_page("pages/output.py")
-   
-    
-
 
 
 # Execute the analysis

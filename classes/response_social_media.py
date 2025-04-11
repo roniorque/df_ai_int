@@ -78,28 +78,29 @@ class SocialMedia:
         return x
     
     def process(self):  
-                    with st.spinner('Social Media Analyst...', show_time=True):
-                            st.write('')
+        with st.spinner('Social Media Analyst...', show_time=True):
+                    st.write('')
+                    headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}              
+                    try:
+                        payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
+                        payload_txt_model = self.request_model(payload_txt, headers)
+                        debug_info = {'data_field' : 'Social Media Analyst', 'result': payload_txt_model}
+                        upload_response(debug_info)
 
-                            headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}              
-                            try:
-                                        payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
-                                        payload_txt_model = self.request_model(payload_txt, headers)
-                                        debug_info = {'data_field' : 'Social Media Analyst', 'result': payload_txt_model}
-                                        upload_response(debug_info)
+                        st.session_state['fb_upload'] = ''
+                        st.session_state['ig_upload'] = ''
+                        st.session_state['twitter_upload'] = ''
+                        st.session_state['youtube_upload'] = ''
+                        st.session_state['linkedin_upload'] = ''
+                        st.session_state['tiktok_upload'] = ''
+                        count = 0
+                                                
+                    except Exception as e:
+                        pass
+                    st.session_state['analyzing'] = False
 
-                                        st.session_state['fb_upload'] = ''
-                                        st.session_state['ig_upload'] = ''
-                                        st.session_state['twitter_upload'] = ''
-                                        st.session_state['youtube_upload'] = ''
-                                        st.session_state['linkedin_upload'] = ''
-                                        st.session_state['tiktok_upload'] = ''
-                                        count = 0
-                                        
-                            except Exception as e:
-                                 pass
-                                                         
     def row1(self):
+            st.session_state['analyzing'] = False
             self.payload = ""
             count = 0                           
             try:
