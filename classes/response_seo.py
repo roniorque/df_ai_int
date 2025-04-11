@@ -206,7 +206,6 @@ class Seo:
             try:
                 session_bounce_rate = st.session_state['bounce_rate']
                 if session_bounce_rate == 'uploaded':
-                    print("run")
                     count += 1
                     self.payload += self.fetch_data("Bounce Rate")                 
             except Exception as e:
