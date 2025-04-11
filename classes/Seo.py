@@ -162,7 +162,6 @@ class Seo:
 
         session = st.session_state.analyze
         if ((self.uploaded_file or self.others or self.uploaded_file_seo) or (self.page_index or self.bounce_rate)) and  session == 'clicked':
-                    combined_text = ""
                     seo_keywords = ""
                     traffic_channels = ""
                     traffic_aqcuisition = ""
@@ -199,7 +198,7 @@ class Seo:
                         except AttributeError:
                             pass
                         except KeyError:
-                            pass
+                            st.info("Incorrect SEMRush format. Please upload a valid SEMRush file.")
                         
                         try:
                             df_seo = st.session_state['df_seo']
@@ -229,7 +228,7 @@ class Seo:
                         except KeyError:
                             pass
                         except TypeError:
-                            pass
+                            st.info("Incorrect GA4 format. Please upload a valid GA4 file.")
 
                         # OUTPUT FOR SEO ANALYST
                         payload_txt_seo_keywords = {"question": seo_keywords}
