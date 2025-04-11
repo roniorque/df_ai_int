@@ -59,6 +59,59 @@ def write_table(website_and_tools_data):
         st.warning("No data retrieved for analysis.")
     # --- End: Loop and display data ---
 
+def seo_on_page_table(df_data):
+     
+    if df_data:
+        try:
+            
+            parsed_data = df_data
+            
+            if isinstance(parsed_data, list):
+                # Create Markdown table header
+                markdown_table = "| Element | Description | Remarks |\n"
+                markdown_table += "|---|---|---|\n"
+
+                # Loop through the list of dictionaries
+                for item in parsed_data:
+                    # Use .get() for safety in case keys are missing
+                    element = item.get('elements', 'N/A')
+                    description = item.get('description', 'Static information')
+                    remarks = item.get('remarks', 'N/A')
+
+                    # Add a row to the Markdown table string
+                    # Replace underscores with spaces and apply title case to element
+                    element_formatted = element.replace('_', ' ').title()
+                    description_formatted = description.replace('_', ' ')
+                    remarks_formatted = remarks.replace('_', ' ')
+
+                    markdown_table += f"| {element_formatted} | {description_formatted} | {remarks_formatted} |\n"
+                    
+
+                # Display the complete Markdown table
+                st.markdown(markdown_table)
+
+            # Handle case if data is not a list (e.g., a single dictionary)
+            elif isinstance(parsed_data, dict):
+                 st.write("Analysis Result (Summary):")
+                 # You might want to display dictionary data differently
+                 st.json(parsed_data) # Example: Display as JSON
+            else:
+                 st.warning("data is not in the expected list format.")
+                 st.write(parsed_data) # Show the raw data
+
+        except json.JSONDecodeError:
+            st.error("Error: Could not parse the data as JSON.")
+            st.text(df_data) # Show the raw string data
+        except AttributeError:
+             st.error("Error: Could not find expected keys ('category', 'current_footprint', 'best_of_breed_solution') in the data.")
+             st.write(parsed_data) # Show the data that caused the error
+        except Exception as e:
+            st.error(f"An unexpected error occurred while processing data: {e}")
+            st.write(df_data) # Show the raw data
+    else:
+        st.warning("No data retrieved for analysis.")
+    # --- End: Loop and display data ---
+
      
     
 def display_outputs():
@@ -104,7 +157,7 @@ In line with this, we have looked into the technology used by **{client_name}** 
 With several businesses out there all vying for the same eyeballs, it’s never been more important to advertise online, and search engine marketing is the most effective way to promote need-based, high-investment products and services such as solar energy services.\n
 Currently, {client_name} has already explored numerous online advertising. Its competitors are also experienced in PPC in multiple platforms. """)
     
-    # Write W&T Table
+    # Write SEM Table
     sem_data = get_analyst_response("SEM PPC Analyst")
     write_table(sem_data)
     
@@ -114,9 +167,23 @@ Currently, {client_name} has already explored numerous online advertising. Its c
     st.markdown(f"""The purpose of Search Engine Optimization (SEO) is to strategically rearrange the website’s pages, attributes, content, and structure so that the website appears as high as possible in the results list displayed by search engines like Google, Bing, and Yahoo! when certain queries are entered by an internet user. Since high ranking positions are generally earned and worked for, ranking on the first page promotes trust between you and the search engine as well as to ultimately receive organic visibility with your users.\n 
 There are two types of SEO based on where the optimization is implemented: On-page SEO (which refers to any type of optimization done within the website) and Off-page SEO (which is often called Link Building or Link Acquisition – the process of getting more “votes” for the website through other domains). Both are essential in increasing a website’s visibility in search results pages and in ranking for more business-related keywords. """)
     
-    # Write W&T Table
+    # Write SEO Table
     seo_data = get_analyst_response("SEO Analyst")
     write_table(seo_data)
+    
+    st.markdown("---")
+    
+    # Write On Page Table
+    st.markdown("### ON-PAGE OPTIMIZATION")
+    on_page_data = get_analyst_response("On Page Analyst")
+    seo_on_page_table(on_page_data)
+    
+    st.markdown("---")
+    
+    # Write Off Page Table
+    st.markdown("### OFF PAGE OPTIMIZATION")
+    on_page_data = get_analyst_response("Off Page Analyst")
+    seo_on_page_table(on_page_data)
     
     st.markdown("---")
 
