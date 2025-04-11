@@ -4,7 +4,7 @@ def hide_button():
     st.markdown(
         """
                     <style>
-                    .element-container:nth-of-type(3) button {
+                    .element-container:nth-of-type(2) button {
                     display: none;
                     }
                     </style>
@@ -16,7 +16,7 @@ def unhide_button():
     st.markdown(
         """
             <style>
-            element-container:nth-of-type(3) button {
+            element-container:nth-of-type(2) button {
             display: inline;
             }
             </style>

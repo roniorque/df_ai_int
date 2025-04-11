@@ -12,6 +12,7 @@ from classes.Youtube import YouTube
 from classes.Linkedin import Linkedin
 from classes.Tiktok import Tiktok
 from classes.website_and_tools import WebsiteAndTools
+from classes.client_summary import CientSummary
 import asyncio
 import time
 from helper.upload_button import hide_button, unhide_button
@@ -33,32 +34,28 @@ class DigitalFootprintDashboard:
             st.session_state['nature'] = ''
         if 'analyze' not in st.session_state:
             st.session_state['analyze'] = ''
-    
+
     async def create_row1(self):
         """Create the first row with four columns"""
         col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
-            txt = st.text_area(
-                "Client Summary:",
-                f"{st.session_state.nature}",
-                help="Name of business, nature of business, location, products/services" 
-            )
-            st.session_state.nature = txt
-
-            upload_file_button = st.button("Upload File", st.session_state['analyze'])
-            if upload_file_button == True:
+            
+            self.upload_file_button = st.button("Upload File", st.session_state['analyze'])
+            if self.upload_file_button == True:
                 st.session_state["analyze"] = 'clicked'
                 unhide_button()
             else:
                 st.session_state["analyze"] = ''
 
-            analyze_button = st.button("Analyze")
-            if analyze_button == True:
+            self.analyze_button = st.button("Analyze")
+            if self.analyze_button == True:
                 st.switch_page("pages/analyzing_page.py")
             else:
                 hide_button()
-     
+            
+            self.client_summary = CientSummary()
+            
         with col2:
             st.write("## Website Traffic")
             self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
