@@ -55,48 +55,11 @@ class WebsiteAndTools:
             st.session_state['web_analytics'] = ''
         if 'client_relations_management_system' not in st.session_state:
             st.session_state['client_relations_management_system'] = ''
-        if 'lead_generation_mechanism' not in st.session_state:
-            st.session_state['lead_generation_mechanism'] = ''
-        
-        
-    def request_model(self, payload_txt):
-        response = requests.post(self.model_url, json=payload_txt)
-        response.raise_for_status()
-        output = response.json()
-        
-        categories = []
-        remarks = []
-
-        for key, value in output.items():
-            if key == 'json':
-                for item in value:
-                    categories.append(item.get('elements', 'N/A').replace('_', ' ').title())
-                    remarks.append(item.get('remarks', 'N/A'))
-
-        output = ""
-        for i in range(len(categories)):
-            output += f"\n\n---\n **Category:** {categories[i]}"
-            output += f"\n\n **Remarks:** {remarks[i]}\n\n"
-        
-        data = {
-            "Category": [str(category) for category in categories],
-            "Remarks": [str(footprint) for footprint in remarks],
-        }
-        df_output = pd.DataFrame(data)
-        '''
-        with st.expander("AI Analysis", expanded=True, icon="🤖"):
-            st.table(df_output.style.set_table_styles(
-                [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
-                {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
-            ).set_properties(**{'text-align': 'center'}))
-        '''
-
-        return output
     
     def process(self):
                 session = st.session_state.analyze
                 start_time = time.time()
-                if (self.website_responsiveness or self.content_management_system or self.SSL_certificate or self.web_analytics or self.client_relations_management_system or self.lead_generation_mechanism or self.mobile_responsiveness or self.mobile_loading_speed or self.desktop_loading_speed) and session == 'clicked':
+                if (self.website_responsiveness or self.content_management_system or self.SSL_certificate or self.web_analytics or self.client_relations_management_system or self.mobile_responsiveness or self.mobile_loading_speed or self.desktop_loading_speed) and session == 'clicked':
                     website_responsiveness = ""
                     content_management_system = ""
                     SSL_certificate = ""
@@ -106,7 +69,7 @@ class WebsiteAndTools:
                     web_analytics = ""
                     client_relations_management_system = ""
                     mobile_loading_speed = ""
-                    lead_generation_mechanism = ""
+        
                     with st.spinner('SEO On Page Analyst...', show_time=True):
                         st.write('')
                         '''
@@ -164,11 +127,6 @@ class WebsiteAndTools:
                             client_relations_management_system += f"\nClient Relations Management System: {self.client_relations_management_system}"
                         except KeyError:
                             pass
-                        try:
-                            lead_generation_mechanism += f"\nLead Generation Mechanism: {self.lead_generation_mechanism}"
-                        except KeyError:
-                            pass
-
                         
                         # OUTPUT FOR WEBSITE RESPONSIVENESS
                         payload_txt_website_responsiveness = {"question": website_responsiveness}
@@ -191,8 +149,6 @@ class WebsiteAndTools:
                         #result_client_relations_management_system = self.request_model(client_relations_management_system)
                         
                         # OUTPUT FOR LEAD GENERATION MECHANISM
-                        payload_txt_lead_generation_mechanism = {"question": lead_generation_mechanism}
-                        #result_lead_generation_mechanism = self.request_model(lead_generation_mechanism)
 
                         # OUTPUT FOR SEO ANALYST
                         #payload_txt = {"question": combined_text}
@@ -208,7 +164,7 @@ class WebsiteAndTools:
                         debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
                         debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
                         debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
-                        debug_info_lead_generation_mechanism = {'data_field' : 'Lead Generation Mechanism', 'result': lead_generation_mechanism}
+
                         '''
                         debug_info = {#'analyst': self.analyst_name,
                                       'url_uuid': self.model_url.split("-")[-1],
@@ -245,9 +201,7 @@ class WebsiteAndTools:
                         if self.client_relations_management_system:
                             st.session_state['client_relations_management_system'] = 'uploaded'
                             collect_telemetry(debug_info_client_relations_management_system)
-                        if self.lead_generation_mechanism:
-                            st.session_state['lead_generation_mechanism'] = 'uploaded'
-                            collect_telemetry(debug_info_lead_generation_mechanism)
+
                             
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
@@ -279,8 +233,7 @@ class WebsiteAndTools:
             self.mobile_loading_speed = st.text_input("Mobile Loading Speed - GTMetrix:", placeholder='Enter Mobile Loading Speed')
             self.web_analytics = st.text_input("Web Analytics - BuiltWith (GA4):", placeholder='Enter Web Analytics')
             self.client_relations_management_system = st.text_input("Client Relations Management System - BuiltWith:", placeholder='Enter Client Relations Management System')
-            self.lead_generation_mechanism = st.text_input("Lead Generation Mechanism - Business Context (Lead Generation & Lead Nurturing):", placeholder='Enter Lead Generation Mechanism')
-
+            
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("AI Analyst Output: ")

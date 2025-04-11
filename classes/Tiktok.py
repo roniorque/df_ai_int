@@ -155,9 +155,9 @@ class Tiktok:
             followers = {
                 'Tiktok Followers': self.tiktok_f if self.tiktok_f else 'N/A'
             }
-            tiktok_post = self.file_upload("Tiktok", "Tiktok Content post", "Tiktok")
+            #tiktok_post = self.file_upload("Tiktok", "Tiktok Content post", "Tiktok")
             
-            tiktok_post
+            #tiktok_post
            
             '''
             st.write("") # FOR THE HIDE BUTTON

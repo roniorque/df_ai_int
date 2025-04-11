@@ -7,6 +7,9 @@ from classes.response_on_page import SeoOn
 from classes.response_website_and_tools import WebsiteAndTools
 from classes.response_seo import Seo
 from classes.response_social_media import SocialMedia
+from classes.response_lld_pm_ln import LLD_PM_LN
+from classes.response_pull_through_offers import PullThroughOffers
+from classes.response_content import Content
 
 def run_analysis():
     # Placeholders for status updates
@@ -15,6 +18,9 @@ def run_analysis():
     website_and_tools_status = st.empty()
     seo_status = st.empty()
     social_media_status = st.empty()
+    lld_pm_ln_status = st.empty()
+    pull_through_offers_status = st.empty()
+    content_status = st.empty()
     # Function to run SEO Off Page Analysis
     def run_off_page_analysis():
         try:
@@ -65,13 +71,43 @@ def run_analysis():
         except Exception as e:
             social_media_status.error(f"Social Media Analysis failed: {e}")
             return None
-        
+    def run_lld_pm_ln():
+        try:
+            lld_pm_ln_status.info("Starting LLD/PM/LN Analysis...")
+            result = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
+            lld_pm_ln_status.success("LLD/PM/LN completed successfully.")
+            return result
+        except Exception as e:
+            lld_pm_ln_status.error(f"LLD/PM/LN Analysis failed: {e}")
+            return None
+    def run_pull_through_offers():
+        try:
+            pull_through_offers_status.info("Starting Pull through offer Analysis...")
+            result = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
+            pull_through_offers_status.success("Pull through offer completed successfully.")
+            return result
+        except Exception as e:
+            pull_through_offers_status.error(f"Pull through offer Analysis failed: {e}")
+            return None
+    def run_content():
+        try:
+            content_status.info("Starting Content Analysis...")
+            result = Content(os.getenv('Model_Content'))
+            content_status.success("Content Analysis completed successfully.")
+            return result
+        except Exception as e:
+            content_status.error(f"Content Analysis failed: {e}")
+            return None
+    
     # Create threads for concurrent execution
     off_page_thread = threading.Thread(target=run_off_page_analysis)
     on_page_thread = threading.Thread(target=run_on_page_analysis)
     website_and_tools_thread = threading.Thread(target=run_website_and_tools_analysis)
     seo_thread = threading.Thread(target=run_seo_analysis)
     social_media_thread = threading.Thread(target=run_social_media_analysis)
+    llm_pm_ln_thread = threading.Thread(target=run_lld_pm_ln)
+    pull_through_offers_thread = threading.Thread(target=run_pull_through_offers)
+    content_thread = threading.Thread(target=run_content)
 
     # Attach Streamlit context to threads
     add_script_run_ctx(off_page_thread)
@@ -79,6 +115,9 @@ def run_analysis():
     add_script_run_ctx(website_and_tools_thread)
     add_script_run_ctx(seo_thread)
     add_script_run_ctx(social_media_thread)
+    add_script_run_ctx(llm_pm_ln_thread)
+    add_script_run_ctx(pull_through_offers_thread)
+    add_script_run_ctx(content_thread)
 
     # Start threads
     off_page_thread.start()
@@ -86,6 +125,9 @@ def run_analysis():
     website_and_tools_thread.start()
     seo_thread.start()
     social_media_thread.start()
+    llm_pm_ln_thread.start()
+    pull_through_offers_thread.start()
+    content_thread.start()
 
     # Wait for threads to complete
     off_page_thread.join()
@@ -93,7 +135,10 @@ def run_analysis():
     website_and_tools_thread.join()
     seo_thread.join()
     social_media_thread.join()
-    
+    llm_pm_ln_thread.join()
+    pull_through_offers_thread.join()
+    content_thread.join()
+
     st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
     if st.button("View Results"):

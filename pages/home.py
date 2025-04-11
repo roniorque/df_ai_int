@@ -13,6 +13,9 @@ from classes.Linkedin import Linkedin
 from classes.Tiktok import Tiktok
 from classes.website_and_tools import WebsiteAndTools
 from classes.client_summary import CientSummary
+from classes.pull_through_offers import PullThroughOffers
+from classes.lld_pm_ln import LLD_PM_LN
+from classes.content import Content
 import asyncio
 import time
 from helper.upload_button import hide_button, unhide_button
@@ -86,6 +89,9 @@ class DigitalFootprintDashboard:
             #self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
             self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
             self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
+            self.lld_pm_ln = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
+            self.pull_through_offers = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
+            self.content = Content(os.getenv('Model_Content'))
 
         return col1, col2, col3, col4
 
