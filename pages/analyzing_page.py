@@ -10,6 +10,7 @@ from classes.response_social_media import SocialMedia
 from classes.response_lld_pm_ln import LLD_PM_LN
 from classes.response_pull_through_offers import PullThroughOffers
 from classes.response_content import Content
+from classes.response_sem_ppc import Sem_PPC
 
 def run_analysis():
     # Placeholders for status updates
@@ -21,7 +22,8 @@ def run_analysis():
     lld_pm_ln_status = st.empty()
     pull_through_offers_status = st.empty()
     content_status = st.empty()
-    # Function to run SEO Off Page Analysis
+    sem_ppc = st.empty()
+
     def run_off_page_analysis():
         try:
             off_page_status.info("Starting SEO Off Page Analysis...")
@@ -32,7 +34,6 @@ def run_analysis():
             off_page_status.error(f"SEO Off Page Analysis failed: {e}")
             return None
 
-    # Function to run On Page Analysis
     def run_on_page_analysis():
         try:
             on_page_status.info("Starting On Page Analysis...")
@@ -52,6 +53,7 @@ def run_analysis():
         except Exception as e:
             on_page_status.error(f"Website and Tools Analysis failed: {e}")
             return None
+        
     def run_seo_analysis():
         try:
             seo_status.info("Starting SEO Analysis...")
@@ -71,6 +73,7 @@ def run_analysis():
         except Exception as e:
             social_media_status.error(f"Social Media Analysis failed: {e}")
             return None
+        
     def run_lld_pm_ln():
         try:
             lld_pm_ln_status.info("Starting LLD/PM/LN Analysis...")
@@ -80,6 +83,7 @@ def run_analysis():
         except Exception as e:
             lld_pm_ln_status.error(f"LLD/PM/LN Analysis failed: {e}")
             return None
+        
     def run_pull_through_offers():
         try:
             pull_through_offers_status.info("Starting Pull through offer Analysis...")
@@ -89,6 +93,7 @@ def run_analysis():
         except Exception as e:
             pull_through_offers_status.error(f"Pull through offer Analysis failed: {e}")
             return None
+        
     def run_content():
         try:
             content_status.info("Starting Content Analysis...")
@@ -97,6 +102,16 @@ def run_analysis():
             return result
         except Exception as e:
             content_status.error(f"Content Analysis failed: {e}")
+            return None
+        
+    def run_sem_ppc_analysis():
+        try:
+            sem_ppc.info("Starting SEM/PPC Analysis...")
+            result = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
+            sem_ppc.success("SEM/PPC Analysis completed successfully.")
+            return result
+        except Exception as e:
+            sem_ppc.error(f"SEM/PPC Analysis failed: {e}")
             return None
     
     # Create threads for concurrent execution
@@ -108,6 +123,7 @@ def run_analysis():
     llm_pm_ln_thread = threading.Thread(target=run_lld_pm_ln)
     pull_through_offers_thread = threading.Thread(target=run_pull_through_offers)
     content_thread = threading.Thread(target=run_content)
+    content_sem_ppc_thread = threading.Thread(target=run_sem_ppc_analysis)
 
     # Attach Streamlit context to threads
     add_script_run_ctx(off_page_thread)
@@ -118,6 +134,7 @@ def run_analysis():
     add_script_run_ctx(llm_pm_ln_thread)
     add_script_run_ctx(pull_through_offers_thread)
     add_script_run_ctx(content_thread)
+    add_script_run_ctx(content_sem_ppc_thread)
 
     # Start threads
     off_page_thread.start()
@@ -128,6 +145,8 @@ def run_analysis():
     llm_pm_ln_thread.start()
     pull_through_offers_thread.start()
     content_thread.start()
+    content_sem_ppc_thread.start()
+
 
     # Wait for threads to complete
     off_page_thread.join()
@@ -138,6 +157,7 @@ def run_analysis():
     llm_pm_ln_thread.join()
     pull_through_offers_thread.join()
     content_thread.join()
+    content_sem_ppc_thread.join()
 
     st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
