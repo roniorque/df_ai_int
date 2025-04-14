@@ -54,7 +54,6 @@ class DigitalFootprintDashboard:
             else:
                 st.session_state["analyze"] = ''
 
-                    
             self.analyze_button = st.button("Analyze", icon="✨", use_container_width=True)
             if self.analyze_button == True:
                 st.switch_page("pages/analyzing_page.py")

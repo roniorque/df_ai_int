@@ -2,7 +2,7 @@ import json
 import os
 import streamlit as st
 from helper.data_field import get_analyst_response
-import time
+from helper.telemetry import collect_telemetry
 
 st.set_page_config(layout="centered") 
 
@@ -111,8 +111,6 @@ def seo_on_page_table(df_data):
     else:
         st.warning("No data retrieved for analysis.")
     # --- End: Loop and display data ---
-
-     
     
 def display_outputs():
     st.markdown("<div id='top'></div>", unsafe_allow_html=True);
@@ -132,6 +130,7 @@ This document represents the results of our audit of LoansOne’s digital market
     st.markdown(f"{overview}")
     st.markdown("---")
     st.markdown("### Executive Summary")
+
     st.markdown(f"Simtech LED's digital footprint reveals significant strengths and areas for improvement that can enhance its competitive positioning in the casino, gaming, and entertainment LED market. The analysis highlights the following key findings and recommendations")
     st.markdown("---")
     
@@ -241,11 +240,13 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.write("TBD")
     
     st.markdown("##### WHAT IS THE PULL-THROUGH OFFER?")
-    st.write(get_analyst_response("Pull through offers Analyst"))
+    pull_through_data = get_analyst_response("Pull through offers Analyst")
+    st.write(pull_through_data)
     
     
     st.markdown("##### WEBSITE AUDIENCE ACQUISITION")
-    st.write(get_analyst_response("Website Audience Acquisition Analyst"))
+    website_audience_data = get_analyst_response("Website Audience Acquisition Analyst")
+    st.write(website_audience_data)
     
     #LLD/PM/LN
     lld_data = get_analyst_response("LLD/PM/LN Analyst")
@@ -301,8 +302,7 @@ We have evaluated the process of content development strategy and existing conte
     st.write("TBD")
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
-    
-    
+
 if st.button("Back to Dashboard", icon="🏠"):
         st.switch_page("pages/home.py")
 display_outputs()

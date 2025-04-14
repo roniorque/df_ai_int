@@ -13,6 +13,7 @@ from classes.response_content import Content
 from classes.response_sem_ppc import Sem_PPC
 from classes.response_marketplace import Marketplace
 from classes.response_target_market import TargetMarket
+from classes.response_executive_summary import ExecutiveSummary
 
 def run_analysis():
     # Placeholders for status updates
@@ -27,6 +28,7 @@ def run_analysis():
     sem_ppc = st.empty()
     marketplace = st.empty()
     target_market = st.empty()
+    executive_summary_status = st.empty()
 
     def run_off_page_analysis():
         try:
@@ -137,7 +139,17 @@ def run_analysis():
         except Exception as e:
             target_market.error(f"Target Market Analysis failed: {e}")
             return None
-        
+    
+    def run_executive_summary_analysis():
+        try:
+            executive_summary = st.empty().info("Starting Executive Summary Analysis...")
+            result = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
+            executive_summary = st.empty().success("Executive Summary Analysis completed successfully.")
+            return result
+        except Exception as e:
+            executive_summary = st.empty().error(f"Executive Summary Analysis failed: {e}")
+            return None
+
     # Create threads for concurrent execution
     off_page_thread = threading.Thread(target=run_off_page_analysis)
     on_page_thread = threading.Thread(target=run_on_page_analysis)
@@ -191,7 +203,13 @@ def run_analysis():
     target_market_thread.join()
 
     st.markdown("---")
-    st.success("🎉 All analyses completed!") # Final success message
+    executive_summary_status.info("Starting Executive Summary Analysis...")
+    try:
+        executive_summary = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
+        executive_summary_status.success("Executive Summary Analysis completed successfully.")
+    except Exception as e:
+        executive_summary_status.error(f"Executive Summary Analysis failed: {e}")    
+        st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
     if st.button("View Results", icon="📃"):
         st.switch_page("pages/output.py")
