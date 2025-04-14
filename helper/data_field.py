@@ -21,7 +21,7 @@ def get_analyst_response(data_src):
                 if x and "result" in x:
                         return x["result"]
                 else:
-                        print(f"No matching document or 'result' field found for data_src: {data_src} in df_response")
+                        print(f"No matching document or 'result' field found for data_src: {data_src} in df_response. 404")
                         return None # Return None if no doc or 'result' field found
         finally:
                 if myclient:

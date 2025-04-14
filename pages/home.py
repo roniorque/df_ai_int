@@ -46,14 +46,14 @@ class DigitalFootprintDashboard:
         
         with col1:
             
-            self.upload_file_button = st.button("Upload File", st.session_state['analyze'])
+            self.upload_file_button = st.button("Sync Data", st.session_state['analyze'], icon="🔄", use_container_width=True)
             if self.upload_file_button == True:
                 st.session_state["analyze"] = 'clicked'
                 unhide_button()
             else:
                 st.session_state["analyze"] = ''
 
-            self.analyze_button = st.button("Analyze")
+            self.analyze_button = st.button("Analyze", icon="✨", use_container_width=True)
             if self.analyze_button == True:
                 st.switch_page("pages/analyzing_page.py")
             else:

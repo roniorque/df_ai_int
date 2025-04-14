@@ -115,14 +115,16 @@ def seo_on_page_table(df_data):
      
     
 def display_outputs():
+    st.markdown("<div id='top'></div>", unsafe_allow_html=True);
     client_name = "RMX Creatives"
+    client_website = "https://rmxcreatives.com/"
     overview = f"""**{client_name}** is a financial services company based in Auckland, New Zealand, specializing in providing quick and flexible loan solutions for businesses and individuals. Represented by Paul Stone, LoansOne has enlisted ShoreMarketing to perform a deep dive into their digital footprint to have a view of the holistic status of their digital properties and determine how each property can play part in implementing a stronger digital marketing plan.\n
 The Digital Marketing Footprint consists of deep-dive research by ShoreMarketing specialists to help the business leaders of LoansOne understand the effectiveness of their existing digital initiatives with the view of giving them an insight to developing a strategy and effectively allocating business resources to digital properties that will give them the best results.\n
 This document represents the results of our audit of LoansOne’s digital marketing and management practices. Our audit covered reviews of key digital areas: Website and Tools, PPC/SEM, SEO, Social Media, and Market Places."""
     
     
     st.markdown("# Digital Marketing Audit")
-    st.markdown(f"{client_name}")
+    st.markdown(f"for: **{client_name} ({client_website})**")
     st.write("")
     st.write("")
     st.write("")
@@ -134,11 +136,11 @@ This document represents the results of our audit of LoansOne’s digital market
     st.markdown("---")
     
     st.markdown("### CLIENT FOOTPRINT")
-    st.markdown(f"A")
+    st.write("TBD")
     st.markdown("---")    
     
-    st.markdown("### SNAPSHOT BY CHANNEL")
-    st.markdown(f"A")
+    st.markdown("### SNAPSHOT BY CHANNEL")    
+    st.write("TBD")
     st.markdown("---")
     
     st.markdown("## AUDITS PER CHANNEL")
@@ -150,6 +152,7 @@ In line with this, we have looked into the technology used by **{client_name}** 
     website_and_tools_data = get_analyst_response("Website and Tools Analyst")
     write_table(website_and_tools_data)
     
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
    
     st.markdown("### SEARCH ENGINE MARKETING/PPC")
@@ -158,9 +161,10 @@ With several businesses out there all vying for the same eyeballs, it’s never 
 Currently, {client_name} has already explored numerous online advertising. Its competitors are also experienced in PPC in multiple platforms. """)
     
     # Write SEM Table
-    sem_data = get_analyst_response("SEM PPC Analyst")
+    sem_data = get_analyst_response("SEM/PPC Analyst")
     write_table(sem_data)
     
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     st.markdown("### SEARCH ENGINE OPTIMIZATION")
@@ -171,6 +175,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     seo_data = get_analyst_response("SEO Analyst")
     write_table(seo_data)
     
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write On Page Table
@@ -178,6 +183,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     on_page_data = get_analyst_response("On Page Analyst")
     seo_on_page_table(on_page_data)
     
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write Off Page Table
@@ -185,8 +191,118 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     on_page_data = get_analyst_response("Off Page Analyst")
     seo_on_page_table(on_page_data)
     
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    # Write SocMed Table
+    st.markdown("### SOCIAL MEDIA")
+    st.markdown(f"""Social Media Marketing for the B2B industry is tricky. While B2C businesses can easily have millions of fans through social media, B2B lead generation such as {client_name} sources from a significantly smaller market.
+    
+Regardless, it is still a great channel worth investing to improve a business’ lead generation if handled correctly. {client_name}, along with its competitors, are found to be using different social media platforms to extend their brand presence. """)
+    social_media_data = get_analyst_response("Social Media Analyst")
+    write_table(social_media_data)
+    
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    # Write SocMed Table
+    st.markdown("### CONTENT")
+    st.markdown(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. """)
+    content_data = get_analyst_response("Content Analyst")
+    write_table(content_data)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
 
-if st.button("Back to Dashboard"):
+    if (get_analyst_response("Marketplace Analyst")):
+        st.markdown("### MARKET PLACE")
+        marketpalce_data = get_analyst_response("Marketplace Analyst")
+        write_table(marketpalce_data)
+        st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+        st.markdown("---")
+    
+    
+    st.markdown("## OTHER INFORMATION")
+    st.markdown("### DIGITAL MARKETING APPROACH: CUSTOMER CENTRIC INBOUND MARKETING")
+    st.markdown(f"""Digital Marketing is often called in-bound marketing in a sense that it is not intrusive: a person must search for the information before the marketing stimulus is served to them. Unlike the traditional offline marketing which is more brand-centric in style and intrusive (they are served to you even though you did not intend to see the marketing stimulus), digital marketing is customer-centric: it takes into account the needs, thoughts, and considerations of the customer in all stages in the sales funnel while strategically serving them the appropriate content at the right time, at the right frequency, and through the correct channel. We suggest that {client_name} looks into the details below with the view of understanding where the brand’s footing is in some stages in their customer’s decision and buying journey. """)
+    
+    
+    
+    target_market_data = get_analyst_response("Target Market Analyst")
+    st.markdown("##### TARGET MARKET")
+    st.write(target_market_data['target_market'])
+    
+    st.markdown("##### PRODUCT/SERVICE DEMOGRAPHICS")
+    st.write(target_market_data['demographics'])
+    
+    st.markdown("##### MARKETING MESSAGE SUMMARY")
+    st.write(target_market_data['summary'])
+    
+    st.markdown("##### WHAT IS THE DESIRED OUTCOMES OF DIGITAL MARKETING?")
+    st.write("TBD")
+    
+    st.markdown("##### WHAT IS THE PULL-THROUGH OFFER?")
+    st.write(get_analyst_response("Pull through offers Analyst"))
+    
+    
+    st.markdown("##### WEBSITE AUDIENCE ACQUISITION")
+    st.write(get_analyst_response("Website Audience Acquisition Analyst"))
+    
+    #LLD/PM/LN
+    lld_data = get_analyst_response("LLD/PM/LN Analyst")
+    st.markdown("##### LEAD LIST DEVELOPMENT")
+    st.write(lld_data.get('lead_list_development', None))
+    
+    st.markdown("##### PROSPECTING MECHANISM")
+    st.write(lld_data.get('prospecting_mechanism', None))
+    
+    st.markdown("##### LEAD NURTURING")
+    st.write(lld_data.get('lead_nurturing', None))
+    
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    
+    st.markdown("#### CONTENT - PROCESS AND ASSETS")
+    st.write(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. \n
+We have evaluated the process of content development strategy and existing content assets of {client_name} based on how they serve clients throughout the customer journey. """)
+    
+    
+    pna_data = get_analyst_response("Content - Process and Assets Analyst")
+    if pna_data:
+        st.markdown("##### AWARENESS STAGE")
+        st.write(pna_data.get('awareness_stage', 'N/A'))
+        st.markdown("##### CONSIDERATION STAGE")
+        st.write(pna_data.get('consideration_stage', 'N/A'))
+        st.markdown("##### DECISION STAGE")
+        st.write(pna_data.get('decision_stage', 'N/A'))
+        
+    else:
+        st.markdown("##### AWARENESS STAGE")
+        st.write(None)
+        st.markdown("##### CONSIDERATION STAGE")
+        st.write(None)
+        st.markdown("##### DECISION STAGE")
+        st.write(None)
+        
+    st.markdown("---")       
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    
+    st.markdown("#### CONVERSION –  ACTIVATION OF VISITORS")
+    st.markdown("##### AWARENESS TO TRAFFIC")
+    st.write("TBD")
+    st.markdown("##### TRAFFIC TO LEAD CONVERSION")
+    st.write("TBD")
+    st.markdown("##### LEAD TO SALES CONVERSION")
+    st.write("TBD")
+    st.markdown("##### CONVERSION TO BRAND LOYALTY")
+    st.write("TBD")
+    
+    st.markdown("##### CONNECTION OF ALL ONLINE AND OFFLINE TOUCH POINTS")
+    st.write("TBD")
+    
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    
+    
+if st.button("Back to Dashboard", icon="🏠"):
         st.switch_page("pages/home.py")
 display_outputs()

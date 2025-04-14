@@ -190,9 +190,10 @@ def run_analysis():
     marketplace_thread.join()
     target_market_thread.join()
 
+    st.markdown("---")
     st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
-    if st.button("View Results"):
+    if st.button("View Results", icon="📃"):
         st.switch_page("pages/output.py")
 
 # Execute the analysis
