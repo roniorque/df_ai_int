@@ -5,9 +5,9 @@ def data_field(data_src):
         myclient = MongoClient(mongodb_uri)
         mydb = myclient.get_database()
         mycol = mydb["df_data"]
-        x = mycol.find_one({"data_field": data_src})
-        x = x["result"]["question"]
-        #st.write(x)
+        x = mycol.find_one({"data_field": data_src},
+                sort=[('timestamp', -1)])
+        x = x["result"]
         return x
 
 def get_analyst_response(data_src):

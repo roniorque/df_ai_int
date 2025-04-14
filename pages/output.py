@@ -1,8 +1,8 @@
 import json
 import os
 import streamlit as st
-from helper.data_field import get_analyst_response
-from helper.telemetry import collect_telemetry
+from helper.data_field import get_analyst_response, data_field
+import time
 
 st.set_page_config(layout="centered") 
 
@@ -21,21 +21,21 @@ def write_client_footprint():
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
     markdown_table += f"| Website Health Score | {result_web['website_overall_health_score']} |\n"
-    markdown_table += f"| Organic Traffic to the Website | {seo['organic_traffic']} |\n"
-    markdown_table += f"| Paid Traffic to the Website | {seo['paid_traffic']} |\n"
-    markdown_table += f"| Referral Traffic to the Website | {seo['referral_traffic']} |\n"
+    markdown_table += f"| Organic Traffic to the Website | {seo.get('organic_traffic', 'N/A')} |\n"
+    markdown_table += f"| Paid Traffic to the Website | {seo.get('paid_traffic', 'N/A')} |\n"
+    markdown_table += f"| Referral Traffic to the Website | {seo.get('referral_traffic', 'N/A')} |\n"
     markdown_table += f"| Email Traffic to the Website | N/A |\n"
-    markdown_table += f"| Direct Traffic to the Website | {seo['direct_traffic']} |\n"
+    markdown_table += f"| Direct Traffic to the Website | {seo.get('direct_traffic', 'N/A')} |\n"
     markdown_table += f"| Social Traffic to the Website | N/A |\n"
     markdown_table += f"| Display Traffic to the Website | N/A |\n"
     markdown_table += f"| Email Database | N/A |\n"
-    markdown_table += f"| Facebook Followers | {socmed['facebook_followers']} |\n"
-    markdown_table += f"| Twitter Followers | {socmed['twitter_followers']} |\n"
-    markdown_table += f"| Instagram Followers | {socmed['instagram_followers']} |\n"
-    markdown_table += f"| Linkedin Followers | {socmed['linkedin_followers']} |\n"
+    markdown_table += f"| Facebook Followers | {socmed.get('facebook_followers', 'N/A')} |\n"
+    markdown_table += f"| Twitter Followers | {socmed.get('twitter_followers', 'N/A')} |\n"
+    markdown_table += f"| Instagram Followers | {socmed.get('instagram_followers', 'N/A')} |\n"
+    markdown_table += f"| Linkedin Followers | {socmed.get('linkedin_followers', 'N/A')} |\n"
     markdown_table += f"| Google My Business | N/A |\n"
-    markdown_table += f"| # of Keywords Ranking in Top 10 | {seo['keyword_ranking_in_top_10']} |\n"
-    markdown_table += f"| # of Keywords Ranking in Top 100 | {seo['keyword_ranking_in_top_100']} |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 10 | {seo.get('keyword_ranking_in_top_10', 'N/A')} |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 100 | {seo.get('keyword_ranking_in_top_100', 'N/A')} |\n"
     
     return markdown_table
     
@@ -147,10 +147,9 @@ def seo_on_page_table(df_data):
     # --- End: Loop and display data ---
     
 def display_outputs():
-    st.markdown("<div id='top'></div>", unsafe_allow_html=True);
-    client_name = "RMX Creatives"
-    client_website = "https://rmxcreatives.com/"
-    overview = f"""**{client_name}** is a financial services company based in Auckland, New Zealand, specializing in providing quick and flexible loan solutions for businesses and individuals. Represented by Paul Stone, LoansOne has enlisted ShoreMarketing to perform a deep dive into their digital footprint to have a view of the holistic status of their digital properties and determine how each property can play part in implementing a stronger digital marketing plan.\n
+    client_name = data_field("Client Name")
+    client_website = data_field("Client Website")
+    overview = f"""{client_name} is a financial services company based in Auckland, New Zealand, specializing in providing quick and flexible loan solutions for businesses and individuals. Represented by Paul Stone, LoansOne has enlisted ShoreMarketing to perform a deep dive into their digital footprint to have a view of the holistic status of their digital properties and determine how each property can play part in implementing a stronger digital marketing plan.\n
 The Digital Marketing Footprint consists of deep-dive research by ShoreMarketing specialists to help the business leaders of LoansOne understand the effectiveness of their existing digital initiatives with the view of giving them an insight to developing a strategy and effectively allocating business resources to digital properties that will give them the best results.\n
 This document represents the results of our audit of LoansOne’s digital marketing and management practices. Our audit covered reviews of key digital areas: Website and Tools, PPC/SEM, SEO, Social Media, and Market Places."""
     
@@ -164,8 +163,7 @@ This document represents the results of our audit of LoansOne’s digital market
     st.markdown(f"{overview}")
     st.markdown("---")
     st.markdown("### Executive Summary")
-
-    st.markdown(f"Simtech LED's digital footprint reveals significant strengths and areas for improvement that can enhance its competitive positioning in the casino, gaming, and entertainment LED market. The analysis highlights the following key findings and recommendations")
+    st.markdown(get_analyst_response("Executive Summary Analyst"))
     st.markdown("---")
     
     st.markdown("### CLIENT FOOTPRINT")
@@ -329,24 +327,46 @@ We have evaluated the process of content development strategy and existing conte
         st.markdown("##### DECISION STAGE")
         st.write(None)
         
+    
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")       
-    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     
+    
+    conversion = get_analyst_response("Conversion Analyst")
     st.markdown("#### CONVERSION –  ACTIVATION OF VISITORS")
-    st.markdown("##### AWARENESS TO TRAFFIC")
-    st.write("TBD")
-    st.markdown("##### TRAFFIC TO LEAD CONVERSION")
-    st.write("TBD")
-    st.markdown("##### LEAD TO SALES CONVERSION")
-    st.write("TBD")
-    st.markdown("##### CONVERSION TO BRAND LOYALTY")
-    st.write("TBD")
     
+    if conversion:
+        st.markdown("##### AWARENESS TO TRAFFIC")
+        st.write(conversion.get('awareness_to_traffic', 'N/A'))
+        
+        st.markdown("##### TRAFFIC TO LEAD CONVERSION")
+        st.write(conversion.get('traffic_to_lead', 'N/A'))
+        
+        st.markdown("##### LEAD TO SALES CONVERSION")
+        st.write(conversion.get('lead_to_sales', 'N/A'))
+        
+        st.markdown("##### CONVERSION TO BRAND LOYALTY")
+        st.write(conversion.get('conversion_to_brand', 'N/A'))
+    else:
+        st.markdown("##### AWARENESS TO TRAFFIC")
+        st.write(None)
+        st.markdown("##### TRAFFIC TO LEAD CONVERSION")
+        st.write(None)
+        st.markdown("##### LEAD TO SALES CONVERSION")
+        st.write(None)
+        st.markdown("##### CONVERSION TO BRAND LOYALTY")
+        st.write(None)
+    
+    
+    conversion = get_analyst_response("Connection Analyst")
     st.markdown("##### CONNECTION OF ALL ONLINE AND OFFLINE TOUCH POINTS")
-    st.write("TBD")
+    st.write(conversion)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    
 
+
+st.markdown("<div id='top'></div>", unsafe_allow_html=True);    
 if st.button("Back to Dashboard", icon="🏠"):
         st.switch_page("pages/home.py")
 display_outputs()
