@@ -79,8 +79,8 @@ class eBay:
                                 #time_lapsed = end_time - start_time
                                 
                                 debug_info_product_title_ebay = {'data_field' : 'Product Title - eBay', 'result': self.product_title_ebay}
-                                debug_category_ebay = {'data_field' : 'Category', 'result - eBay': self.category_ebay}
-                                debug_images_ebay = {'data_field' : 'Images', 'result - eBay': self.images_ebay}
+                                debug_category_ebay = {'data_field' : 'Category - eBay', 'result': self.category_ebay}
+                                debug_images_ebay = {'data_field' : 'Images - eBay', 'result': self.images_ebay}
                                 debug_product_description_ebay = {'data_field' : 'Product Description - eBay', 'result': self.product_description_ebay}
 
                                 '''
