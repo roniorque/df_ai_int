@@ -90,12 +90,12 @@ class Sem_PPC:
                                 #end_time = time.time()
                                 #time_lapsed = end_time - start_time
                                 
-                                debug_info_account_set_up = {'data_field' : 'Account Set Up', 'result': self.account_set_up}
-                                debug_info_search_ads = {'data_field' : 'Search Ads', 'result': self.search_ads}
-                                debug_info_display_ads = {'data_field' : 'Display Ads', 'result': self.display_ads}
-                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads', 'result': self.mobile_ads}
-                                debug_info_video_ads = {'data_field' : 'Video Ads', 'result': self.video_ads}
-                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads', 'result': self.shopping_ads}
+                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': self.account_set_up}
+                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': self.search_ads}
+                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': self.display_ads}
+                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': self.mobile_ads}
+                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': self.video_ads}
+                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': self.shopping_ads}
 
                                 '''
                                 debug_info = {
@@ -137,13 +137,12 @@ class Sem_PPC:
 
     def row1(self):
             self.account_set_up = st.text_input("Account Set Up - Google Ads:", placeholder='Enter Account Set Up')
-            self.search_ads = st.checkbox("Search Ads")
-            self.display_ads = st.checkbox("Display Ads")
-            self.mobile_ads = st.checkbox("Mobile Ads")
-            self.video_ads = st.checkbox("Video Ads")
-            self.shopping_ads = st.checkbox("Shopping Ads")
+            self.search_ads = st.checkbox("Search Ads - Google Ads/SEMRush")
+            self.display_ads = st.checkbox("Display Ads - Google Ads/SEMRush")
+            self.mobile_ads = st.checkbox("Mobile Ads - Google Ads")
+            self.video_ads = st.checkbox("Video Ads - Google Ads")
+            self.shopping_ads = st.checkbox("Shopping Ads - Google Ads/SEMRush")
 
-            
             '''
             st.write("") # FOR THE HIDE BUTTON
             st.write("") # FOR THE HIDE BUTTON
