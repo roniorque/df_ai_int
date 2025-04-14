@@ -163,7 +163,7 @@ This document represents the results of our audit of LoansOne’s digital market
     st.markdown(f"{overview}")
     st.markdown("---")
     st.markdown("### Executive Summary")
-    st.markdown(get_analyst_response("Executive Summary Analyst"))
+    st.markdown(get_analyst_response("Executive Summary"))
     st.markdown("---")
     
     st.markdown("### CLIENT FOOTPRINT")
@@ -180,8 +180,8 @@ This document represents the results of our audit of LoansOne’s digital market
     )
     st.markdown("---")    
     
-    st.markdown("### SNAPSHOT BY CHANNEL")    
-    st.write("TBD")
+    st.markdown("### SNAPSHOT BY CHANNEL")   
+    st.table(get_analyst_response("Snapshot Analyst"))
     st.markdown("---")
     
     st.markdown("## AUDITS PER CHANNEL")
