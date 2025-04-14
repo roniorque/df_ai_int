@@ -16,8 +16,10 @@ from classes.client_summary import CientSummary
 from classes.pull_through_offers import PullThroughOffers
 from classes.lld_pm_ln import LLD_PM_LN
 from classes.content import Content
+from classes.sem_ppc import Sem_PPC
+from classes.amazon import Amazon
+from classes.ebay import eBay
 import asyncio
-import time
 from helper.upload_button import hide_button, unhide_button
 
 class DigitalFootprintDashboard:
@@ -95,6 +97,21 @@ class DigitalFootprintDashboard:
 
         return col1, col2, col3, col4
 
+    async def create_row2(self):
+        """Create the first row with four columns"""
+        col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
+        
+        with col1:
+            st.write("## Ads")
+            self.sem_ppc = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
+        with col2:
+            st.write("## Amazon")
+            self.amazon = Amazon(os.getenv('Model_SEM_PPC_Analyst'))
+        with col3:
+            st.write("## eBay")
+            self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
+        return col1, col2, col3
+    
     async def run_analysis(self):
         result = await asyncio.gather(
             self.gtmetrix.process(), 
@@ -112,6 +129,7 @@ class DigitalFootprintDashboard:
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
+        await self.create_row2()
         #self.run_analysis()
 
 # Main execution
