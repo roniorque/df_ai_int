@@ -210,6 +210,8 @@ def run_analysis():
     except Exception as e:
         executive_summary_status.error(f"Executive Summary Analysis failed: {e}")    
         st.success("🎉 All analyses completed!") # Final success message
+    
+    st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
     if st.button("View Results", icon="📃"):
         st.switch_page("pages/output.py")
