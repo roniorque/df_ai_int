@@ -21,6 +21,7 @@ from classes.amazon import Amazon
 from classes.ebay import eBay
 import asyncio
 from helper.upload_button import hide_button, unhide_button
+import time
 
 class DigitalFootprintDashboard:
     def __init__(self):
@@ -42,7 +43,7 @@ class DigitalFootprintDashboard:
 
     async def create_row1(self):
         """Create the first row with four columns"""
-        col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
+        col1, col2, col3, col4, col5 = st.columns(5, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
             
@@ -53,6 +54,7 @@ class DigitalFootprintDashboard:
             else:
                 st.session_state["analyze"] = ''
 
+                    
             self.analyze_button = st.button("Analyze", icon="✨", use_container_width=True)
             if self.analyze_button == True:
                 st.switch_page("pages/analyzing_page.py")
@@ -60,6 +62,8 @@ class DigitalFootprintDashboard:
                 hide_button()
             
             self.client_summary = CientSummary()
+            
+            
             
         with col2:
             st.write("## Website Traffic")
@@ -77,6 +81,9 @@ class DigitalFootprintDashboard:
             st.write('### Twitter')
             self.twitter = Twitter(os.getenv('MODEL_Social_Media_Analyst'))
 
+            
+        with col4:
+            st.write("## Social Media")
             st.write('### YouTube')
             self.youtube = YouTube(os.getenv('MODEL_Social_Media_Analyst'))
             
@@ -85,8 +92,8 @@ class DigitalFootprintDashboard:
 
             st.write('### Tiktok')
             self.tiktok = Tiktok(os.getenv('MODEL_Social_Media_Analyst'))
-
-        with col4:
+        
+        with col5:
             st.write("## Website Structure")
             #self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
             self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
@@ -95,7 +102,7 @@ class DigitalFootprintDashboard:
             self.pull_through_offers = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
             self.content = Content(os.getenv('Model_Content'))
 
-        return col1, col2, col3, col4
+        return col1, col2, col3, col4, col5
 
     async def create_row2(self):
         """Create the first row with four columns"""
