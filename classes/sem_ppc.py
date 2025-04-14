@@ -41,6 +41,8 @@ class Sem_PPC:
             st.session_state['display_ads'] = ''
         if 'mobile_ads' not in st.session_state:
             st.session_state['mobile_ads'] = ''
+        if 'video_ads' not in st.session_state:
+            st.session_state['video_ads'] = ''
         if 'shopping_ads' not in st.session_state:
             st.session_state['shopping_ads'] = ''
 
@@ -90,12 +92,12 @@ class Sem_PPC:
                                 #end_time = time.time()
                                 #time_lapsed = end_time - start_time
                                 
-                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': self.account_set_up}
-                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': self.search_ads}
-                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': self.display_ads}
-                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': self.mobile_ads}
-                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': self.video_ads}
-                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': self.shopping_ads}
+                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
+                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
+                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
+                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': mobile_ads}
+                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': video_ads}
+                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads}
 
                                 '''
                                 debug_info = {
