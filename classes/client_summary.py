@@ -31,8 +31,8 @@ class CientSummary:
                         client_website = ""
                         # 
                         client_summary = f"Client Summary: {self.client_summary}\n"
-                        client_name = f"Client Name: {self.name}\n"
-                        client_website = f"Client Website: {self.website}\n"
+                        client_name = f"{self.name}\n"
+                        client_website = f"{self.website}\n"
 
                         debug_client_summary = {'data_field' : 'Client Summary', 'result': client_summary}
                         debug_client_name = {'data_field' : 'Client Name', 'result': client_name}
