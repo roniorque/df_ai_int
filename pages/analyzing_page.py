@@ -14,6 +14,7 @@ from classes.response_sem_ppc import Sem_PPC
 from classes.response_marketplace import Marketplace
 from classes.response_target_market import TargetMarket
 from classes.response_executive_summary import ExecutiveSummary
+from classes.response_snapshot import Snapshot
 
 def run_analysis():
     # Placeholders for status updates
@@ -25,10 +26,11 @@ def run_analysis():
     lld_pm_ln_status = st.empty()
     pull_through_offers_status = st.empty()
     content_status = st.empty()
-    sem_ppc = st.empty()
-    marketplace = st.empty()
-    target_market = st.empty()
+    sem_ppc_status = st.empty()
+    marketplace_status = st.empty()
+    target_market_status = st.empty()
     executive_summary_status = st.empty()
+    snapshot_status = st.empty()
 
     def run_off_page_analysis():
         try:
@@ -57,7 +59,7 @@ def run_analysis():
             website_and_tools_status.success("Website and Tools completed successfully.")
             return result
         except Exception as e:
-            on_page_status.error(f"Website and Tools Analysis failed: {e}")
+            website_and_tools_status.error(f"Website and Tools Analysis failed: {e}")
             return None
         
     def run_seo_analysis():
@@ -112,111 +114,109 @@ def run_analysis():
         
     def run_sem_ppc_analysis():
         try:
-            sem_ppc.info("Starting SEM/PPC Analysis...")
+            sem_ppc_status.info("Starting SEM/PPC Analysis...")
             result = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
-            sem_ppc.success("SEM/PPC Analysis completed successfully.")
+            sem_ppc_status.success("SEM/PPC Analysis completed successfully.")
             return result
         except Exception as e:
-            sem_ppc.error(f"SEM/PPC Analysis failed: {e}")
+            sem_ppc_status.error(f"SEM/PPC Analysis failed: {e}")
             return None
         
     def run_marketplace_analysis():
         try:
-            marketplace.info("Starting Marketplace Analysis...")
+            marketplace_status.info("Starting Marketplace Analysis...")
             result = Marketplace(os.getenv('Model_SEM_PPC_Analyst'))
-            marketplace.success("Marketplace Analysis completed successfully.")
+            marketplace_status.success("Marketplace Analysis completed successfully.")
             return result
         except Exception as e:
-            marketplace.error(f"Marketplace Analysis failed: {e}")
+            marketplace_status.error(f"Marketplace Analysis failed: {e}")
             return None
     
     def run_target_market_analysis():
         try:
-            target_market.info("Starting Target Market Analysis...")
+            target_market_status.info("Starting Target Market Analysis...")
             result = TargetMarket(os.getenv('Model_Target_Market_Analyst'))
-            target_market.success("Target Market Analysis completed successfully.")
+            target_market_status.success("Target Market Analysis completed successfully.")
             return result
         except Exception as e:
-            target_market.error(f"Target Market Analysis failed: {e}")
+            target_market_status.error(f"Target Market Analysis failed: {e}")
             return None
-    
+
+    def run_snapshot_analysis():
+        try:
+            snapshot_status.info("Starting Snapshot by Channel Analysis...")
+            result = Snapshot(os.getenv('Model_Snapshot_by_Channel_Analyst'))
+            snapshot_status.success("Snapshot by Channel Analysis completed successfully.")
+            return result
+        except Exception as e:
+            snapshot_status.error(f"Snapshot by Channel Analysis failed: {e}")
+            return None
+
     def run_executive_summary_analysis():
         try:
-            executive_summary = st.empty().info("Starting Executive Summary Analysis...")
+            executive_summary_status.info("Starting Executive Summary Analysis...")
             result = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
-            executive_summary = st.empty().success("Executive Summary Analysis completed successfully.")
+            executive_summary_status.success("Executive Summary Analysis completed successfully.")
             return result
         except Exception as e:
-            executive_summary = st.empty().error(f"Executive Summary Analysis failed: {e}")
+            executive_summary_status.error(f"Executive Summary Analysis failed: {e}")
             return None
+    
+    # Create threads for first batch of concurrent execution
+    first_batch_threads = [
+        threading.Thread(target=run_off_page_analysis),
+        threading.Thread(target=run_on_page_analysis),
+        threading.Thread(target=run_website_and_tools_analysis),
+        threading.Thread(target=run_seo_analysis),
+        threading.Thread(target=run_social_media_analysis),
+        threading.Thread(target=run_lld_pm_ln),
+        threading.Thread(target=run_pull_through_offers),
+        threading.Thread(target=run_content),
+        threading.Thread(target=run_sem_ppc_analysis),
+        threading.Thread(target=run_marketplace_analysis),
+        threading.Thread(target=run_target_market_analysis)
+    ]
 
-    # Create threads for concurrent execution
-    off_page_thread = threading.Thread(target=run_off_page_analysis)
-    on_page_thread = threading.Thread(target=run_on_page_analysis)
-    website_and_tools_thread = threading.Thread(target=run_website_and_tools_analysis)
-    seo_thread = threading.Thread(target=run_seo_analysis)
-    social_media_thread = threading.Thread(target=run_social_media_analysis)
-    llm_pm_ln_thread = threading.Thread(target=run_lld_pm_ln)
-    pull_through_offers_thread = threading.Thread(target=run_pull_through_offers)
-    content_thread = threading.Thread(target=run_content)
-    content_sem_ppc_thread = threading.Thread(target=run_sem_ppc_analysis)
-    marketplace_thread = threading.Thread(target=run_marketplace_analysis)
-    target_market_thread = threading.Thread(target=run_target_market_analysis)
+    # Attach Streamlit context to first batch threads
+    for thread in first_batch_threads:
+        add_script_run_ctx(thread)
 
-    # Attach Streamlit context to threads
-    add_script_run_ctx(off_page_thread)
-    add_script_run_ctx(on_page_thread)
-    add_script_run_ctx(website_and_tools_thread)
-    add_script_run_ctx(seo_thread)
-    add_script_run_ctx(social_media_thread)
-    add_script_run_ctx(llm_pm_ln_thread)
-    add_script_run_ctx(pull_through_offers_thread)
-    add_script_run_ctx(content_thread)
-    add_script_run_ctx(content_sem_ppc_thread)
-    add_script_run_ctx(marketplace_thread)
-    add_script_run_ctx(target_market_thread)
+    # Start first batch threads
+    for thread in first_batch_threads:
+        thread.start()
 
-    # Start threads
-    off_page_thread.start()
-    on_page_thread.start()
-    website_and_tools_thread.start()
-    seo_thread.start()
-    social_media_thread.start()
-    llm_pm_ln_thread.start()
-    pull_through_offers_thread.start()
-    content_thread.start()
-    content_sem_ppc_thread.start()
-    marketplace_thread.start()
-    target_market_thread.start()
-
-    # Wait for threads to complete
-    off_page_thread.join()
-    on_page_thread.join()
-    website_and_tools_thread.join()
-    seo_thread.join()
-    social_media_thread.join()
-    llm_pm_ln_thread.join()
-    pull_through_offers_thread.join()
-    content_thread.join()
-    content_sem_ppc_thread.join()
-    marketplace_thread.join()
-    target_market_thread.join()
+    # Wait for first batch threads to complete
+    for thread in first_batch_threads:
+        thread.join()
 
     st.markdown("---")
-    executive_summary_status.info("Starting Executive Summary Analysis...")
-    try:
-        executive_summary = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
-        executive_summary_status.success("Executive Summary Analysis completed successfully.")
-    except Exception as e:
-        executive_summary_status.error(f"Executive Summary Analysis failed: {e}")    
-        st.success("🎉 All analyses completed!") # Final success message
-    
+    st.info("Initial analyses completed. Now generating Summary reports...")
+
+    # Create threads for second batch of concurrent execution (Snapshot and Executive Summary)
+    second_batch_threads = [
+        threading.Thread(target=run_snapshot_analysis),
+        threading.Thread(target=run_executive_summary_analysis)
+    ]
+
+    # Attach Streamlit context to second batch threads
+    for thread in second_batch_threads:
+        add_script_run_ctx(thread)
+
+    # Start second batch threads
+    for thread in second_batch_threads:
+        thread.start()
+
+    # Wait for second batch threads to complete
+    for thread in second_batch_threads:
+        thread.join()
+
     st.success("🎉 All analyses completed!") # Final success message
+
     # --- Display Button After Completion ---
     if st.button("View Results", icon="📃"):
         st.switch_page("pages/output.py")
 
 # Execute the analysis
 if st.button("Back"):
-        st.switch_page("pages/home.py")
+    st.switch_page("pages/home.py")
 run_analysis()
