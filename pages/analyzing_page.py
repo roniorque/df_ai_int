@@ -11,6 +11,7 @@ from classes.response_lld_pm_ln import LLD_PM_LN
 from classes.response_pull_through_offers import PullThroughOffers
 from classes.response_content import Content
 from classes.response_sem_ppc import Sem_PPC
+from classes.response_marketplace import Marketplace
 
 def run_analysis():
     # Placeholders for status updates
@@ -23,6 +24,7 @@ def run_analysis():
     pull_through_offers_status = st.empty()
     content_status = st.empty()
     sem_ppc = st.empty()
+    marketplace = st.empty()
 
     def run_off_page_analysis():
         try:
@@ -113,6 +115,16 @@ def run_analysis():
         except Exception as e:
             sem_ppc.error(f"SEM/PPC Analysis failed: {e}")
             return None
+        
+    def run_marketplace_analysis():
+        try:
+            marketplace.info("Starting Marketplace Analysis...")
+            result = Marketplace(os.getenv('Model_SEM_PPC_Analyst'))
+            marketplace.success("Marketplace Analysis completed successfully.")
+            return result
+        except Exception as e:
+            marketplace.error(f"Marketplace Analysis failed: {e}")
+            return None
     
     # Create threads for concurrent execution
     off_page_thread = threading.Thread(target=run_off_page_analysis)
@@ -124,6 +136,7 @@ def run_analysis():
     pull_through_offers_thread = threading.Thread(target=run_pull_through_offers)
     content_thread = threading.Thread(target=run_content)
     content_sem_ppc_thread = threading.Thread(target=run_sem_ppc_analysis)
+    marketplace_thread = threading.Thread(target=run_marketplace_analysis)
 
     # Attach Streamlit context to threads
     add_script_run_ctx(off_page_thread)
@@ -135,6 +148,7 @@ def run_analysis():
     add_script_run_ctx(pull_through_offers_thread)
     add_script_run_ctx(content_thread)
     add_script_run_ctx(content_sem_ppc_thread)
+    add_script_run_ctx(marketplace_thread)
 
     # Start threads
     off_page_thread.start()
@@ -146,7 +160,7 @@ def run_analysis():
     pull_through_offers_thread.start()
     content_thread.start()
     content_sem_ppc_thread.start()
-
+    marketplace_thread.start()
 
     # Wait for threads to complete
     off_page_thread.join()
@@ -158,12 +172,12 @@ def run_analysis():
     pull_through_offers_thread.join()
     content_thread.join()
     content_sem_ppc_thread.join()
+    marketplace_thread.join()
 
     st.success("🎉 All analyses completed!") # Final success message
     # --- Display Button After Completion ---
     if st.button("View Results"):
         st.switch_page("pages/output.py")
-
 
 # Execute the analysis
 if st.button("Back"):
