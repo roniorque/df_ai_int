@@ -1,11 +1,5 @@
 import streamlit as st
-import requests
 from dotenv import load_dotenv
-import os
-import pandas as pd
-import pandas._libs.tslibs.parsing
-import time
-import chardet
 from helper.telemetry import collect_telemetry
 from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button

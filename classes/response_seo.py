@@ -213,12 +213,13 @@ class Seo:
             try:
                 session_backlinks = st.session_state["off_page_file_uploaded"] 
                 if session_backlinks == 'uploaded':
-                    count += 1
                     self.payload += self.fetch_backlinks("Backlinks") 
             except Exception as e:
                 pass
 
             if count >= 1:
+                summary = self.fetch_data("Client Summary")
+                self.payload = summary + self.payload
                 self.process()
             
 

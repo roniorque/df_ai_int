@@ -45,38 +45,53 @@ class SeoOffPageAnalyst:
 
         return text
     
+    def fetch_data(self, data_field):
+        mongodb_uri = os.getenv("MONGODB_URI")
+        myclient = MongoClient(mongodb_uri)
+        mydb = myclient.get_database()
+        mycol = mydb["df_data"]
+        
+        # Sort by timestamp field in descending order
+        x = mycol.find_one(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  
+        )
+        
+        x = x["result"]
+        return x
+    
     def process(self):
-         session = st.session_state['off_page_file_uploaded']
-         if session == 'uploaded':
-                    with st.spinner('SEO Off Page Analyst...', show_time=True):
+                with st.spinner('SEO Off Page Analyst...', show_time=True):
                         st.write('')
-                        
-                        # OUTPUT FOR SEO ANALYST
-                        payload_txt = {"input_value": data_field("Backlinks"),
-                                       "output_type": "text",
-                                        "input_type": "chat"}
-                        headers = {
-                            "Content-Type": "application/json",
-                            "x-api-key": f"{os.getenv('x-api-key')}"
-                        }
-                        result = self.request_model(payload_txt, headers)
-                        
-                        #end_time = time.time()
-                        #time_lapsed = end_time - start_time
-                        
-                        debug_info = {'data_field' : 'Off Page Analyst', 'result': result}
-                        #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
-                        upload_response(debug_info)
-                        
-                        #with st.expander("Debug information", icon="⚙"):
-                        #    st.write(debug_info)
-                        st.session_state["off_page_file_uploaded"] = ''
-                        st.session_state['analyzing'] = False
+                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}         
+                        try:
+                                payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
+                                payload_txt_model = self.request_model(payload_txt, headers)
+                                debug_info = {'data_field' : 'SEO Off Page Analyst', 'result': payload_txt_model}
+                                upload_response(debug_info)
+
+                                st.session_state['off_page_file_uploaded'] = ''
+                                count = 0
+                        except Exception as e:
+                            pass
+                        st.session_state['analyzing'] = False    
                       
     def row1(self):
             st.session_state['analyzing'] = False
-            session = st.session_state['off_page_file_uploaded']
-            if session == 'uploaded':
+            self.payload = ""  
+            count = 0
+            try:
+                session_off_page_file_uploaded = st.session_state['off_page_file_uploaded']
+                if session_off_page_file_uploaded == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Backlinks")
+                
+            except Exception as e:
+                pass
+
+            if count >= 1:
+                summary = self.fetch_data("Client Summary")
+                self.payload = summary + self.payload
                 self.process()
                                        
 

@@ -149,6 +149,8 @@ class Sem_PPC:
                 pass
 
             if count >= 1:
+                summary = self.fetch_data("Client Summary")
+                self.payload = summary + self.payload
                 self.process()
             
 

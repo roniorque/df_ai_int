@@ -126,7 +126,6 @@ class WebsiteAndTools:
     def row1(self):
             st.session_state['analyzing'] = False
             self.payload = ""
-            
             count = 0
             try:
                 session_website_responsiveness = st.session_state['website_responsiveness']
@@ -195,6 +194,8 @@ class WebsiteAndTools:
             
             
             if count >= 1:
+                summary = self.fetch_data("Client Summary")
+                self.payload = summary + self.payload
                 self.process()
                  
 if __name__ == "__main__":

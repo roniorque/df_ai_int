@@ -122,6 +122,8 @@ class LLD_PM_LN:
             except Exception as e:
                 pass
             if count >= 1:
+                summary = self.fetch_data("Client Summary")
+                self.payload = summary + self.payload
                 self.process()
                  
 if __name__ == "__main__":
