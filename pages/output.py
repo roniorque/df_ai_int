@@ -6,6 +6,40 @@ from helper.telemetry import collect_telemetry
 
 st.set_page_config(layout="centered") 
 
+def write_client_footprint():
+
+    web = get_analyst_response("Website and Tools Analyst")
+    result_web = {item["category"]: item["current_footprint"] for item in web}
+    
+    seo = get_analyst_response("SEO Analyst")
+    seo = {item["category"]: item["current_footprint"] for item in seo}
+    
+    socmed = get_analyst_response("Social Media Analyst")
+    socmed = {item["category"]: item["current_footprint"] for item in socmed}
+    
+    
+    markdown_table = "| Source/Channel | Current KPI |\n"
+    markdown_table += "|---|---|\n"
+    markdown_table += f"| Website Health Score | {result_web['website_overall_health_score']} |\n"
+    markdown_table += f"| Organic Traffic to the Website | {seo['organic_traffic']} |\n"
+    markdown_table += f"| Paid Traffic to the Website | {seo['paid_traffic']} |\n"
+    markdown_table += f"| Referral Traffic to the Website | {seo['referral_traffic']} |\n"
+    markdown_table += f"| Email Traffic to the Website | N/A |\n"
+    markdown_table += f"| Direct Traffic to the Website | {seo['direct_traffic']} |\n"
+    markdown_table += f"| Social Traffic to the Website | N/A |\n"
+    markdown_table += f"| Display Traffic to the Website | N/A |\n"
+    markdown_table += f"| Email Database | N/A |\n"
+    markdown_table += f"| Facebook Followers | {socmed['facebook_followers']} |\n"
+    markdown_table += f"| Twitter Followers | {socmed['twitter_followers']} |\n"
+    markdown_table += f"| Instagram Followers | {socmed['instagram_followers']} |\n"
+    markdown_table += f"| Linkedin Followers | {socmed['linkedin_followers']} |\n"
+    markdown_table += f"| Google My Business | N/A |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 10 | {seo['keyword_ranking_in_top_10']} |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 100 | {seo['keyword_ranking_in_top_100']} |\n"
+    
+    return markdown_table
+    
+    
 def write_table(website_and_tools_data):
      
     if website_and_tools_data:
@@ -135,7 +169,17 @@ This document represents the results of our audit of LoansOne’s digital market
     st.markdown("---")
     
     st.markdown("### CLIENT FOOTPRINT")
-    st.write("TBD")
+    st.markdown(write_client_footprint())
+    st.markdown(
+        """
+        <style>
+        table{
+            width: 100%;
+        }
+            
+            """,
+            unsafe_allow_html=True,
+    )
     st.markdown("---")    
     
     st.markdown("### SNAPSHOT BY CHANNEL")    
