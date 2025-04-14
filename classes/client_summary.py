@@ -20,6 +20,8 @@ class CientSummary:
             st.session_state['client_name'] = ''
         if 'client_webiste' not in st.session_state:
             st.session_state['client_webiste'] = ''
+        if 'target_market' not in st.session_state:
+            st.session_state['target_market'] = ''
     
     def process (self):
             with st.spinner('Seo Analyst...', show_time=True):
@@ -38,6 +40,7 @@ class CientSummary:
 
                         if self.client_summary:
                             st.session_state['client_summary'] = 'uploaded'
+                            st.session_state['target_market'] = 'uploaded'
                             collect_telemetry(debug_client_summary)
                         if self.name:
                             st.session_state['client_name'] = 'uploaded'
