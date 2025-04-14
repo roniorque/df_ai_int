@@ -13,6 +13,7 @@ from classes.response_content import Content
 from classes.response_sem_ppc import Sem_PPC
 from classes.response_marketplace import Marketplace
 from classes.response_target_market import TargetMarket
+from classes.response_df_overview import dfOverview
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
@@ -29,6 +30,7 @@ def run_analysis():
     sem_ppc = st.empty()
     marketplace = st.empty()
     target_market = st.empty()
+    df_overview_status = st.empty()
     executive_summary_status = st.empty()
     snapshot_status = st.empty()
 
@@ -141,6 +143,16 @@ def run_analysis():
         except Exception as e:
             target_market.error(f"Target Market Analysis failed: {e}")
             return None
+        
+    def df_overview_analysis():
+        try:
+            df_overview_status.info("DF Overview Analysis...")
+            result = dfOverview(os.getenv('Model_DF_Overview_Analyst'))
+            df_overview_status.success("DF Overview Analysis completed successfully.")
+            return result
+        except Exception as e:
+            df_overview_status.error(f"DF Overview Analysis failed: {e}")
+            return None
     
     # Create threads for concurrent execution
     off_page_thread = threading.Thread(target=run_off_page_analysis)
@@ -154,6 +166,7 @@ def run_analysis():
     content_sem_ppc_thread = threading.Thread(target=run_sem_ppc_analysis)
     marketplace_thread = threading.Thread(target=run_marketplace_analysis)
     target_market_thread = threading.Thread(target=run_target_market_analysis)
+    df_overview_thread = threading.Thread(target=df_overview_analysis)
 
     # Attach Streamlit context to threads
     add_script_run_ctx(off_page_thread)
@@ -167,6 +180,7 @@ def run_analysis():
     add_script_run_ctx(content_sem_ppc_thread)
     add_script_run_ctx(marketplace_thread)
     add_script_run_ctx(target_market_thread)
+    add_script_run_ctx(df_overview_thread)
 
     # Start threads
     off_page_thread.start()
@@ -180,6 +194,7 @@ def run_analysis():
     content_sem_ppc_thread.start()
     marketplace_thread.start()
     target_market_thread.start()
+    df_overview_thread.start()
 
     # Wait for threads to complete
     off_page_thread.join()
@@ -193,6 +208,7 @@ def run_analysis():
     content_sem_ppc_thread.join()
     marketplace_thread.join()
     target_market_thread.join()
+    df_overview_thread.join()
 
     st.markdown("---")
     snapshot_status.info("Starting Snapshot by Channel Analysis...")
