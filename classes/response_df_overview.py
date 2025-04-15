@@ -34,7 +34,7 @@ class dfOverview:
         #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         #text = json.loads(text)
-        st.write(text)
+        #st.write(text)
         return text
     
     def fetch_data(self, data_field):
@@ -62,7 +62,8 @@ class dfOverview:
                                 debug_info = {'data_field' : 'DF Overview Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
 
-                                st.session_state['target_market'] = ''
+                                st.session_state['client_summary'] = ''
+                                st.session_state['client_name'] = ''
                                 count = 0
                         except Exception as e:
                             pass
