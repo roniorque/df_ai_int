@@ -17,6 +17,7 @@ from classes.response_target_market import TargetMarket
 from classes.response_df_overview import dfOverview
 from classes.response_desired_outcome import DesiredOutcome
 from classes.response_conversion_analyst import ConversionAnalyst
+from classes.response_website_audience_acquisition import WebsiteAudienceAcquisition
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
@@ -72,9 +73,9 @@ def run_analysis():
         "df_overview": st.empty(),
         "desired_outcome": st.empty(),
         "conversion": st.empty(),
+        "website_audience": st.empty(),
         "snapshot": st.empty(),
         "executive_summary": st.empty(),
-        
         
     }
     
@@ -237,6 +238,17 @@ def run_analysis():
             handler.update_error(f"Conversion Analysis failed: {str(e)}")
             return None
             
+    def run_website_audience():
+        handler = handlers["website_audience"]
+        try:
+            handler.update_info("Running Website Audience Acquisition Analysis...")
+            result = WebsiteAudienceAcquisition(os.getenv('Model_Website_Audience_Acquisition_Analyst'))
+            handler.update_success("Website Audience Acquisition Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Website Audience Acquisition Analysis failed: {str(e)}")
+            return None
+        
     def run_snapshot_analysis():
         handler = handlers["snapshot"]
         try:
@@ -274,7 +286,8 @@ def run_analysis():
         (run_target_market_analysis, "target_market"),
         (run_df_overview_analysis, "df_overview"),
         (run_desired_outcomes_analysis, "desired_outcome"),
-        (run_conversion_analysis, "conversion")
+        (run_conversion_analysis, "conversion"),
+        (run_website_audience, "website_audience")
     ]
     
     # Create and start first batch threads with small delays to prevent UI conflicts

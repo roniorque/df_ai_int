@@ -28,7 +28,6 @@ class DesiredOutcome:
     def request_model(self, payload_txt, headers):
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()
-        print(response)
         output = response.json()
         #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
