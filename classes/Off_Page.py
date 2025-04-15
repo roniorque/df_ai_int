@@ -75,17 +75,13 @@ class SeoOffPageAnalyst:
                         except KeyError:
                             st.info("Incorrect CSV format. Please upload a valid CSV file.")
                         # OUTPUT FOR SEO ANALYST
-                        payload_txt = {"question": combined_text}
-                        headers = {
-                            "Content-Type": "application/json",
-                            "x-api-key": f"{os.getenv('x-api-key')}"
-                        }
+
                         #result = self.request_model(payload_txt, headers)
                         
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
                         
-                        debug_info = {'data_field' : 'Backlinks', 'result': payload_txt}
+                        debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
                         #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
                         collect_telemetry(debug_info)
                         

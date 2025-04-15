@@ -9,8 +9,6 @@ from helper.upload_response import upload_response
 from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button, unhide_button
 from helper.initialize_analyze_session import initialize_analyze_session
-import pandas as pd
-import asyncio
 import json
 from pymongo import MongoClient
 from helper.data_field import data_field
@@ -37,9 +35,10 @@ class SeoOffPageAnalyst:
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()
         output = response.json()
+        #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         text = json.loads(text)
-        
+        #st.write(text)
         backlinks = text[0]
         referring_domains = text[1]
 
@@ -88,7 +87,6 @@ class SeoOffPageAnalyst:
                 
             except Exception as e:
                 pass
-
             if count >= 1:
                 summary = self.fetch_data("Client Summary")
                 self.payload = summary + self.payload
