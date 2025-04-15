@@ -15,6 +15,7 @@ from classes.response_sem_ppc import Sem_PPC
 from classes.response_marketplace import Marketplace
 from classes.response_target_market import TargetMarket
 from classes.response_df_overview import dfOverview
+from classes.response_desired_outcome import DesiredOutcome
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
@@ -68,8 +69,11 @@ def run_analysis():
         "marketplace": st.empty(),
         "target_market": st.empty(),
         "df_overview": st.empty(),
+        "desired_outcome": st.empty(),
+        "snapshot": st.empty(),
         "executive_summary": st.empty(),
-        "snapshot": st.empty()
+        
+        
     }
     
     # Create thread-safe handlers for each analysis type
@@ -208,6 +212,17 @@ def run_analysis():
         except Exception as e:
             handler.update_error(f"DF Overview Analysis failed: {str(e)}")
             return None
+    
+    def run_desired_outcomes_analysis():
+        handler = handlers["desired_outcome"]
+        try:
+            handler.update_info("Running Desired Outcomes Analysis...")
+            result = DesiredOutcome(os.getenv('Model_Desired_Outcomes_DM_Analyst'))
+            handler.update_success("Desired Outcomes Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Desired Outcomes Analysis failed: {str(e)}")
+            return None
             
     def run_snapshot_analysis():
         handler = handlers["snapshot"]
@@ -244,7 +259,8 @@ def run_analysis():
         (run_sem_ppc_analysis, "sem_ppc"),
         (run_marketplace_analysis, "marketplace"),
         (run_target_market_analysis, "target_market"),
-        (run_df_overview_analysis, "df_overview")
+        (run_df_overview_analysis, "df_overview"),
+        (run_desired_outcomes_analysis, "desired_outcome")
     ]
     
     # Create and start first batch threads with small delays to prevent UI conflicts
