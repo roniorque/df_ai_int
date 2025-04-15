@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import threading
+import time
 from streamlit.runtime.scriptrunner import add_script_run_ctx
 from classes.response_off import SeoOffPageAnalyst
 from classes.response_on_page import SeoOn
@@ -17,223 +18,296 @@ from classes.response_df_overview import dfOverview
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
-def run_analysis():
-    # Placeholders for status updates
-    off_page_status = st.empty()
-    on_page_status = st.empty()
-    website_and_tools_status = st.empty()
-    seo_status = st.empty()
-    social_media_status = st.empty()
-    lld_pm_ln_status = st.empty()
-    pull_through_offers_status = st.empty()
-    content_status = st.empty()
-    sem_ppc = st.empty()
-    marketplace = st.empty()
-    target_market = st.empty()
-    df_overview_status = st.empty()
-    executive_summary_status = st.empty()
-    snapshot_status = st.empty()
+# Initialize session state to track if analysis has been run
+if 'analysis_completed' not in st.session_state:
+    st.session_state.analysis_completed = False
 
+# Create a thread-safe way to update the UI
+class ThreadSafeAnalysis:
+    def __init__(self, placeholder, name):
+        self.placeholder = placeholder
+        self.name = name
+        self.lock = threading.Lock()
+        
+    def update_info(self, message):
+        with self.lock:
+            try:
+                self.placeholder.info(message)
+            except Exception:
+                # Silently ignore errors here - this prevents "bad set index" errors
+                pass
+            
+    def update_success(self, message):
+        with self.lock:
+            try:
+                self.placeholder.success(message)
+            except Exception:
+                # Silently ignore errors here
+                pass
+            
+    def update_error(self, message):
+        with self.lock:
+            try:
+                self.placeholder.error(message)
+            except Exception:
+                # Silently ignore errors here
+                pass
+
+def run_analysis():
+    # Create placeholders for status updates
+    placeholders = {
+        "off_page": st.empty(),
+        "on_page": st.empty(),
+        "website_tools": st.empty(),
+        "seo": st.empty(),
+        "social_media": st.empty(),
+        "lld_pm_ln": st.empty(),
+        "pull_through": st.empty(),
+        "content": st.empty(),
+        "sem_ppc": st.empty(),
+        "marketplace": st.empty(),
+        "target_market": st.empty(),
+        "df_overview": st.empty(),
+        "executive_summary": st.empty(),
+        "snapshot": st.empty()
+    }
+    
+    # Create thread-safe handlers for each analysis type
+    handlers = {name: ThreadSafeAnalysis(placeholder, name) 
+                for name, placeholder in placeholders.items()}
+    
+    # Define all analysis functions
     def run_off_page_analysis():
+        handler = handlers["off_page"]
         try:
-            off_page_status.info("Starting SEO Off Page Analysis...")
+            handler.update_info("Running SEO Off Page Analysis...")
             result = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
-            off_page_status.success("SEO Off Page Analysis completed successfully.")
+            handler.update_success("SEO Off Page Analysis completed successfully.")
             return result
         except Exception as e:
-            off_page_status.error(f"SEO Off Page Analysis failed: {e}")
+            handler.update_error(f"SEO Off Page Analysis failed: {str(e)}")
             return None
 
     def run_on_page_analysis():
+        handler = handlers["on_page"]
         try:
-            on_page_status.info("Starting On Page Analysis...")
+            handler.update_info("Running On Page Analysis...")
             result = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
-            on_page_status.success("On Page Analysis completed successfully.")
+            handler.update_success("On Page Analysis completed successfully.")
             return result
         except Exception as e:
-            on_page_status.error(f"On Page Analysis failed: {e}")
+            handler.update_error(f"On Page Analysis failed: {str(e)}")
             return None
     
     def run_website_and_tools_analysis():
+        handler = handlers["website_tools"]
         try:
-            website_and_tools_status.info("Starting Website and Tools Analysis...")
+            handler.update_info("Running Website and Tools Analysis...")
             result = WebsiteAndTools(os.getenv('Model_Website_and_Tools_Analyst'))
-            website_and_tools_status.success("Website and Tools completed successfully.")
+            handler.update_success("Website and Tools completed successfully.")
             return result
         except Exception as e:
-            on_page_status.error(f"Website and Tools Analysis failed: {e}")
+            handler.update_error(f"Website and Tools Analysis failed: {str(e)}")
             return None
         
     def run_seo_analysis():
+        handler = handlers["seo"]
         try:
-            seo_status.info("Starting SEO Analysis...")
+            handler.update_info("Running SEO Analysis...")
             result = Seo(os.getenv('MODEL_SEO_Analyst'))
-            seo_status.success("SEO Analysis completed successfully.")
+            handler.update_success("SEO Analysis completed successfully.")
             return result
         except Exception as e:
-            seo_status.error(f"SEO Analysis failed: {e}")
+            handler.update_error(f"SEO Analysis failed: {str(e)}")
             return None
         
     def run_social_media_analysis():
+        handler = handlers["social_media"]
         try:
-            social_media_status.info("Starting Social Media Analysis...")
+            handler.update_info("Running Social Media Analysis...")
             result = SocialMedia(os.getenv('MODEL_Social_Media_Analyst'))
-            social_media_status.success("Social Media Analysis completed successfully.")
+            handler.update_success("Social Media Analysis completed successfully.")
             return result
         except Exception as e:
-            social_media_status.error(f"Social Media Analysis failed: {e}")
+            handler.update_error(f"Social Media Analysis failed: {str(e)}")
             return None
         
     def run_lld_pm_ln():
+        handler = handlers["lld_pm_ln"]
         try:
-            lld_pm_ln_status.info("Starting LLD/PM/LN Analysis...")
+            handler.update_info("Running LLD/PM/LN Analysis...")
             result = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
-            lld_pm_ln_status.success("LLD/PM/LN completed successfully.")
+            handler.update_success("LLD/PM/LN completed successfully.")
             return result
         except Exception as e:
-            lld_pm_ln_status.error(f"LLD/PM/LN Analysis failed: {e}")
+            handler.update_error(f"LLD/PM/LN Analysis failed: {str(e)}")
             return None
         
     def run_pull_through_offers():
+        handler = handlers["pull_through"]
         try:
-            pull_through_offers_status.info("Starting Pull through offer Analysis...")
+            handler.update_info("Running Pull through offer Analysis...")
             result = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
-            pull_through_offers_status.success("Pull through offer completed successfully.")
+            handler.update_success("Pull through offer completed successfully.")
             return result
         except Exception as e:
-            pull_through_offers_status.error(f"Pull through offer Analysis failed: {e}")
+            handler.update_error(f"Pull through offer Analysis failed: {str(e)}")
             return None
         
     def run_content():
+        handler = handlers["content"]
         try:
-            content_status.info("Starting Content Analysis...")
+            handler.update_info("Running Content Analysis...")
             result = Content(os.getenv('Model_Content'))
-            content_status.success("Content Analysis completed successfully.")
+            handler.update_success("Content Analysis completed successfully.")
             return result
         except Exception as e:
-            content_status.error(f"Content Analysis failed: {e}")
+            handler.update_error(f"Content Analysis failed: {str(e)}")
             return None
         
     def run_sem_ppc_analysis():
+        handler = handlers["sem_ppc"]
         try:
-            sem_ppc.info("Starting SEM/PPC Analysis...")
+            handler.update_info("Running SEM/PPC Analysis...")
             result = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
-            sem_ppc.success("SEM/PPC Analysis completed successfully.")
+            handler.update_success("SEM/PPC Analysis completed successfully.")
             return result
         except Exception as e:
-            sem_ppc.error(f"SEM/PPC Analysis failed: {e}")
+            handler.update_error(f"SEM/PPC Analysis failed: {str(e)}")
             return None
         
     def run_marketplace_analysis():
+        handler = handlers["marketplace"]
         try:
-            marketplace.info("Starting Marketplace Analysis...")
+            handler.update_info("Running Marketplace Analysis...")
             result = Marketplace(os.getenv('Model_SEM_PPC_Analyst'))
-            marketplace.success("Marketplace Analysis completed successfully.")
+            handler.update_success("Marketplace Analysis completed successfully.")
             return result
         except Exception as e:
-            marketplace.error(f"Marketplace Analysis failed: {e}")
+            handler.update_error(f"Marketplace Analysis failed: {str(e)}")
             return None
     
     def run_target_market_analysis():
+        handler = handlers["target_market"]
         try:
-            target_market.info("Starting Target Market Analysis...")
+            handler.update_info("Running Target Market Analysis...")
             result = TargetMarket(os.getenv('Model_Target_Market_Analyst'))
-            target_market.success("Target Market Analysis completed successfully.")
+            handler.update_success("Target Market Analysis completed successfully.")
             return result
         except Exception as e:
-            target_market.error(f"Target Market Analysis failed: {e}")
+            handler.update_error(f"Target Market Analysis failed: {str(e)}")
             return None
         
-    def df_overview_analysis():
+    def run_df_overview_analysis():
+        handler = handlers["df_overview"]
         try:
-            df_overview_status.info("DF Overview Analysis...")
+            handler.update_info("Running DF Overview Analysis...")
             result = dfOverview(os.getenv('Model_DF_Overview_Analyst'))
-            df_overview_status.success("DF Overview Analysis completed successfully.")
+            handler.update_success("DF Overview Analysis completed successfully.")
             return result
         except Exception as e:
-            df_overview_status.error(f"DF Overview Analysis failed: {e}")
+            handler.update_error(f"DF Overview Analysis failed: {str(e)}")
+            return None
+            
+    def run_snapshot_analysis():
+        handler = handlers["snapshot"]
+        try:
+            handler.update_info("Running Snapshot by Channel Analysis...")
+            result = Snapshot(os.getenv('Model_Snapshot_by_Channel_Analyst'))
+            handler.update_success("Snapshot by Channel Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Snapshot by Channel Analysis failed: {str(e)}")
             return None
     
-    # Create threads for concurrent execution
-    off_page_thread = threading.Thread(target=run_off_page_analysis)
-    on_page_thread = threading.Thread(target=run_on_page_analysis)
-    website_and_tools_thread = threading.Thread(target=run_website_and_tools_analysis)
-    seo_thread = threading.Thread(target=run_seo_analysis)
-    social_media_thread = threading.Thread(target=run_social_media_analysis)
-    llm_pm_ln_thread = threading.Thread(target=run_lld_pm_ln)
-    pull_through_offers_thread = threading.Thread(target=run_pull_through_offers)
-    content_thread = threading.Thread(target=run_content)
-    content_sem_ppc_thread = threading.Thread(target=run_sem_ppc_analysis)
-    marketplace_thread = threading.Thread(target=run_marketplace_analysis)
-    target_market_thread = threading.Thread(target=run_target_market_analysis)
-    df_overview_thread = threading.Thread(target=df_overview_analysis)
+    def run_executive_summary_analysis():
+        handler = handlers["executive_summary"]
+        try:
+            handler.update_info("Running Executive Summary Analysis...")
+            result = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
+            handler.update_success("Executive Summary Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Executive Summary Analysis failed: {str(e)}")
+            return None
 
-    # Attach Streamlit context to threads
-    add_script_run_ctx(off_page_thread)
-    add_script_run_ctx(on_page_thread)
-    add_script_run_ctx(website_and_tools_thread)
-    add_script_run_ctx(seo_thread)
-    add_script_run_ctx(social_media_thread)
-    add_script_run_ctx(llm_pm_ln_thread)
-    add_script_run_ctx(pull_through_offers_thread)
-    add_script_run_ctx(content_thread)
-    add_script_run_ctx(content_sem_ppc_thread)
-    add_script_run_ctx(marketplace_thread)
-    add_script_run_ctx(target_market_thread)
-    add_script_run_ctx(df_overview_thread)
-
-    # Start threads
-    off_page_thread.start()
-    on_page_thread.start()
-    website_and_tools_thread.start()
-    seo_thread.start()
-    social_media_thread.start()
-    llm_pm_ln_thread.start()
-    pull_through_offers_thread.start()
-    content_thread.start()
-    content_sem_ppc_thread.start()
-    marketplace_thread.start()
-    target_market_thread.start()
-    df_overview_thread.start()
-
-    # Wait for threads to complete
-    off_page_thread.join()
-    on_page_thread.join()
-    website_and_tools_thread.join()
-    seo_thread.join()
-    social_media_thread.join()
-    llm_pm_ln_thread.join()
-    pull_through_offers_thread.join()
-    content_thread.join()
-    content_sem_ppc_thread.join()
-    marketplace_thread.join()
-    target_market_thread.join()
-    df_overview_thread.join()
-
-    st.markdown("---")
-    snapshot_status.info("Starting Snapshot by Channel Analysis...")
-    try:
-        snapshot = Snapshot(os.getenv('Model_Snapshot_by_Channel_Analyst'))
-        snapshot_status.success("Snapshot by Channel Analysis completed successfully.")
-    except Exception as e:
-        snapshot_status.error(f"Snapshot by Channel Analysis failed: {e}")    
-
-    executive_summary_status.info("Starting Executive Summary Analysis...")
-    try:
-        executive_summary = ExecutiveSummary(os.getenv('Model_Executive_Summary_Analyst'))
-        executive_summary_status.success("Executive Summary Analysis completed successfully.")
-    except Exception as e:
-        executive_summary_status.error(f"Executive Summary Analysis failed: {e}")    
-        st.success("🎉 All analyses completed!") # Final success message
+    # Define first batch of analyses
+    threads_first_batch = [
+        (run_off_page_analysis, "off_page"),
+        (run_on_page_analysis, "on_page"),
+        (run_website_and_tools_analysis, "website_tools"),
+        (run_seo_analysis, "seo"),
+        (run_social_media_analysis, "social_media"),
+        (run_lld_pm_ln, "lld_pm_ln"),
+        (run_pull_through_offers, "pull_through"),
+        (run_content, "content"),
+        (run_sem_ppc_analysis, "sem_ppc"),
+        (run_marketplace_analysis, "marketplace"),
+        (run_target_market_analysis, "target_market"),
+        (run_df_overview_analysis, "df_overview")
+    ]
     
+    # Create and start first batch threads with small delays to prevent UI conflicts
+    thread_objects_first_batch = []
+    for i, (func, name) in enumerate(threads_first_batch):
+        # Add a small stagger to thread start times to reduce conflicts
+        time.sleep(0.1)
+        thread = threading.Thread(target=func, name=name)
+        add_script_run_ctx(thread)  # Attach Streamlit context
+        thread_objects_first_batch.append(thread)
+        thread.start()
+    
+    # Wait for all first batch threads to complete
+    for thread in thread_objects_first_batch:
+        thread.join()
+    
+    # Add a separator
+    try:
+        st.markdown("---")
+    except Exception:
+        pass
+    
+    # Wait a bit to let UI stabilize before starting second batch
+    time.sleep(0.5)
+    
+    # Create threads for second batch (snapshot and executive summary)
+    threads_second_batch = [
+        (run_snapshot_analysis, "snapshot"),
+        (run_executive_summary_analysis, "executive_summary")
+    ]
+    
+    # Create and start second batch threads
+    thread_objects_second_batch = []
+    for i, (func, name) in enumerate(threads_second_batch):
+        # Add a small stagger between threads
+        time.sleep(0.2)
+        thread = threading.Thread(target=func, name=name)
+        add_script_run_ctx(thread)  # Attach Streamlit context
+        thread_objects_second_batch.append(thread)
+        thread.start()
+    
+    # Wait for second batch threads to complete
+    for thread in thread_objects_second_batch:
+        thread.join()
+    
+    # Set analysis_completed to True when all analyses are done
+    st.session_state.analysis_completed = True
+    try:
+        st.success("🎉 All analyses completed!")
+    except Exception:
+        pass
 
-    st.success("🎉 All analyses completed!") # Final success message
-
-    # --- Display Button After Completion ---
-    if st.button("View Results", icon="📃"):
-        st.switch_page("pages/output.py")
-
-# Execute the analysis
+# Navigation button
 if st.button("Back"):
-        st.switch_page("pages/home.py")
-run_analysis()
+    st.switch_page("pages/home.py")
+
+# Main logic
+if not st.session_state.analysis_completed:
+    run_analysis()
+else:
+    st.info("Analysis has already been completed.")
+
+# View Results button (only displayed after analysis is completed)
+if st.session_state.analysis_completed and st.button("View Results", icon="📃"):
+    st.switch_page("pages/output.py")
+    st.session_state.analysis_completed = False
