@@ -366,7 +366,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     
     
     st.markdown("##### WEBSITE AUDIENCE ACQUISITION")
-    website_audience_data = get_analyst_response("Website Audience Acquisition Analyst")
+    website_audience_data = get_analyst_response("Website Audience Acquisition")
     st.write(website_audience_data)
     
     #LLD/PM/LN
