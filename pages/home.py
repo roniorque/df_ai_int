@@ -40,6 +40,8 @@ class DigitalFootprintDashboard:
             st.session_state['nature'] = ''
         if 'analyze' not in st.session_state:
             st.session_state['analyze'] = ''
+        if 'analysis_completed' not in st.session_state:
+            st.session_state.analysis_completed = False
 
     async def create_row1(self):
         """Create the first row with four columns"""
@@ -56,6 +58,7 @@ class DigitalFootprintDashboard:
 
             self.analyze_button = st.button("Analyze", icon="✨", use_container_width=True)
             if self.analyze_button == True:
+                st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
             else:
                 hide_button()
