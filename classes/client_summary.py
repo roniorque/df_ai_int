@@ -18,8 +18,8 @@ class CientSummary:
             st.session_state['client_summary'] = ''
         if 'client_name' not in st.session_state:
             st.session_state['client_name'] = ''
-        if 'client_webiste' not in st.session_state:
-            st.session_state['client_webiste'] = ''
+        if 'client_website' not in st.session_state:
+            st.session_state['client_website'] = ''
         if 'target_market' not in st.session_state:
             st.session_state['target_market'] = ''
     
@@ -46,7 +46,7 @@ class CientSummary:
                             st.session_state['client_name'] = 'uploaded'
                             collect_telemetry(debug_client_website)
                         if self.website:
-                            st.session_state['client_webiste'] = 'uploaded'
+                            st.session_state['client_website'] = 'uploaded'
                             collect_telemetry(debug_client_name)
              
     def row1(self):
