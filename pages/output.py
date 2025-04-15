@@ -39,7 +39,66 @@ def write_client_footprint():
     
     return markdown_table
     
-    
+def write_snapshot(data):
+     
+    if data:
+        try:
+            
+            parsed_data = data
+            
+            if isinstance(parsed_data, list):
+                # Create Markdown table header
+                markdown_table = "| Channel | Status | Requirements | What's Needed to Deliver |\n"
+                markdown_table += "|---|---|---|---|\n"
+
+                # Loop through the list of dictionaries
+                for item in parsed_data:
+                    # Use .get() for safety in case keys are missing
+                    channel = item.get('channel', 'N/A')
+                    status = item.get('status', 'N/A')
+                    requirements = item.get('requirements', 'N/A')
+                    deliver = item.get('deliver', 'N/A')
+
+                    # Add a row to the Markdown table string
+                    # Replace underscores with spaces and apply title case to category
+                                       # Replace underscores with spaces first
+                    channel_temp = channel.replace('_', ' ')
+
+                    # Apply title case if there are multiple words, otherwise uppercase
+                    if ' ' in channel_temp: # Check for spaces directly
+                        channel_formatted = channel_temp.title()
+                    else:
+                        channel_formatted = channel_temp.upper() # Use upper() instead of upper_case()
+                   
+
+                    markdown_table += f"| {channel_formatted} | {status} | {requirements} | {deliver} |\n"
+                    
+
+                # Display the complete Markdown table
+                st.markdown(markdown_table)
+
+            # Handle case if data is not a list (e.g., a single dictionary)
+            elif isinstance(parsed_data, dict):
+                 st.write("Analysis Result (Summary):")
+                 # You might want to display dictionary data differently
+                 st.json(parsed_data) # Example: Display as JSON
+            else:
+                 st.warning("data is not in the expected list format.")
+                 st.write(parsed_data) # Show the raw data
+
+        except json.JSONDecodeError:
+            st.error("Error: Could not parse the data as JSON.")
+            st.text(data) # Show the raw string data
+        except AttributeError:
+             st.error("Error: Could not find expected keys ('channel', 'status', 'requirements', 'deliver') in the data.")
+             st.write(parsed_data) # Show the data that caused the error
+        except Exception as e:
+            st.error(f"An unexpected error occurred while processing data: {e}")
+            st.write(data) # Show the raw data
+    else:
+        st.warning("No data retrieved for analysis.")
+    # --- End: Loop and display data ---
+        
 def write_table(website_and_tools_data):
      
     if website_and_tools_data:
@@ -62,6 +121,7 @@ def write_table(website_and_tools_data):
                     # Add a row to the Markdown table string
                     # Replace underscores with spaces and apply title case to category
                     category_formatted = category.replace('_', ' ').title()
+                    
                     current_footprint_formatted = current_footprint.replace('_', ' ')
                     best_of_breed_formatted = best_of_breed.replace('_', ' ')
 
@@ -149,11 +209,33 @@ def seo_on_page_table(df_data):
 def display_outputs():
     client_name = data_field("Client Name")
     client_website = data_field("Client Website")
+    
+    
+    
     overview = get_analyst_response("DF Overview Analyst")    
     
     st.markdown("# Digital Marketing Audit")
     st.markdown(f"for: **{client_name} ({client_website})**")
     st.write("")
+    st.write("")
+    
+    st.markdown("#### Table of Contents")
+    st.markdown("""<ul><li><a href='#digital-footprint-overview'>Digital Footprint Overview</a></li>
+    <li><a href='#executive-summary'>Executive Summary</a></li>
+    <li><a href='#client-footprint'>Client Footprint</a></li>
+    <li><a href='#snapshot-by-channel'>Snapshot by Channel</a></li>
+    <li><a href='#website-and-tools'>Website and Tools</a></li>
+    <li><a href='#search-engine-marketing'>Search Engine Marketing</a></li>
+    <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
+    <li><a href='#social-media'>Social Media</a></li>
+    <li><a href='#content'>Content</a></li>
+    <li><a href='#market-place'>Market Place</a></li>
+    <li><a href='#target-market'>Target Market</a></li>
+    <li><a href='#desired-outcomes'>Desired Outcomes</a></li>
+    </ul>""", unsafe_allow_html=True)
+    
+    st.markdown("---")  
+    
     st.write("")
     st.write("")
     st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
@@ -178,7 +260,7 @@ def display_outputs():
     st.markdown("---")    
     
     st.markdown("### SNAPSHOT BY CHANNEL")   
-    st.table(get_analyst_response("Snapshot Analyst"))
+    st.write(write_snapshot(get_analyst_response("Snapshot Analyst"))) #write_snapshot
     st.markdown("---")
     
     st.markdown("## AUDITS PER CHANNEL")
@@ -276,7 +358,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.write(target_market_data['summary'])
     
     st.markdown("##### WHAT IS THE DESIRED OUTCOMES OF DIGITAL MARKETING?")
-    st.write("TBD")
+    st.markdown(get_analyst_response("Desired Outcomes Analyst"))
     
     st.markdown("##### WHAT IS THE PULL-THROUGH OFFER?")
     pull_through_data = get_analyst_response("Pull through offers Analyst")
