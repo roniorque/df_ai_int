@@ -16,6 +16,7 @@ from classes.response_marketplace import Marketplace
 from classes.response_target_market import TargetMarket
 from classes.response_df_overview import dfOverview
 from classes.response_desired_outcome import DesiredOutcome
+from classes.response_conversion_analyst import ConversionAnalyst
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
@@ -70,6 +71,7 @@ def run_analysis():
         "target_market": st.empty(),
         "df_overview": st.empty(),
         "desired_outcome": st.empty(),
+        "conversion": st.empty(),
         "snapshot": st.empty(),
         "executive_summary": st.empty(),
         
@@ -223,6 +225,17 @@ def run_analysis():
         except Exception as e:
             handler.update_error(f"Desired Outcomes Analysis failed: {str(e)}")
             return None
+    
+    def run_conversion_analysis():
+        handler = handlers["conversion"]
+        try:
+            handler.update_info("Running Conversion Analysis...")
+            result = ConversionAnalyst(os.getenv('Model_Conversion_Analyst'))
+            handler.update_success("Conversion Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Conversion Analysis failed: {str(e)}")
+            return None
             
     def run_snapshot_analysis():
         handler = handlers["snapshot"]
@@ -260,7 +273,8 @@ def run_analysis():
         (run_marketplace_analysis, "marketplace"),
         (run_target_market_analysis, "target_market"),
         (run_df_overview_analysis, "df_overview"),
-        (run_desired_outcomes_analysis, "desired_outcome")
+        (run_desired_outcomes_analysis, "desired_outcome"),
+        (run_conversion_analysis, "conversion")
     ]
     
     # Create and start first batch threads with small delays to prevent UI conflicts
