@@ -149,10 +149,7 @@ def seo_on_page_table(df_data):
 def display_outputs():
     client_name = data_field("Client Name")
     client_website = data_field("Client Website")
-    overview = f"""{client_name} is a financial services company based in Auckland, New Zealand, specializing in providing quick and flexible loan solutions for businesses and individuals. Represented by Paul Stone, LoansOne has enlisted ShoreMarketing to perform a deep dive into their digital footprint to have a view of the holistic status of their digital properties and determine how each property can play part in implementing a stronger digital marketing plan.\n
-The Digital Marketing Footprint consists of deep-dive research by ShoreMarketing specialists to help the business leaders of LoansOne understand the effectiveness of their existing digital initiatives with the view of giving them an insight to developing a strategy and effectively allocating business resources to digital properties that will give them the best results.\n
-This document represents the results of our audit of LoansOne’s digital marketing and management practices. Our audit covered reviews of key digital areas: Website and Tools, PPC/SEM, SEO, Social Media, and Market Places."""
-    
+    overview = get_analyst_response("DF Overview Analyst")    
     
     st.markdown("# Digital Marketing Audit")
     st.markdown(f"for: **{client_name} ({client_website})**")
@@ -229,7 +226,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     
     # Write Off Page Table
     st.markdown("### OFF PAGE OPTIMIZATION")
-    on_page_data = get_analyst_response("Off Page Analyst")
+    on_page_data = get_analyst_response("SEO Off Page Analyst")
     seo_on_page_table(on_page_data)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
