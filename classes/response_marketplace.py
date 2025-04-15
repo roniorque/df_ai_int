@@ -39,8 +39,11 @@ class Marketplace:
         response.raise_for_status()
         output = response.json()
         #st.write(output)
-        text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
-        text = json.loads(text)
+        text_amazon = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]["amazon"]
+        text_ebay = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]["ebay"]
+        text_amazon = json.loads(text_amazon)
+        text_ebay = json.loads(text_ebay)
+        text = text_amazon + text_ebay
         #st.write(text)
         return text
     

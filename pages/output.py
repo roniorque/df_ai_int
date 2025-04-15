@@ -1,7 +1,7 @@
 import json
 import os
 import streamlit as st
-from helper.data_field import get_analyst_response, data_field
+from helper.data_field import get_analyst_response, data_field, get_marketplace_response
 import time
 
 st.set_page_config(layout="centered") 
@@ -256,7 +256,7 @@ Regardless, it is still a great channel worth investing to improve a business’
 
     if (get_analyst_response("Marketplace Analyst")):
         st.markdown("### MARKET PLACE")
-        marketpalce_data = get_analyst_response("Marketplace Analyst")
+        marketpalce_data = get_marketplace_response("Marketplace Analyst")
         write_table(marketpalce_data)
         st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
         st.markdown("---")

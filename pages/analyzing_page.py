@@ -180,7 +180,7 @@ def run_analysis():
         handler = handlers["marketplace"]
         try:
             handler.update_info("Running Marketplace Analysis...")
-            result = Marketplace(os.getenv('Model_SEM_PPC_Analyst'))
+            result = Marketplace(os.getenv('Model_Target_Market_Analyst'))
             handler.update_success("Marketplace Analysis completed successfully.")
             return result
         except Exception as e:
