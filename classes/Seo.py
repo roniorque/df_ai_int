@@ -50,43 +50,6 @@ class Seo:
             st.session_state['df_traffic'] = ''
         if 'df_seo' not in st.session_state:
             st.session_state['df_seo'] = ''
-           
-    def request_model(self, payload_txt):
-        response = requests.post(self.model_url, json=payload_txt)
-        response.raise_for_status()
-        output = response.json()
-        
-        categories = []
-        current_footprint = []
-        number_of_backlinks = []
-
-        for key, value in output.items():
-            if key == 'json':
-                for item in value:
-                    categories.append(item.get('category', 'N/A').replace('_', ' ').title())
-                    current_footprint.append(item.get('current_footprint', 'N/A'))
-                    number_of_backlinks.append(item.get('best_of_breed_solution', 'N/A'))    
-
-        output = ""
-        for i in range(len(categories)):
-            output += f"\n\n---\n **Category:** {categories[i]}"
-            output += f"\n\n **Current Footprint:** {current_footprint[i]}\n\n"
-            output += f"**Number of Backlinks:** {number_of_backlinks[i]}"
-
-        data = {
-            "": [str(category) for category in categories],
-            "Current Footprint": [str(footprint) for footprint in current_footprint],
-            "Best of Breed Solutions": [str(backlink) for backlink in number_of_backlinks]
-        }
-        df_output = pd.DataFrame(data)
-        with st.expander("AI Analysis", expanded=True, icon="🤖"):
-            st.table(df_output.style.set_table_styles(
-                [{'selector': 'th:first-child, td:first-child', 'props': [('width', '20px')]},
-                {'selector': 'th, td', 'props': [('width', '150px'), ('text-align', 'center')]}]
-            ).set_properties(**{'text-align': 'center'}))
-
-        
-        return output
       
     def detect_encoding(self, uploaded_file):
         result = chardet.detect(uploaded_file.read(100000))
@@ -158,8 +121,6 @@ class Seo:
             pass
     
     def process (self):
-        start_time = time.time()
-
         session = st.session_state.analyze
         if ((self.uploaded_file or self.others or self.uploaded_file_seo) or (self.page_index or self.bounce_rate)) and  session == 'clicked':
                     seo_keywords = ""
@@ -197,8 +158,13 @@ class Seo:
                             
                         except AttributeError:
                             pass
-                        except KeyError:
-                            st.info("Incorrect SEMRush format. Please upload a valid SEMRush file.")
+                        except KeyError as e:
+                            # Check if 'df_traffic' is the missing key (no file uploaded)
+                            if self.uploaded_file_seo:
+                                pass
+                            else:
+                                # This would be triggered if df_traffic exists but the other keys are missing
+                                st.info("Incorrect Traffic Channels SEMRush format. Please upload a valid SEMRush file.")
                         
                         try:
                             df_seo = st.session_state['df_seo']
@@ -226,17 +192,13 @@ class Seo:
                             traffic_aqcuisition += f"Traffics: {traffics}"
                             traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
                         except KeyError:
-                            pass
+                            if self.others:
+                                pass
+                            else:
+                                # This would be triggered if df_traffic exists but the other keys are missing
+                                st.info("Incorrect Traffic Acquisition GA4 format. Please upload a valid GA4 file.")
                         except TypeError:
-                            st.info("Incorrect GA4 format. Please upload a valid GA4 file.")
-
-                        # OUTPUT FOR SEO ANALYST
-                        payload_txt_seo_keywords = {"question": seo_keywords}
-                        payload_txt_traffic_channels = {"question": traffic_channels}
-                        payload_txt_traffic_aqcuisition = {"question": traffic_aqcuisition}
-                        payload_txt_pages_index = {"question": pages_index}
-                        payload_txt_bounce_rate = {"question": bounce_rate}
-
+                            st.info("Incorrect Traffic Acquisition GA4 format. Please upload a valid GA4 file.")
 
                         #result = self.request_model(payload_txt_seo_keywords)
                         #end_time = time.time()
