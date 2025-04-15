@@ -80,7 +80,7 @@ class Marketplace:
                                 payload_txt_model = self.request_model(payload_txt, headers)
                                 debug_info = {'data_field' : 'Marketplace Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
-
+                                '''
                                 st.session_state['product_title_amazon'] = ''
                                 st.session_state['images_amazon'] = ''
                                 st.session_state['bullet_points_amazon'] = ''
@@ -89,6 +89,9 @@ class Marketplace:
                                 st.session_state['category_ebay'] = ''
                                 st.session_state['images_ebay'] = ''
                                 st.session_state['product_description_ebay'] = ''
+                                '''
+                                st.session_state['amazon_marketplace_questionnaires'] = ''
+                                st.session_state['ebay_marketplace_questionnaires'] = ''
                                 count = 0
                         except Exception as e:
                             pass
@@ -100,6 +103,7 @@ class Marketplace:
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
             self.payload = ""  
             count = 0
+            '''
             try:
                 session_product_title_amazon = st.session_state['product_title_amazon']
                 if session_product_title_amazon == 'uploaded':
@@ -156,6 +160,22 @@ class Marketplace:
                 if session_product_description_ebay == 'uploaded':
                     count += 1
                     self.payload += self.fetch_data("Product Description - eBay")                 
+            except Exception as e:
+                pass
+            '''
+            try:
+                session_amazon_marketplace_questionnaires = st.session_state['amazon_marketplace_questionnaires']
+                if session_amazon_marketplace_questionnaires == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Marketplace Questionnaires - Amazon")                 
+            except Exception as e:
+                pass
+            
+            try:
+                session_ebay_marketplace_questionnaires = st.session_state['ebay_marketplace_questionnaires']
+                if session_ebay_marketplace_questionnaires == 'uploaded':
+                    count += 1
+                    self.payload += self.fetch_data("Marketplace Questionnaires - eBay")                 
             except Exception as e:
                 pass
 

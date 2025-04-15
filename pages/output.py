@@ -254,7 +254,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
 
-    if (get_analyst_response("Marketplace Analyst")):
+    if (get_marketplace_response("Marketplace Analyst")):
         st.markdown("### MARKET PLACE")
         marketpalce_data = get_marketplace_response("Marketplace Analyst")
         write_table(marketpalce_data)
