@@ -77,7 +77,8 @@ class SeoOffPageAnalyst:
                                     combined_text += f"Referring Domain: {unique_domains}"
                                     #st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
                             except KeyError:
-                                st.info("Incorrect CSV format. Please upload a valid CSV file.")
+                                #st.info("Incorrect CSV format. Please upload a valid CSV file.")
+                                pass
                             except UnboundLocalError:
                                  pass
                         except AttributeError:
