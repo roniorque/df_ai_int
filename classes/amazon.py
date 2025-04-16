@@ -120,9 +120,7 @@ class Amazon:
                                     if self.amazon_marketplace_questionnaires != self.template:
                                         st.session_state['amazon_marketplace_questionnaires'] = 'uploaded'
                                         collect_telemetry(debug_amazon_marketplace_questionnaires)
-                                        print("no")
                                     else:
-                                         print("yes")
                                          pass
                                 
                                 st.session_state['analyzing'] = False 

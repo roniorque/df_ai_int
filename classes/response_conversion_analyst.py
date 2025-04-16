@@ -31,7 +31,7 @@ class ConversionAnalyst:
         output = response.json()
         #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
-        #text = json.loads(text)
+        text = json.loads(text)
         #st.write(text)
         return text
     
@@ -51,13 +51,13 @@ class ConversionAnalyst:
         return x
     
     def process(self):
-                with st.spinner('Converison Analyst...', show_time=True):
+                with st.spinner('Conversion Analyst...', show_time=True):
                         st.write('')
                         headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}         
                         try:
                                 payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)
-                                debug_info = {'data_field' : 'Converison Analyst', 'result': payload_txt_model}
+                                debug_info = {'data_field' : 'Conversion Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
 
                                 count = 0
