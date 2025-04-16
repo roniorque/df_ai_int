@@ -74,7 +74,7 @@ class SeoOn:
                 with st.spinner('SEO On Page...', show_time=True):
                         st.write('')
                         # OUTPUT FOR SEO ANALYST
-                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}                                  
+                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x_api_key')}"}                                  
                         try:                          
                                 payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)

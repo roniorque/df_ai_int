@@ -73,7 +73,7 @@ class LLD_PM_LN:
     def process(self):
                 with st.spinner('LLD/PM/LN Analyst...', show_time=True):
                         st.write('')       
-                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x-api-key')}"}                                     
+                        headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x_api_key')}"}                                     
                         try:
                             payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                             payload_txt_model = self.request_model(payload_txt, headers)
