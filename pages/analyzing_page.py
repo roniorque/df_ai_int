@@ -308,7 +308,7 @@ def run_analysis():
         (run_pull_through_offers, "pull_through"),
         (run_content, "content"),
         (run_sem_ppc_analysis, "sem_ppc"),
-        (run_marketplace_analysis, "marketplace"),
+        #(run_marketplace_analysis, "marketplace"),
         (run_target_market_analysis, "target_market"),
         (run_df_overview_analysis, "df_overview"),
         (run_desired_outcomes_analysis, "desired_outcome"),
