@@ -28,7 +28,7 @@ class Content_Process_and_Assets_Analyst:
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
         response.raise_for_status()
         output = response.json()
-        st.write(output)
+        #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         #text = json.loads(text)
         #st.write(text)
