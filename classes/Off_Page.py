@@ -53,7 +53,7 @@ class SeoOffPageAnalyst:
          if (self.uploaded_files or self.website_audience) and session == 'clicked':
                     combined_text = ""
                     website_audience = ""
-                    with st.spinner('SEO Off Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Off Page...', show_time=True):
                         st.write('')
                         try:
                             for file_info in st.session_state['uploaded_files'].values():

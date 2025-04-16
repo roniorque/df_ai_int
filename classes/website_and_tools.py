@@ -70,7 +70,7 @@ class WebsiteAndTools:
                     client_relations_management_system = ""
                     mobile_loading_speed = ""
         
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Website and Tools...', show_time=True):
                         st.write('')
                         '''
                         try:

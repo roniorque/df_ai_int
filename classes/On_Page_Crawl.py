@@ -78,7 +78,7 @@ class SeoOnCrawl:
         session = st.session_state.analyze
         if self.uploaded_files and session == 'clicked':
                     combined_text = ""
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Crawl File...', show_time=True):
                         st.write('')
                         try:
                             for file_info in st.session_state['uploaded_files'].values():

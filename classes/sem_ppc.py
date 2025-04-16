@@ -56,7 +56,7 @@ class Sem_PPC:
                         mobile_ads = ""
                         video_ads = ""
                         shopping_ads = ""
-                        with st.spinner('Ads...', show_time=True):
+                        with st.spinner('Uploading SEM/PPC...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"

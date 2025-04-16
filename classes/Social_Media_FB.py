@@ -147,7 +147,7 @@ class Facebook:
         if ((self.fb_organic_post and self.fb_organic_post.name) or (self.fb_ads_campaign and self.fb_ads_campaign.name) or (self.facebooks) or (self.facebook_rr)) and session == 'clicked':
                 try:
                         combined_text = ""
-                        with st.spinner('Social Media Analyst...', show_time=True):
+                        with st.spinner('Uploading FB Files...', show_time=True):
                             st.write('')
                             # INITIALIZING SESSIONS
                             #combined_text += f"Client Summary: {st.session_state.nature}\n"

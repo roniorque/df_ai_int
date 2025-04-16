@@ -54,7 +54,7 @@ class eBay:
                         #product_description_ebay = ""
                         ebay_marketplace_questionnaires = ""
 
-                        with st.spinner('eBay...', show_time=True):
+                        with st.spinner('Uploading Ebay Files...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"

@@ -214,7 +214,7 @@ class SeoBacklinks:
                 hide_button()
                 if self.uploaded_files:
                     combined_text = ""
-                    with st.spinner('Analyzing...', show_time=True):
+                    with st.spinner('Uploading Backlinks...', show_time=True):
                         st.write('')
                         '''
                         # INITIALIZING SESSIONS

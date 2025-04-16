@@ -30,7 +30,7 @@ class PullThroughOffers:
                 session = st.session_state.analyze
                 if (self.pull_through_offers) and session == 'clicked':
                     pull_through_offers = ""
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Pull Through Offers...', show_time=True):
                         st.write('')
                         
                         try:

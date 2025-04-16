@@ -128,7 +128,7 @@ class Seo:
                     traffic_aqcuisition = ""
                     pages_index = ""
                     bounce_rate = ""
-                    with st.spinner('Seo Analyst...', show_time=True):
+                    with st.spinner('Uploading Seo Files...', show_time=True):
                         st.write('')
                         
                         # INITIALIZING SESSIONS

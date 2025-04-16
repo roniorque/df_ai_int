@@ -110,7 +110,7 @@ class Instagram:
         if (self.instagram or self.instagram_er or self.instagram_pf) and session == 'clicked':
                         try:
                             combined_text = ""
-                            with st.spinner('Instagram...', show_time=True):
+                            with st.spinner('Uploading IG Files...', show_time=True):
                                     st.write('')
                                     try:
                                         combined_text += f"\nInstagram Followers: {self.instagram}"

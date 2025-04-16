@@ -35,7 +35,7 @@ class Content:
                 session = st.session_state.analyze
 
                 if (self.content_in_the_website or self.content_outside_the_website) and session == 'clicked':
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Contents...', show_time=True):
                         st.write('')
                         content_in_the_website = ""
                         content_outside_the_website = ""

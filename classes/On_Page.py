@@ -84,7 +84,7 @@ class SeoOn:
                 if (self.first_meaningful_paint or self.uploaded_files) and session == 'clicked':
                     first_meaningful_paint = ""
                     crawl_file = ""
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading On Page...', show_time=True):
                         st.write('')
                         '''
                         try:

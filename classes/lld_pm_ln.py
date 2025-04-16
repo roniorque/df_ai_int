@@ -34,7 +34,7 @@ class LLD_PM_LN:
                 session = st.session_state.analyze
                 if (self.lead_generation_mechanism) and session == 'clicked':
                     lead_generation_mechanism = ""
-                    with st.spinner('SEO On Page Analyst...', show_time=True):
+                    with st.spinner('Uploading Lead Generation...', show_time=True):
                         st.write('')
 
                         try:

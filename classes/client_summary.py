@@ -24,7 +24,7 @@ class CientSummary:
             st.session_state['target_market'] = ''
     
     def process (self):
-            with st.spinner('Seo Analyst...', show_time=True):
+            with st.spinner('Uploading Client Details...', show_time=True):
                         st.write('')
                         client_summary = ""
                         client_name = ""
