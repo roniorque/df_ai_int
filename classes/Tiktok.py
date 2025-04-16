@@ -109,7 +109,7 @@ class Tiktok:
         if (self.tiktok_f or self.tiktok_er or self.tiktok_pf) and session == 'clicked':
                     try:
                         combined_text = ""
-                        with st.spinner('Tiktok...', show_time=True):
+                        with st.spinner('Uploading Tiktok Files...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"

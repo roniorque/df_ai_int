@@ -121,7 +121,7 @@ class Twitter:
         if (self.twitter or self.twitter_er or self.twitter_pf) and session == 'clicked':
                     try:
                         combined_text = ""
-                        with st.spinner('Twitter...', show_time=True):
+                        with st.spinner('Uploading Twitter Files...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 combined_text += f"Client Summary: {st.session_state.nature}\n"

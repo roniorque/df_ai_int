@@ -138,7 +138,7 @@ class Linkedin:
         if  (self.linkedin_f or (self.linkedin_metrics and self.linkedin_metrics.name) or (self.linkedin_post and self.linkedin_post.name)) and session == "clicked":
                 try:
                         combined_text = ""
-                        with st.spinner('Linkedin...', show_time=True):
+                        with st.spinner('Uploading Linkedin Files...', show_time=True):
                             st.write('')
                             # INITIALIZING SESSIONS
                             #combined_text += f"Client Summary: {st.session_state.nature}\n"

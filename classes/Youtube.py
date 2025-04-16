@@ -109,7 +109,7 @@ class YouTube:
         if ((self.youtube or self.youtube_er or self.youtube_pf) and session) == 'clicked':
                     try:
                         combined_text = ""
-                        with st.spinner('Youtube...', show_time=True):
+                        with st.spinner('Uploading YT Files...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"
