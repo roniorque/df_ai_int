@@ -42,30 +42,39 @@ class DigitalFootprintDashboard:
             st.session_state['analyze'] = ''
         if 'analysis_completed' not in st.session_state:
             st.session_state.analysis_completed = False
+        if 'uploading' not in st.session_state:
+            st.session_state['uploading'] = False
 
     async def create_row1(self):
         """Create the first row with four columns"""
         col1, col2, col3, col4, col5 = st.columns(5, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
-            
-            self.upload_file_button = st.button("Sync Data", st.session_state['analyze'], icon="🔄", use_container_width=True)
-            if self.upload_file_button == True:
-                st.session_state["analyze"] = 'clicked'
-                unhide_button()
+            button_label = "Uploading..." if st.session_state['uploading'] else "Sync Data"
+            if st.button(button_label, key="sync_button", icon="🔄", use_container_width=True):
+                st.session_state['uploading'] = True
+                st.session_state['analyze'] = 'clicked'
+                
+                st.session_state['uploading'] = False
             else:
                 st.session_state["analyze"] = ''
 
-            self.analyze_button = st.button("Analyze", icon="✨", use_container_width=True)
-            if self.analyze_button == True:
+            #self.upload_file_button = st.button("Sync Data", st.session_state['analyze'], icon="🔄", use_container_width=True)
+            
+            #if self.upload_file_button == True:
+            #    st.session_state["analyze"] = 'clicked'
+                #unhide_button()
+            #else:
+            #    st.session_state["analyze"] = ''
+            
+            analyze_disabled = st.session_state.get('analyze') != 'clicked'
+            if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
-            else:
-                hide_button()
+            
             
             self.client_summary = CientSummary()
             
-               
         with col2:
             st.write("## Website Traffic")
             self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))

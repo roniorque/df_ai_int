@@ -75,7 +75,7 @@ class SeoOffPageAnalyst:
                                         
                                     combined_text += f"Total Backlinks Count: {num_rows}\n"
                                     combined_text += f"Referring Domain: {unique_domains}"
-                                    st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
+                                    #st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
                             except KeyError:
                                 st.info("Incorrect CSV format. Please upload a valid CSV file.")
                             except UnboundLocalError:
@@ -99,11 +99,9 @@ class SeoOffPageAnalyst:
                                             # Instead of reading from StringIO, just use the DataFrame directly
                                             website_audience += f"Website Audience Acquisition {df}\n"
                                             
-                                            st.info("Website Audience Acquisition Uploaded Successfully", icon="ℹ️")
+                                            #st.info("Website Audience Acquisition Uploaded Successfully", icon="ℹ️")
                                     except KeyError:
                                         st.info(f"Incorrect format for {file_name}. Please upload a valid CSV file.")
-                            else:
-                                st.info("No website audience data available. Please upload CSV files first.")
                         except Exception as e:
                             st.error(f"Error processing data: {str(e)}")
                         

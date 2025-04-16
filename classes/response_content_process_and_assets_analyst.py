@@ -5,7 +5,7 @@ import os
 from helper.upload_response import upload_response
 from helper.upload_File import uploadFile
 from pymongo import MongoClient
-
+import json
 class Content_Process_and_Assets_Analyst:
     def __init__(self, model_url):
         self.uploaded_files = []
@@ -30,7 +30,7 @@ class Content_Process_and_Assets_Analyst:
         output = response.json()
         #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
-        #text = json.loads(text)
+        text = json.loads(text)
         #st.write(text)
         return text
     
