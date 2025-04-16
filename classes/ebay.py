@@ -118,8 +118,11 @@ class eBay:
                                     collect_telemetry(debug_product_description_ebay)
                                 '''
                                 if self.ebay_marketplace_questionnaires:
-                                    st.session_state['ebay_marketplace_questionnaires'] = 'uploaded'
-                                    collect_telemetry(debug_ebay_marketplace_questionnaires)
+                                    if self.ebay_marketplace_questionnaires != self.template:
+                                        st.session_state['ebay_marketplace_questionnaires'] = 'uploaded'
+                                        collect_telemetry(debug_ebay_marketplace_questionnaires)
+                                    else:
+                                         pass
 
                                 st.session_state['analyzing'] = False 
                     except AttributeError:
@@ -132,9 +135,7 @@ class eBay:
             #self.images_ebay = st.text_input("Bullet Points - eBay:", placeholder='Enter Bullet Points')
             #self.product_description_ebay = st.text_input("Product Description - eBay:", placeholder='Enter Product Description')
 
-            self.ebay_marketplace_questionnaires = st.text_area(
-                                                        "Marketplace Questionnaires - eBay:",
-                                                        "Product Title:\n"
+            self.template = ("Product Title:\n"
                                                         "a. Is the title within the 80-character limit?\n"
                                                         "b. Does the title include important details (e.g., brand, color, quantity, compatibility)?\n"
                                                         "c. Are search keywords used effectively in the title?\n"
@@ -153,7 +154,10 @@ class eBay:
                                                         "c. Are there images embedded in the description?\n"
                                                         "d. Are there any technical issues (e.g., broken images, loading errors)?\n"
                                                         "e. Is there consistent keyword usage in the description?\n"
-                                                        "f. Other Remarks:",
+                                                        "f. Other Remarks:")
+            self.ebay_marketplace_questionnaires = st.text_area(
+                                                        "Marketplace Questionnaires - eBay:",
+                                                        value=self.template,
                                                         height=600
                                                     )
             self.process()

@@ -101,7 +101,6 @@ class DigitalFootprintDashboard:
             self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
             self.lld_pm_ln = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
             self.pull_through_offers = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
-            self.content = Content(os.getenv('Model_Content'))
 
         return col1, col2, col3, col4, col5
 
@@ -118,7 +117,10 @@ class DigitalFootprintDashboard:
         with col3:
             st.write("## eBay")
             self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
-        return col1, col2, col3
+        with col4:
+            st.write("## Website Content")
+            self.content = Content(os.getenv('Model_Content'))
+        return col1, col2, col3, col4
     
     async def run_analysis(self):
         result = await asyncio.gather(

@@ -54,7 +54,7 @@ class Amazon:
                         #product_description_amazon = ""
                         amazon_marketplace_questionnaires = ""
 
-                        with st.spinner('Aamzon...', show_time=True):
+                        with st.spinner('Amazon...', show_time=True):
                                 st.write('')
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"
@@ -117,10 +117,14 @@ class Amazon:
                                     collect_telemetry(debug_product_description_amazon)
                                 '''
                                 if self.amazon_marketplace_questionnaires:
-                                    st.session_state['amazon_marketplace_questionnaires'] = 'uploaded'
-                                    collect_telemetry(debug_amazon_marketplace_questionnaires)
+                                    if self.amazon_marketplace_questionnaires != self.template:
+                                        st.session_state['amazon_marketplace_questionnaires'] = 'uploaded'
+                                        collect_telemetry(debug_amazon_marketplace_questionnaires)
+                                        print("no")
+                                    else:
+                                         print("yes")
+                                         pass
                                 
-
                                 st.session_state['analyzing'] = False 
                     except AttributeError:
                         st.info("Please upload CSV or PDF files first.")
@@ -131,10 +135,7 @@ class Amazon:
             #self.images_amazon = st.text_input("Images - Amazon:", placeholder='Enter Images')
             #self.bullet_points_amazon = st.text_input("Bullet Points - Amazon:", placeholder='Enter Bullet Points')
             #self.product_description_amazon = st.text_input("Product Description - Amazon:", placeholder='Enter Product Description')
-
-            self.amazon_marketplace_questionnaires = st.text_area(
-                                                            "Marketplace Questionnaires - Amazon:",
-                                                            "Product Title:\n"
+            self.template = ("Product Title:\n"
                                                             "a. Does the product title include relevant keywords (e.g., Product Brand/Description + Product Line + Material or Key Ingredient + Color + Size + Quantity)?\n"
                                                             "b. Is the title within Amazon’s recommended character limit (≤200 characters)?\n"
                                                             "c. Other Remarks:\n\n"
@@ -156,7 +157,10 @@ class Amazon:
                                                             "c. Does it include important product specifications (size, material, compatibility)?\n"
                                                             "d. Are there any customer reviews or ratings?\n"
                                                             "e. If yes, is the average rating above 4 stars?\n"
-                                                            "f. Other Remarks:",
+                                                            "f. Other Remarks:")
+            self.amazon_marketplace_questionnaires = st.text_area(
+                                                            "Marketplace Questionnaires - Amazon:",
+                                                            value=self.template,
                                                             height=600
                                                         )                                                    
             self.process()
