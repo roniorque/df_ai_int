@@ -31,7 +31,7 @@ class Content_Process_and_Assets_Analyst:
         st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         #text = json.loads(text)
-        st.write(text)
+        #st.write(text)
         return text
     
     def fetch_data(self, data_field):
