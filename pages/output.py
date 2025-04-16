@@ -259,8 +259,8 @@ def display_outputs():
     )
     st.markdown("---")    
     
-    st.markdown("### SNAPSHOT BY CHANNEL")   
-    st.write(write_snapshot(get_analyst_response("Snapshot Analyst"))) #write_snapshot
+    st.markdown("### SNAPSHOT BY CHANNEL")    
+    write_snapshot(get_analyst_response("Snapshot Analyst")) #write_snapshot
     st.markdown("---")
     
     st.markdown("## AUDITS PER CHANNEL")

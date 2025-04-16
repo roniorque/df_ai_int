@@ -101,54 +101,27 @@ class SocialMedia:
 
     def row1(self):
             st.session_state['analyzing'] = False
-            self.payload = ""
-            count = 0                           
-            try:
-                session_fb = st.session_state['fb_upload']
-                if session_fb == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Facebook")        
-            except Exception as e:
-                pass
-            try:
-                session_ig = st.session_state['ig_upload']
-                if session_ig == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Instagram")
-            except Exception as e:
-                pass
-            try:
-                session_twitter = st.session_state['twitter_upload']
-                if session_twitter == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Twitter")
-            except Exception as e:
-                pass
-            try:
-                session_yt = st.session_state['youtube_upload']
-                if session_yt == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("YouTube")
-            except Exception as e:
-                pass
-            try:
-                session_linkedin = st.session_state['linkedin_upload']
-                if session_linkedin == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Linkedin")           
-            except Exception as e:
-                pass
-            try:
-                session_tiktok = st.session_state['tiktok_upload']
-                if session_tiktok == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Tiktok")
-            except Exception as e:
-                pass
-            if count >= 1:
-                summary = self.fetch_data("Client Summary")
-                self.payload = summary + self.payload
-                self.process()
+            self.payload = ""                   
+            
+            self.payload += self.fetch_data("Facebook")        
+    
+    
+            self.payload += self.fetch_data("Instagram")
+    
+    
+            self.payload += self.fetch_data("Twitter")
+    
+    
+            self.payload += self.fetch_data("YouTube")
+    
+    
+            self.payload += self.fetch_data("Linkedin")           
+    
+    
+            self.payload += self.fetch_data("Tiktok")
+            summary = self.fetch_data("Client Summary")
+            self.payload = summary + self.payload
+            self.process()
             
 
 if __name__ == "__main__":

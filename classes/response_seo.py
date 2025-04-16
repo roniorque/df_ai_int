@@ -172,55 +172,22 @@ class Seo:
             #st.write("") # FOR THE HIDE BUTTON
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
             self.payload = ""  
-            count = 0
-            try:
-                session_traffic_aqcuisition = st.session_state['df_seo']
-                if session_traffic_aqcuisition == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("SEO Keywords")
-                
-            except Exception as e:
-                pass
-            try:
-                session_traffic_channels = st.session_state['df_traffic']
-                if session_traffic_channels == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Traffic Channels")
-            except Exception as e:
-                pass
-            try:
-                session_others = st.session_state['others']
-                if session_others == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Traffic Acquisition")
-                
-            except Exception as e:
-                pass
-            try:
-                session_page_index = st.session_state['pages_index']
-                if session_page_index == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Pages Indexed")            
-            except Exception as e:
-                pass
-            try:
-                session_bounce_rate = st.session_state['bounce_rate']
-                if session_bounce_rate == 'uploaded':
-                    count += 1
-                    self.payload += self.fetch_data("Bounce Rate")                 
-            except Exception as e:
-                pass
-            try:
-                session_backlinks = st.session_state["off_page_file_uploaded"] 
-                if session_backlinks == 'uploaded':
-                    self.payload += self.fetch_backlinks("Backlinks") 
-            except Exception as e:
-                pass
-
-            if count >= 1:
-                summary = self.fetch_data("Client Summary")
-                self.payload = summary + self.payload
-                self.process()
+            self.payload += self.fetch_data("SEO Keywords")
+        
+    
+            self.payload += self.fetch_data("Traffic Channels")
+    
+            self.payload += self.fetch_data("Traffic Acquisition")
+        
+    
+            self.payload += self.fetch_data("Pages Indexed")            
+    
+            self.payload += self.fetch_data("Bounce Rate")      
+            self.payload += self.fetch_backlinks("Backlinks") 
+            
+            summary = self.fetch_data("Client Summary")
+            self.payload = summary + self.payload
+            self.process()
             
 
 if __name__ == "__main__":
