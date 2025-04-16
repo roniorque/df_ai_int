@@ -60,7 +60,7 @@ class Seo:
         mydb = myclient.get_database()
         mycol = mydb["df_data"]
         x = mycol.find_one({"data_field": data_field})
-        x = x["result"]['question']
+        x = x["result"]
         return x
     
     def fetch_data(self, data_field):
@@ -149,6 +149,7 @@ class Seo:
     
     def process (self):    
         with st.spinner('Seo Analyst...', show_time=True):
+                        print("doneeeeeeeeeee")
                         st.write('')
                         headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x_api_key')}"}         
                         try:
