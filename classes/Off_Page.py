@@ -101,7 +101,8 @@ class SeoOffPageAnalyst:
                                             
                                             #st.info("Website Audience Acquisition Uploaded Successfully", icon="ℹ️")
                                     except KeyError:
-                                        st.info(f"Incorrect format for {file_name}. Please upload a valid CSV file.")
+                                        pass
+                                        #st.info(f"Incorrect format for {file_name}. Please upload a valid CSV file.")
                         except Exception as e:
                             st.error(f"Error processing data: {str(e)}")
                         

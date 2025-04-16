@@ -192,11 +192,13 @@ class Seo:
                             traffic_aqcuisition += f"Traffics: {traffics}"
                             traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
                         except KeyError:
+                            
                             if self.others:
                                 pass
                             else:
                                 # This would be triggered if df_traffic exists but the other keys are missing
-                                st.info("Incorrect Traffic Acquisition GA4 format. Please upload a valid GA4 file.")
+                                #st.info("Incorrect Traffic Acquisition GA4 format. Please upload a valid GA4 file.")
+                                pass
                         except TypeError:
                             st.info("Incorrect Traffic Acquisition GA4 format. Please upload a valid GA4 file.")
 
