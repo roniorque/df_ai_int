@@ -19,6 +19,7 @@ from classes.response_desired_outcome import DesiredOutcome
 from classes.response_conversion_analyst import ConversionAnalyst
 from classes.response_website_audience_acquisition import WebsiteAudienceAcquisition
 from classes.response_content_process_and_assets_analyst import Content_Process_and_Assets_Analyst
+from classes.response_connection_analyst import ConnectionAnalyst
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
@@ -76,6 +77,7 @@ def run_analysis():
         "conversion": st.empty(),
         "website_audience": st.empty(),
         "content_process_and_assets": st.empty(),
+        "connection": st.empty(),
         "snapshot": st.empty(),
         "executive_summary": st.empty(),
         
@@ -262,6 +264,17 @@ def run_analysis():
             handler.update_error(f"Content - Process and Assets Analysis failed: {str(e)}")
             return None
 
+    def run_connection_analysis():
+        handler = handlers["connection"]
+        try:
+            handler.update_info("Connection Analysis...")
+            result = ConnectionAnalyst(os.getenv('Model_Connection_Analyst'))
+            handler.update_success("Connection Analysis completed successfully.")
+            return result
+        except Exception as e:
+            handler.update_error(f"Connection Analysis failed: {str(e)}")
+            return None
+
     def run_snapshot_analysis():
         handler = handlers["snapshot"]
         try:
@@ -301,7 +314,8 @@ def run_analysis():
         (run_desired_outcomes_analysis, "desired_outcome"),
         (run_content_process_and_assets_analysis, "content_process_and_assets"),
         (run_conversion_analysis, "conversion"),
-        (run_website_audience, "website_audience")
+        (run_website_audience, "website_audience"),
+        (run_connection_analysis, "connection")
     ]
     
     # Create and start first batch threads with small delays to prevent UI conflicts
