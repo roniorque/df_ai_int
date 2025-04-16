@@ -119,6 +119,8 @@ class SeoOn:
                                         pass
                         except KeyError:
                             pass
+                        except AttributeError:
+                            pass
                         try:
                             first_meaningful_paint += f"\nFirst Meaningful Paint: {self.first_meaningful_paint}"
                         except KeyError:
