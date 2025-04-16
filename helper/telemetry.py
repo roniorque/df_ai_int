@@ -39,3 +39,23 @@ def collect_telemetry(data):
         print(f"Error sending data to MongoDB: {e}")
     finally:
         client.close()
+
+def clear_collection(data):
+    """
+    Deletes all documents from a specified MongoDB collection.
+    """
+    mongodb_uri = os.getenv("MONGODB_URI")
+    if not mongodb_uri:
+        print("Deletion skipped: No database configured.")
+        return
+
+    try:
+        client = MongoClient(mongodb_uri)
+        db = client.get_default_database()
+        collection = db[f"{data}"]  # Replace with your collection name
+        result = collection.delete_many({})
+        print(f"Deleted {result.deleted_count} documents from the collection.")
+    except Exception as e:
+        print(f"Error deleting documents: {e}")
+    finally:
+        client.close()

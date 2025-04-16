@@ -21,6 +21,7 @@ from classes.amazon import Amazon
 from classes.ebay import eBay
 import asyncio
 from helper.upload_button import hide_button, unhide_button
+from helper.telemetry import clear_collection
 import time
 
 class DigitalFootprintDashboard:
@@ -131,6 +132,12 @@ class DigitalFootprintDashboard:
             self.content = Content(os.getenv('Model_Content'))
         return col1, col2, col3, col4
     
+    async def delete_button(self):
+        reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
+
+        if reset_button:
+            clear_collection("telemetry")
+
     async def run_analysis(self):
         result = await asyncio.gather(
             self.gtmetrix.process(), 
@@ -144,11 +151,12 @@ class DigitalFootprintDashboard:
             self.tiktok.process(), 
         )
         st.session_state.analyze = False
-
+        
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
         await self.create_row2()
+        await self.delete_button()
         #self.run_analysis()
 
 # Main execution
