@@ -116,21 +116,22 @@ class DigitalFootprintDashboard:
 
     async def create_row2(self):
         """Create the first row with four columns"""
-        col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
+        col1, col4 = st.columns(2, border=True, gap="medium", vertical_alignment="top")
+        # col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
             st.write("## Ads")
             self.sem_ppc = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
-        with col2:
-            st.write("## Amazon")
-            self.amazon = Amazon(os.getenv('Model_SEM_PPC_Analyst'))
-        with col3:
-            st.write("## eBay")
-            self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
+        # with col2:
+        #     st.write("## Amazon")
+        #     self.amazon = Amazon(os.getenv('Model_SEM_PPC_Analyst'))
+        # with col3:
+        #     st.write("## eBay")
+        #     self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
         with col4:
             st.write("## Website Content")
             self.content = Content(os.getenv('Model_Content'))
-        return col1, col2, col3, col4
+        return col1, col4
     
     async def delete_button(self):
         reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)

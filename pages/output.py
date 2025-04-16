@@ -333,12 +333,11 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
 
-    if (get_analyst_response("Marketplace Analyst")):
-        st.markdown("### MARKET PLACE")
-        marketpalce_data = get_analyst_response("Marketplace Analyst")
-        write_table(marketpalce_data)
-        st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
-        st.markdown("---")
+    # if (get_analyst_response("Marketplace Analyst")):
+    #     st.markdown("### MARKET PLACE")
+    #     st.table(get_analyst_response("Marketplace Analyst"))
+    #     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    #     st.markdown("---")
     
     
     st.markdown("## OTHER INFORMATION")
