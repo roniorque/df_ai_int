@@ -137,7 +137,8 @@ class DigitalFootprintDashboard:
         reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
 
         if reset_button:
-            clear_collection("telemetry")
+            clear_collection("df_data")
+            clear_collection("df_response")
 
     async def run_analysis(self):
         result = await asyncio.gather(
