@@ -140,20 +140,6 @@ class DigitalFootprintDashboard:
             clear_collection("df_data")
             clear_collection("df_response")
 
-    async def run_analysis(self):
-        result = await asyncio.gather(
-            self.gtmetrix.process(), 
-            self.backlinks.process(), 
-            self.keywords.process(), 
-            self.facebook.process(), 
-            self.instagram.process(), 
-            self.twitter.process(), 
-            self.youtube.process(), 
-            self.linkedin.process(), 
-            self.tiktok.process(), 
-        )
-        st.session_state.analyze = False
-        
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
