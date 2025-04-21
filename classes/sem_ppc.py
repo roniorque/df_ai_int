@@ -1,106 +1,161 @@
 import streamlit as st
-import threading
 from dotenv import load_dotenv
 from helper.telemetry import collect_telemetry
 from helper.upload_File import uploadFile
 from helper.button_behaviour import hide_button
 
-class ThreadSafeHandler:
-    def __init__(self, placeholder):
-        self.placeholder = placeholder
-        self.lock = threading.Lock()
-
-    def update_info(self, message):
-        with self.lock:
-            try:
-                self.placeholder.info(message)
-            except Exception:
-                pass
-
-    def update_success(self, message):
-        with self.lock:
-            try:
-                self.placeholder.success(message)
-            except Exception:
-                pass
-
-    def update_error(self, message):
-        with self.lock:
-            try:
-                self.placeholder.error(message)
-            except Exception:
-                pass
 
 class Sem_PPC:
     def __init__(self, model_url):
         self.file_dict = {}
         self.model_url = model_url
+        #self.analyst_name = analyst_name
+        #self.data_src = data_src
+        #self.analyst_description = analyst_description
         self.initialize()
         self.row1()
 
     def initialize(self):
+        # FOR ENV
         load_dotenv()
-        # Initialize session state for various ads
-        for ad_type in ['account_set_up', 'search_ads', 'display_ads', 'mobile_ads', 'video_ads', 'shopping_ads']:
-            if ad_type not in st.session_state:
-                st.session_state[ad_type] = ''
+        '''
+        # AGENT NAME
+        st.header(self.analyst_name)
+
+        # EVALUATION FORM LINK
+        url = os.getenv('Link')
+        st.write('Evaluation Form: [Link](%s)' % url)
+
+        # RETURN BUTTON
+        try:
+            if st.button("Return", type='primary'):
+                st.switch_page("./pages/home.py")
+        except Exception:
+            pass
+        '''
+        if 'account_set_up' not in st.session_state:
+            st.session_state['account_set_up'] = ''
+        if 'search_ads' not in st.session_state:
+            st.session_state['search_ads'] = ''
+        if 'display_ads' not in st.session_state:
+            st.session_state['display_ads'] = ''
+        if 'mobile_ads' not in st.session_state:
+            st.session_state['mobile_ads'] = ''
+        if 'video_ads' not in st.session_state:
+            st.session_state['video_ads'] = ''
+        if 'shopping_ads' not in st.session_state:
+            st.session_state['shopping_ads'] = ''
 
     def process(self):
         session = st.session_state.analyze
-        if any([self.account_set_up, self.search_ads, self.display_ads, self.mobile_ads, self.video_ads, self.shopping_ads]) and session == 'clicked':
-            try:
-                # Prepare ad data
-                ad_data = {
-                    'account_set_up': self.account_set_up,
-                    'search_ads': self.search_ads,
-                    'display_ads': self.display_ads,
-                    'mobile_ads': self.mobile_ads,
-                    'video_ads': self.video_ads,
-                    'shopping_ads': self.shopping_ads
-                }
-
-                # Placeholder to display feedback
-                handler = ThreadSafeHandler(st.empty())
-
-                def upload_ads_data(ad_key, ad_value):
+        if (self.account_set_up or self.search_ads or self.display_ads or self.mobile_ads or self.video_ads or self.shopping_ads) and session == 'clicked':
                     try:
-                        handler.update_info(f"Uploading {ad_key.replace('_', ' ').title()}...")
-                        # Simulate the processing logic here
-                        st.session_state[ad_key] = 'uploaded'  # Mock upload success
-                        collect_telemetry({'data_field': ad_key.replace('_', ' ').title(), 'result': ad_value})
-                        handler.update_success(f"{ad_key.replace('_', ' ').title()} completed.")
-                    except Exception as e:
-                        handler.update_error(f"Error uploading {ad_key.replace('_', ' ').title()}: {e}")
+                        account_set_up = ""
+                        search_ads = ""
+                        display_ads = ""
+                        mobile_ads = ""
+                        video_ads = ""
+                        shopping_ads = ""
+                        with st.spinner('Uploading SEM/PPC...', show_time=True):
+                                st.write('')
+                                # INITIALIZING SESSIONS
+                                #combined_text += f"Client Summary: {st.session_state.nature}\n"
+                                try:
+                                    account_set_up += f"\nAccount Set Up: {self.account_set_up}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    search_ads += f"\nSearch Ads: {self.search_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    display_ads += f"\nDisplay Ads: {self.display_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    mobile_ads += f"\nMobile Ads: {self.mobile_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    video_ads += f"\nVideo Ads: {self.video_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    shopping_ads += f"\nShopping Ads: {self.shopping_ads}"
+                                except KeyError:
+                                    pass
 
-                # Start threads for each ad type
-                threads = []
-                for ad_key, ad_value in ad_data.items():
-                    thread = threading.Thread(target=upload_ads_data, args=(ad_key, ad_value))
-                    thread.start()
-                    threads.append(thread)
+                                # OUTPUT FOR SEO ANALYST
+                                #payload_txt = {"question": combined_text}
+                                #result = self.request_model(payload_txt)
+                                
+                                #end_time = time.time()
+                                #time_lapsed = end_time - start_time
+                                
+                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
+                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
+                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
+                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': mobile_ads}
+                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': video_ads}
+                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads}
 
-                # Wait for all threads to complete
-                for t in threads:
-                    t.join()
+                                '''
+                                debug_info = {
+                                    #'analyst': self.analyst_name,
+                                    'url_uuid': self.model_url.split("-")[-1],
+                                    'time_lapsed': time_lapsed,
+                                    'payload': payload_txt,
+                                    'result': result,
+                                }
+                                '''
+                                if self.account_set_up:
+                                    st.session_state['account_set_up'] = 'uploaded'
+                                    collect_telemetry(debug_info_account_set_up)
+                                if self.search_ads:
+                                    st.session_state['search_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_search_ads)
+                                if self.display_ads:
+                                    st.session_state['display_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_display_ads)
+                                if self.mobile_ads:
+                                    st.session_state['mobile_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_mobile_ads)
+                                if self.video_ads:
+                                    st.session_state['video_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_video_ads)
+                                if self.shopping_ads:
+                                    st.session_state['shopping_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_shopping_ads)
+                                
+                
+                                
+                                #with st.expander("Debug information", icon="⚙"):
+                                #    st.write(debug_info)
 
-                # Update session after processing
-                st.session_state['analyzing'] = False
-                st.success("🎉 SEM/PPC Data Uploaded Successfully!")
-            except AttributeError:
-                st.info("Please upload CSV or PDF files first.")
-                hide_button()
+                                st.session_state['analyzing'] = False 
+                    except AttributeError:
+                        st.info("Please upload CSV or PDF files first.")
+                        hide_button() 
 
     def row1(self):
-        self.account_set_up = st.text_input("Account Set Up - Google Ads:", placeholder='Enter Account Set Up')
-        self.search_ads = st.checkbox("Search Ads - Google Ads/SEMRush")
-        self.display_ads = st.checkbox("Display Ads - Google Ads/SEMRush")
-        self.mobile_ads = st.checkbox("Mobile Ads - Google Ads")
-        self.video_ads = st.checkbox("Video Ads - Google Ads")
-        self.shopping_ads = st.checkbox("Shopping Ads - Google Ads/SEMRush")
+            self.account_set_up = st.text_input("Account Set Up - Google Ads:", placeholder='Enter Account Set Up')
+            self.search_ads = st.checkbox("Search Ads - Google Ads/SEMRush")
+            self.display_ads = st.checkbox("Display Ads - Google Ads/SEMRush")
+            self.mobile_ads = st.checkbox("Mobile Ads - Google Ads")
+            self.video_ads = st.checkbox("Video Ads - Google Ads")
+            self.shopping_ads = st.checkbox("Shopping Ads - Google Ads/SEMRush")
 
-        self.process()  # Call process method to initiate processing
-
+            '''
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("AI Analyst Output: ")
+            st.session_state['analyzing'] = False
+            st.write("") # FOR THE HIDE BUTTON'
+            '''
+            #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
+            self.process()
+            
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
 
-    upload = uploadFile()  # Assuming this is another helper class handling file uploads
+upload = uploadFile()
