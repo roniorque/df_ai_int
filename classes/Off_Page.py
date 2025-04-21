@@ -50,7 +50,7 @@ class SeoOffPageAnalyst:
     def process(self):
          start_time = time.time()
          session = st.session_state['analyze']
-         if (self.uploaded_files or self.website_audience) and session == 'clicked':
+         if (self.uploaded_files) and session == 'clicked':
                     combined_text = ""
                     website_audience = ""
                     with st.spinner('Uploading Off Page...', show_time=True):
@@ -77,7 +77,7 @@ class SeoOffPageAnalyst:
                                     combined_text += f"Referring Domain: {unique_domains}"
                                     #st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
                             except KeyError:
-                                #st.info("Incorrect CSV format. Please upload a valid CSV file.")
+                                st.info("Incorrect CSV format. Please upload a valid CSV file.")
                                 pass
                             except UnboundLocalError:
                                  pass
@@ -85,7 +85,7 @@ class SeoOffPageAnalyst:
                                  pass
                         except KeyError:
                              pass
-                        
+                        '''
                         try:
                             # Check if upload_website_audience exists in session state and is a dictionary
                             if 'upload_website_audience' in st.session_state and isinstance(st.session_state['upload_website_audience'], dict):
@@ -107,7 +107,7 @@ class SeoOffPageAnalyst:
                         except Exception as e:
                             st.error(f"Error processing data: {str(e)}")
                         
-
+                        '''
                         # OUTPUT FOR SEO ANALYST
 
                         #result = self.request_model(payload_txt, headers)
@@ -134,13 +134,13 @@ class SeoOffPageAnalyst:
     def row1(self):
             #st.write(self.data_src)
             self.uploaded_files = st.file_uploader('Backlinks - SEMRush', type='csv', accept_multiple_files=True, key="seo_off")
-            self.website_audience = st.file_uploader('Website Audience Acquisition - GA4', type='csv', accept_multiple_files=True, key="website_audiences")
+            #self.website_audience = st.file_uploader('Website Audience Acquisition - GA4', type='csv', accept_multiple_files=True, key="website_audiences")
             #self.website_audience = st.text_input("Website Audience Acquisition:", placeholder='Enter Website Audience Acquisition')
 
             if self.uploaded_files:
                 upload.multiple_upload_file(self.uploaded_files)
-            if self.website_audience:
-                 upload.upload_website_audience(self.website_audience)
+            #if self.website_audience:
+            #     upload.upload_website_audience(self.website_audience)
                 
             #st.write("") # FOR THE HIDE BUTTON
             #st.write("") # FOR THE HIDE BUTTON

@@ -71,10 +71,10 @@ class WebsiteAudienceAcquisition:
             self.payload = ""  
             count = 0
             try:
-                session_content_outside_the_website = st.session_state['website_audience']
+                session_content_outside_the_website = st.session_state['others']
                 if session_content_outside_the_website == 'uploaded':
                     count += 1
-                    self.payload += self.fetch_data("Website Audience Acquisition")
+                    self.payload += self.fetch_data("Traffic Acquisition")
             except Exception as e:
                 pass
             
