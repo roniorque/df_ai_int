@@ -162,7 +162,7 @@ class Seo:
                                 st.session_state['others'] = ''
                                 st.session_state['df_traffic'] = ''
                                 st.session_state['df_seo'] = ''
-                                count = 0
+                                
                         except Exception as e:
                             pass
                         st.session_state['analyzing'] = False    
