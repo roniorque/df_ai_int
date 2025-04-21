@@ -2,8 +2,6 @@ import os
 import streamlit as st
 from classes.Off_Page import SeoOffPageAnalyst
 from classes.On_Page import SeoOn
-from classes.On_Page_Crawl import SeoOnCrawl
-from classes.Seo_Backlinks import SeoBacklinks
 from classes.Seo import Seo
 from classes.Social_Media_FB import Facebook
 from classes.Social_Media_IG import Instagram

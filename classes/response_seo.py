@@ -177,7 +177,6 @@ class Seo:
             self.payload += self.fetch_data("Traffic Channels")
     
             self.payload += self.fetch_data("Traffic Acquisition")
-        
     
             self.payload += self.fetch_data("Pages Indexed")            
     

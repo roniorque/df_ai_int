@@ -8,15 +8,24 @@ st.set_page_config(layout="centered")
 
 def write_client_footprint():
 
-    web = get_analyst_response("Website and Tools Analyst")
-    result_web = {item["category"]: item["current_footprint"] for item in web}
-    
-    seo = get_analyst_response("SEO Analyst")
-    seo = {item["category"]: item["current_footprint"] for item in seo}
-    
-    socmed = get_analyst_response("Social Media Analyst")
-    socmed = {item["category"]: item["current_footprint"] for item in socmed}
-    
+    try:
+        web = get_analyst_response("Website and Tools Analyst")
+        result_web = {item["category"]: item["current_footprint"] for item in web}
+    except TypeError:
+        result_web = None
+
+    try:
+        seo = get_analyst_response("SEO Analyst")
+        seo = {item["category"]: item["current_footprint"] for item in seo}
+    except TypeError:
+        seo = None
+
+    try:
+        socmed = get_analyst_response("Social Media Analyst")
+        socmed = {item["category"]: item["current_footprint"] for item in socmed}
+    except TypeError:
+        socmed = None
+
     
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
