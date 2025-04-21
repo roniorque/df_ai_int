@@ -1,5 +1,4 @@
 import streamlit as st
-import threading
 from dotenv import load_dotenv
 from helper.telemetry import collect_telemetry
 from helper.upload_File import uploadFile
@@ -10,77 +9,153 @@ class Sem_PPC:
     def __init__(self, model_url):
         self.file_dict = {}
         self.model_url = model_url
-        load_dotenv()
+        #self.analyst_name = analyst_name
+        #self.data_src = data_src
+        #self.analyst_description = analyst_description
         self.initialize()
         self.row1()
 
     def initialize(self):
-        for key in ['account_set_up', 'search_ads', 'display_ads', 'mobile_ads', 'video_ads', 'shopping_ads']:
-            if key not in st.session_state:
-                st.session_state[key] = ''
+        # FOR ENV
+        load_dotenv()
+        '''
+        # AGENT NAME
+        st.header(self.analyst_name)
 
-    def run_in_background(self):
+        # EVALUATION FORM LINK
+        url = os.getenv('Link')
+        st.write('Evaluation Form: [Link](%s)' % url)
+
+        # RETURN BUTTON
         try:
-            account_set_up = f"\nAccount Set Up: {self.account_set_up}" if self.account_set_up else ""
-            search_ads = "\nSearch Ads" if self.search_ads else ""
-            display_ads = "\nDisplay Ads" if self.display_ads else ""
-            mobile_ads = "\nMobile Ads" if self.mobile_ads else ""
-            video_ads = "\nVideo Ads" if self.video_ads else ""
-            shopping_ads = "\nShopping Ads" if self.shopping_ads else ""
-
-            # Simulated payload / model call here if needed
-
-            # Logging/Telemetry (each individually)
-            if self.account_set_up:
-                st.session_state['account_set_up'] = 'uploaded'
-                collect_telemetry({'data_field': 'Account Set Up - Google Ads', 'result': account_set_up})
-            if self.search_ads:
-                st.session_state['search_ads'] = 'uploaded'
-                collect_telemetry({'data_field': 'Search Ads - Google Ads/SEMRush', 'result': search_ads})
-            if self.display_ads:
-                st.session_state['display_ads'] = 'uploaded'
-                collect_telemetry({'data_field': 'Display Ads - Google Ads/SEMRush', 'result': display_ads})
-            if self.mobile_ads:
-                st.session_state['mobile_ads'] = 'uploaded'
-                collect_telemetry({'data_field': 'Mobile Ads - Google Ads', 'result': mobile_ads})
-            if self.video_ads:
-                st.session_state['video_ads'] = 'uploaded'
-                collect_telemetry({'data_field': 'Video Ads - Google Ads', 'result': video_ads})
-            if self.shopping_ads:
-                st.session_state['shopping_ads'] = 'uploaded'
-                collect_telemetry({'data_field': 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads})
-
-        except Exception as e:
-            st.error(f"Error during SEM/PPC processing: {e}")
-
-        st.session_state['analyzing'] = False
+            if st.button("Return", type='primary'):
+                st.switch_page("./pages/home.py")
+        except Exception:
+            pass
+        '''
+        if 'account_set_up' not in st.session_state:
+            st.session_state['account_set_up'] = ''
+        if 'search_ads' not in st.session_state:
+            st.session_state['search_ads'] = ''
+        if 'display_ads' not in st.session_state:
+            st.session_state['display_ads'] = ''
+        if 'mobile_ads' not in st.session_state:
+            st.session_state['mobile_ads'] = ''
+        if 'video_ads' not in st.session_state:
+            st.session_state['video_ads'] = ''
+        if 'shopping_ads' not in st.session_state:
+            st.session_state['shopping_ads'] = ''
 
     def process(self):
-        session = st.session_state.get('analyze')
-        if session == 'clicked' and (
-            self.account_set_up or self.search_ads or self.display_ads or
-            self.mobile_ads or self.video_ads or self.shopping_ads
-        ):
-            try:
-                with st.spinner("Uploading SEM/PPC..."):
-                    # Launch processing thread
-                    thread = threading.Thread(target=self.run_in_background)
-                    thread.start()
-            except AttributeError:
-                st.info("Please upload CSV or PDF files first.")
-                hide_button()
+        session = st.session_state.analyze
+        if (self.account_set_up or self.search_ads or self.display_ads or self.mobile_ads or self.video_ads or self.shopping_ads) and session == 'clicked':
+                    try:
+                        account_set_up = ""
+                        search_ads = ""
+                        display_ads = ""
+                        mobile_ads = ""
+                        video_ads = ""
+                        shopping_ads = ""
+                        with st.spinner('Uploading SEM/PPC...', show_time=True):
+                                st.write('')
+                                # INITIALIZING SESSIONS
+                                #combined_text += f"Client Summary: {st.session_state.nature}\n"
+                                try:
+                                    account_set_up += f"\nAccount Set Up: {self.account_set_up}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    search_ads += f"\nSearch Ads: {self.search_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    display_ads += f"\nDisplay Ads: {self.display_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    mobile_ads += f"\nMobile Ads: {self.mobile_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    video_ads += f"\nVideo Ads: {self.video_ads}"
+                                except KeyError:
+                                    pass
+                                try:
+                                    shopping_ads += f"\nShopping Ads: {self.shopping_ads}"
+                                except KeyError:
+                                    pass
+
+                                # OUTPUT FOR SEO ANALYST
+                                #payload_txt = {"question": combined_text}
+                                #result = self.request_model(payload_txt)
+                                
+                                #end_time = time.time()
+                                #time_lapsed = end_time - start_time
+                                
+                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
+                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
+                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
+                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': mobile_ads}
+                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': video_ads}
+                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads}
+
+                                '''
+                                debug_info = {
+                                    #'analyst': self.analyst_name,
+                                    'url_uuid': self.model_url.split("-")[-1],
+                                    'time_lapsed': time_lapsed,
+                                    'payload': payload_txt,
+                                    'result': result,
+                                }
+                                '''
+                                if self.account_set_up:
+                                    st.session_state['account_set_up'] = 'uploaded'
+                                    collect_telemetry(debug_info_account_set_up)
+                                if self.search_ads:
+                                    st.session_state['search_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_search_ads)
+                                if self.display_ads:
+                                    st.session_state['display_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_display_ads)
+                                if self.mobile_ads:
+                                    st.session_state['mobile_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_mobile_ads)
+                                if self.video_ads:
+                                    st.session_state['video_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_video_ads)
+                                if self.shopping_ads:
+                                    st.session_state['shopping_ads'] = 'uploaded'
+                                    collect_telemetry(debug_info_shopping_ads)
+                                
+                
+                                
+                                #with st.expander("Debug information", icon="⚙"):
+                                #    st.write(debug_info)
+
+                                st.session_state['analyzing'] = False 
+                    except AttributeError:
+                        st.info("Please upload CSV or PDF files first.")
+                        hide_button() 
 
     def row1(self):
-        self.account_set_up = st.text_input("Account Set Up - Google Ads:", placeholder='Enter Account Set Up')
-        self.search_ads = st.checkbox("Search Ads - Google Ads/SEMRush")
-        self.display_ads = st.checkbox("Display Ads - Google Ads/SEMRush")
-        self.mobile_ads = st.checkbox("Mobile Ads - Google Ads")
-        self.video_ads = st.checkbox("Video Ads - Google Ads")
-        self.shopping_ads = st.checkbox("Shopping Ads - Google Ads/SEMRush")
+            self.account_set_up = st.text_input("Account Set Up - Google Ads:", placeholder='Enter Account Set Up')
+            self.search_ads = st.checkbox("Search Ads - Google Ads/SEMRush")
+            self.display_ads = st.checkbox("Display Ads - Google Ads/SEMRush")
+            self.mobile_ads = st.checkbox("Mobile Ads - Google Ads")
+            self.video_ads = st.checkbox("Video Ads - Google Ads")
+            self.shopping_ads = st.checkbox("Shopping Ads - Google Ads/SEMRush")
 
-        self.process()
-
-
+            '''
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("") # FOR THE HIDE BUTTON
+            st.write("AI Analyst Output: ")
+            st.session_state['analyzing'] = False
+            st.write("") # FOR THE HIDE BUTTON'
+            '''
+            #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
+            self.process()
+            
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
-    upload = uploadFile()
+
+upload = uploadFile()
