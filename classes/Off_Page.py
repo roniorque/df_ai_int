@@ -50,7 +50,7 @@ class SeoOffPageAnalyst:
     def process(self):
          start_time = time.time()
          session = st.session_state['analyze']
-         if (self.uploaded_files) and session == 'clicked':
+         if self.uploaded_files and session == 'clicked':
                     combined_text = ""
                     website_audience = ""
                     with st.spinner('Uploading Off Page...', show_time=True):
@@ -122,9 +122,9 @@ class SeoOffPageAnalyst:
                         if self.uploaded_files:
                             st.session_state['off_page_file_uploaded'] = 'uploaded'
                             collect_telemetry(debug_info)
-                        if self.website_audience:
-                            st.session_state['website_audience'] = 'uploaded'
-                            collect_telemetry(debug_info_website_audience)
+                        #if self.website_audience:
+                        #    st.session_state['website_audience'] = 'uploaded'
+                        #    collect_telemetry(debug_info_website_audience)
 
                         
                         #with st.expander("Debug information", icon="⚙"):
