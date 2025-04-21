@@ -120,6 +120,7 @@ class SocialMedia:
     
             self.payload += self.fetch_data("Tiktok")
             if self.payload == "":
+                 
                  self.payload += "N/A"
             summary = self.fetch_data("Client Summary")
             self.payload = summary + self.payload
