@@ -229,10 +229,7 @@ def display_outputs():
     st.markdown("# Digital Marketing Audit")
     st.markdown(f"for: **{client_name} ({client_website})**")
     st.write("")
-    st.write("")
     
-    st.write("")
-    st.write("")
     st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
     st.markdown(f"{overview}")
     st.markdown("---")
