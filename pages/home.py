@@ -45,37 +45,34 @@ class DigitalFootprintDashboard:
             st.session_state.analysis_completed = False
         if 'uploading' not in st.session_state:
             st.session_state['uploading'] = False
-        if 'uploaded' not in st.session_state:
-            st.session_state['uploaded'] = False  # To track if uploading is completed
 
     async def create_row1(self):
         """Create the first row with four columns"""
         col1, col2, col3, col4, col5 = st.columns(5, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
-            # Display upload status message
-            if st.session_state['uploading']:
-                st.info("Uploading...", icon="🔄")
-            elif st.session_state['uploaded']:
-                st.success("Uploaded successfully!", icon="✅")
-            
-            button_label = "Sync Data" if not st.session_state['uploading'] else "Uploading..."
+            button_label = "Uploading..." if st.session_state['uploading'] else "Sync Data"
             if st.button(button_label, key="sync_button", icon="🔄", use_container_width=True):
                 st.session_state['uploading'] = True
                 st.session_state['analyze'] = 'clicked'
                 
-                # Simulating uploading process (can be removed in actual case)
-                time.sleep(3)  # Simulate upload delay
-
                 st.session_state['uploading'] = False
-                st.session_state['uploaded'] = True  # Mark as uploaded successfully
             else:
                 st.session_state["analyze"] = ''
 
+            #self.upload_file_button = st.button("Sync Data", st.session_state['analyze'], icon="🔄", use_container_width=True)
+            
+            #if self.upload_file_button == True:
+            #    st.session_state["analyze"] = 'clicked'
+                #unhide_button()
+            #else:
+            #    st.session_state["analyze"] = ''
+            
             analyze_disabled = st.session_state.get('analyze') != 'clicked'
             if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
+            
             
             self.client_summary = CientSummary()
             
@@ -109,6 +106,7 @@ class DigitalFootprintDashboard:
         
         with col5:
             st.write("## Website Structure")
+            #self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
             self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
             self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
             self.lld_pm_ln = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
@@ -119,18 +117,24 @@ class DigitalFootprintDashboard:
     async def create_row2(self):
         """Create the first row with four columns"""
         col1, col4 = st.columns(2, border=True, gap="medium", vertical_alignment="top")
+        # col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
             st.write("## Ads")
             self.sem_ppc = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
-        
+        # with col2:
+        #     st.write("## Amazon")
+        #     self.amazon = Amazon(os.getenv('Model_SEM_PPC_Analyst'))
+        # with col3:
+        #     st.write("## eBay")
+        #     self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
         with col4:
             st.write("## Website Content")
             self.content = Content(os.getenv('Model_Content'))
         return col1, col4
     
     async def delete_button(self):
-        reset_button = st.button("RESET ALL", icon="🗑️", use_container_width=True)
+        reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
 
         if reset_button:
             clear_collection("df_data")
@@ -141,6 +145,7 @@ class DigitalFootprintDashboard:
         await self.create_row1()
         await self.create_row2()
         await self.delete_button()
+        #self.run_analysis()
 
 # Main execution
 if __name__ == "__main__":
