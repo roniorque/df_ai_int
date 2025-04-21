@@ -58,7 +58,7 @@ class Seo:
         mongodb_uri = os.getenv("MONGODB_URI")
         myclient = MongoClient(mongodb_uri)
         mydb = myclient.get_database()
-        mycol = mydb["df_data"]
+        mycol = mydb["df_data"]['question']
         x = mycol.find_one({"data_field": data_field})
         x = x["result"]
         return x
@@ -149,7 +149,6 @@ class Seo:
     
     def process (self):    
         with st.spinner('Seo Analyst...', show_time=True):
-                        print("doneeeeeeeeeee")
                         st.write('')
                         headers = {"Content-Type": "application/json", "x-api-key": f"{os.getenv('x_api_key')}"}         
                         try:
@@ -175,7 +174,6 @@ class Seo:
             self.payload = ""  
             self.payload += self.fetch_data("SEO Keywords")
         
-    
             self.payload += self.fetch_data("Traffic Channels")
     
             self.payload += self.fetch_data("Traffic Acquisition")
@@ -183,7 +181,8 @@ class Seo:
     
             self.payload += self.fetch_data("Pages Indexed")            
     
-            self.payload += self.fetch_data("Bounce Rate")      
+            self.payload += self.fetch_data("Bounce Rate")    
+
             self.payload += self.fetch_backlinks("Backlinks") 
             
             summary = self.fetch_data("Client Summary")
