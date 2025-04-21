@@ -399,15 +399,21 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.write(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. \n
 We have evaluated the process of content development strategy and existing content assets of {client_name} based on how they serve clients throughout the customer journey. """)
     
-    
+    def safe_value(data: dict, key: str) -> str:
+        try:
+            value = data.get(key)
+            return value if value else "N/A"
+        except Exception:
+            return "N/A"
+
     pna_data = get_analyst_response("Content - Process and Assets Analyst")
     if pna_data:
         st.markdown("##### AWARENESS STAGE")
-        st.write(pna_data.get('awareness_stage', 'N/A'))
+        st.write(safe_value(pna_data, 'awareness_stage'))
         st.markdown("##### CONSIDERATION STAGE")
-        st.write(pna_data.get('consideration_stage', 'N/A'))
+        st.write(safe_value(pna_data, 'consideration_stage'))
         st.markdown("##### DECISION STAGE")
-        st.write(pna_data.get('decision_stage', 'N/A'))
+        st.write(safe_value(pna_data, 'decision_stage'))
         
     else:
         st.markdown("##### AWARENESS STAGE")
@@ -427,16 +433,16 @@ We have evaluated the process of content development strategy and existing conte
     
     if conversion:
         st.markdown("##### AWARENESS TO TRAFFIC")
-        st.write(conversion.get('awareness_to_traffic', 'N/A'))
+        st.write(safe_value(conversion, 'awareness_to_traffic'))
         
         st.markdown("##### TRAFFIC TO LEAD CONVERSION")
-        st.write(conversion.get('traffic_to_lead', 'N/A'))
+        st.write(safe_value(conversion, 'traffic_to_lead'))
         
         st.markdown("##### LEAD TO SALES CONVERSION")
-        st.write(conversion.get('lead_to_sales', 'N/A'))
+        st.write(safe_value(conversion, 'lead_to_sales'))
         
         st.markdown("##### CONVERSION TO BRAND LOYALTY")
-        st.write(conversion.get('conversion_to_brand', 'N/A'))
+        st.write(safe_value(conversion, 'conversion_to_brand'))
     else:
         st.markdown("##### AWARENESS TO TRAFFIC")
         st.write(None)
