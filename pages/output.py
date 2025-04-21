@@ -230,24 +230,7 @@ def display_outputs():
     st.markdown(f"for: **{client_name} ({client_website})**")
     st.write("")
     st.write("")
-    '''
-    st.markdown("#### Table of Contents")
-    st.markdown("""<ul><li><a href='#digital-footprint-overview'>Digital Footprint Overview</a></li>
-    <li><a href='#executive-summary'>Executive Summary</a></li>
-    <li><a href='#client-footprint'>Client Footprint</a></li>
-    <li><a href='#snapshot-by-channel'>Snapshot by Channel</a></li>
-    <li><a href='#website-and-tools'>Website and Tools</a></li>
-    <li><a href='#search-engine-marketing'>Search Engine Marketing</a></li>
-    <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
-    <li><a href='#social-media'>Social Media</a></li>
-    <li><a href='#content'>Content</a></li>
-    <li><a href='#market-place'>Market Place</a></li>
-    <li><a href='#target-market'>Target Market</a></li>
-    <li><a href='#desired-outcomes'>Desired Outcomes</a></li>
-    </ul>""", unsafe_allow_html=True)
     
-    st.markdown("---")  
-    '''
     st.write("")
     st.write("")
     st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
