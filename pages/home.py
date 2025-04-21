@@ -12,7 +12,7 @@ from classes.Youtube import YouTube
 from classes.Linkedin import Linkedin
 from classes.Tiktok import Tiktok
 from classes.website_and_tools import WebsiteAndTools
-from classes.client_summary import CientSummary
+from classes.client_summary import ClientSummary
 from classes.pull_through_offers import PullThroughOffers
 from classes.lld_pm_ln import LLD_PM_LN
 from classes.content import Content
@@ -74,7 +74,7 @@ class DigitalFootprintDashboard:
                 st.switch_page("pages/analyzing_page.py")
             
             
-            self.client_summary = CientSummary()
+            self.client_summary = ClientSummary()
             
         with col2:
             st.write("## Website Traffic")
