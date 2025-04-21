@@ -58,7 +58,7 @@ class Seo:
         mongodb_uri = os.getenv("MONGODB_URI")
         myclient = MongoClient(mongodb_uri)
         mydb = myclient.get_database()
-        mycol = mydb["df_data"]['question']
+        mycol = mydb["df_data"]
         x = mycol.find_one({"data_field": data_field})
         x = x["result"]
         return x
@@ -77,75 +77,6 @@ class Seo:
         
         x = x["result"]
         return x
-    
-    def detect_encoding(self, uploaded_file):
-        result = chardet.detect(uploaded_file.read(100000))
-        uploaded_file.seek(0)  # Reset file pointer to the beginning
-        return result['encoding']
-
-    def keyword_ranking(self, df_seo):
-        keyword_ranking = df_seo
-        st.session_state['keyword_ranking'] = keyword_ranking
-
-        keywords_ranking_sorted = keyword_ranking.sort_values("Position", ascending=True)
-
-        keywords_ranking_top_10 = keywords_ranking_sorted[keywords_ranking_sorted["Position"] <= 10].shape[0]
-        keywords_ranking_top_100 = keywords_ranking_sorted[keywords_ranking_sorted["Position"] <= 100].shape[0]
-
-        keyword_ranking = {
-            'Keyword_top_10': keywords_ranking_top_10,
-            'Keyword_top_100': keywords_ranking_top_100
-        }
-        st.session_state['keyword_ranking'] = keyword_ranking
-
-    def traffic_files(self, df_traffic):
-        traffic_channels = df_traffic
-        try:
-            traffic_channels.rename(columns={traffic_channels.columns[0]: 'date'}, inplace=True)
-            traffic_channels['date'] = pd.to_datetime(traffic_channels['date'], format='mixed')
-        except pandas._libs.tslibs.parsing.DateParseError:
-            pass
-        traffic_channels_sort = traffic_channels.sort_values("date", ascending=False)
-
-        organic_traffic = traffic_channels_sort['Organic Search'].values[0]
-        paid_traffic = traffic_channels_sort['Paid Search'].values[0]
-        direct_traffic = traffic_channels_sort['Direct'].values[0]
-        referral_traffic = traffic_channels_sort['Referral'].values[0]
-
-        st.session_state['organic_traffic'] = organic_traffic
-        st.session_state['paid_traffic'] = paid_traffic
-        st.session_state['direct_traffic'] = direct_traffic
-        st.session_state['referral_traffic'] = referral_traffic
-   
-    def ga4_traffic(self, others):
-        st.session_state['others'] = others
-
-        ga4_paid_social = others['Sessions'].values[0]
-        ga4_organic_traffic = others['Sessions'].values[4]
-        ga4_direct_traffic = others['Sessions'].values[2]
-        ga4_referral_traffic = others['Sessions'].values[3]
-        
-        st.session_state['ga4_paid_social'] = ga4_paid_social
-        st.session_state['ga4_organic_traffic'] = ga4_organic_traffic
-        st.session_state['ga4_direct_traffic'] = ga4_direct_traffic
-        st.session_state['ga4_referral_traffic'] = ga4_referral_traffic
-
-    def delete_sessions(self):
-        try:
-            del st.session_state['df_traffic']
-            del st.session_state['others']
-            del st.session_state['df_seo']
-            del st.session_state['keyword_ranking']   
-            del st.session_state['ga4_paid_social']
-            del st.session_state['ga4_organic_traffic']
-            del st.session_state['ga4_direct_traffic']
-            del st.session_state['ga4_referral_traffic']
-            del st.session_state['organic_traffic']
-            del st.session_state['paid_traffic']
-            del st.session_state['direct_traffic']
-            del st.session_state['referral_traffic']
-        except KeyError:
-            pass
     
     def process (self):    
         with st.spinner('Seo Analyst...', show_time=True):
