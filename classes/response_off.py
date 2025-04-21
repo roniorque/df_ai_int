@@ -39,8 +39,8 @@ class SeoOffPageAnalyst:
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         text = json.loads(text)
         #st.write(text)
-        backlinks = text[0]
-        referring_domains = text[1]
+        #backlinks = text[0]
+        #referring_domains = text[1]
 
         return text
     
@@ -70,7 +70,7 @@ class SeoOffPageAnalyst:
                                 upload_response(debug_info)
 
                                 st.session_state['off_page_file_uploaded'] = ''
-                                count = 0
+                                
                         except Exception as e:
                             pass
                         st.session_state['analyzing'] = False    

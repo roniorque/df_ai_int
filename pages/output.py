@@ -26,25 +26,28 @@ def write_client_footprint():
     except TypeError:
         socmed = None
 
+    def safe_get(data, key):
+        value = data.get(key)
+        return value if value else "N/A"
     
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
-    markdown_table += f"| Website Health Score | {result_web['website_overall_health_score']} |\n"
-    markdown_table += f"| Organic Traffic to the Website | {seo.get('organic_traffic', 'N/A')} |\n"
-    markdown_table += f"| Paid Traffic to the Website | {seo.get('paid_traffic', 'N/A')} |\n"
-    markdown_table += f"| Referral Traffic to the Website | {seo.get('referral_traffic', 'N/A')} |\n"
+    markdown_table += f"| Website Health Score | {safe_get(result_web, 'website_overall_health_score')} |\n"
+    markdown_table += f"| Organic Traffic to the Website | {safe_get(seo, 'organic_traffic')} |\n"
+    markdown_table += f"| Paid Traffic to the Website | {safe_get(seo, 'paid_traffic')} |\n"
+    markdown_table += f"| Referral Traffic to the Website | {safe_get(seo, 'referral_traffic')} |\n"
     markdown_table += f"| Email Traffic to the Website | N/A |\n"
-    markdown_table += f"| Direct Traffic to the Website | {seo.get('direct_traffic', 'N/A')} |\n"
+    markdown_table += f"| Direct Traffic to the Website | {safe_get(seo, 'direct_traffic')} |\n"
     markdown_table += f"| Social Traffic to the Website | N/A |\n"
     markdown_table += f"| Display Traffic to the Website | N/A |\n"
     markdown_table += f"| Email Database | N/A |\n"
-    markdown_table += f"| Facebook Followers | {socmed.get('facebook_followers', 'N/A')} |\n"
-    markdown_table += f"| Twitter Followers | {socmed.get('twitter_followers', 'N/A')} |\n"
-    markdown_table += f"| Instagram Followers | {socmed.get('instagram_followers', 'N/A')} |\n"
-    markdown_table += f"| Linkedin Followers | {socmed.get('linkedin_followers', 'N/A')} |\n"
+    markdown_table += f"| Facebook Followers | {safe_get(socmed, 'facebook_followers')} |\n"
+    markdown_table += f"| Twitter Followers | {safe_get(socmed, 'twitter_followers')} |\n"
+    markdown_table += f"| Instagram Followers | {safe_get(socmed, 'instagram_followers')} |\n"
+    markdown_table += f"| Linkedin Followers | {safe_get(socmed, 'linkedin_followers')} |\n"
     markdown_table += f"| Google My Business | N/A |\n"
-    markdown_table += f"| # of Keywords Ranking in Top 10 | {seo.get('keyword_ranking_in_top_10', 'N/A')} |\n"
-    markdown_table += f"| # of Keywords Ranking in Top 100 | {seo.get('keyword_ranking_in_top_100', 'N/A')} |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 10 | {safe_get(seo, 'keyword_ranking_in_top_10')} |\n"
+    markdown_table += f"| # of Keywords Ranking in Top 100 | {safe_get(seo, 'keyword_ranking_in_top_100')} |\n"
     
     return markdown_table
     
