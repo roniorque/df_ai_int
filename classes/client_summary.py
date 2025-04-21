@@ -44,10 +44,10 @@ class ClientSummary:
                             collect_telemetry(debug_client_summary)
                         if self.name:
                             st.session_state['client_name'] = 'uploaded'
-                            collect_telemetry(debug_client_website)
+                            collect_telemetry(debug_client_name)
                         if self.website:
                             st.session_state['client_website'] = 'uploaded'
-                            collect_telemetry(debug_client_name)
+                            collect_telemetry(debug_client_website)
              
     def row1(self):
             self.client_summary = st.text_area("Client Summary:", help="Name of business, nature of business, location, products/services")
