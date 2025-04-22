@@ -255,14 +255,14 @@ def display_outputs():
     st.write("")
     st.write("")
 
-    st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
+    st.markdown("###Digital Footprint Overview")
     st.markdown(f"{overview}")
     st.markdown("---")
     st.markdown("### Executive Summary")
     st.markdown(get_analyst_response("Executive Summary"))
     st.markdown("---")
     
-    st.markdown("### Client Footprint")
+    st.markdown("###Client Footprint")
     st.markdown(write_client_footprint())
     st.markdown(
         """
