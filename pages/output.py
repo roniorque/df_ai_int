@@ -242,7 +242,7 @@ def display_outputs():
     <li><a href='#client-footprint'>Client Footprint</a></li>
     <li><a href='#snapshot-by-channel'>Snapshot by Channel</a></li>
     <li><a href='#website-and-tools'>Website and Tools</a></li>
-    <li><a href='#search-engine-marketing'>Search Engine Marketing</a></li>
+    <li><a href='#search-engine-marketing'>Search Engine Marketing/PPC</a></li>
     <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
     <li><a href='#social-media'>Social Media</a></li>
     <li><a href='#content'>Content</a></li>
@@ -294,7 +294,7 @@ In line with this, we have looked into the technology used by **{client_name}** 
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
    
-    st.markdown("### Search Engine Marketing")
+    st.markdown("### SEARCH ENGINE MARKETING/PPC")
     st.markdown(f"""Search engine marketing, or SEM, is one of the most effective ways to grow a business in an increasingly competitive industry such as solar energy. This is one of the easiest way to be seen by the market almost instantly - but with the certain cost per user clicks. \n
 With several businesses out there all vying for the same eyeballs, it’s never been more important to advertise online, and search engine marketing is the most effective way to promote need-based, high-investment products and services such as solar energy services.\n
 Currently, {client_name} has already explored numerous online advertising. Its competitors are also experienced in PPC in multiple platforms. """)
@@ -306,7 +306,7 @@ Currently, {client_name} has already explored numerous online advertising. Its c
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
-    st.markdown("### Search Engine Optimization")
+    st.markdown("### SEARCH ENGINE OPTIMIZATION")
     st.markdown(f"""The purpose of Search Engine Optimization (SEO) is to strategically rearrange the website’s pages, attributes, content, and structure so that the website appears as high as possible in the results list displayed by search engines like Google, Bing, and Yahoo! when certain queries are entered by an internet user. Since high ranking positions are generally earned and worked for, ranking on the first page promotes trust between you and the search engine as well as to ultimately receive organic visibility with your users.\n 
 There are two types of SEO based on where the optimization is implemented: On-page SEO (which refers to any type of optimization done within the website) and Off-page SEO (which is often called Link Building or Link Acquisition – the process of getting more “votes” for the website through other domains). Both are essential in increasing a website’s visibility in search results pages and in ranking for more business-related keywords. """)
     
