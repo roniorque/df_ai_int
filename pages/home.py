@@ -135,31 +135,8 @@ class DigitalFootprintDashboard:
         reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
 
         if reset_button:
-    # Use session state to track the state of deletion process
-            if 'delete_state' not in st.session_state:
-                st.session_state.delete_state = 'confirmation'
-            
-            # Show confirmation dialog
-            if st.session_state.delete_state == 'confirmation':
-                st.warning("⚠️ Are you sure you want to delete all data? This action cannot be undone.")
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("Yes, delete data", key="confirm_btn"):
-                        # Perform the deletion
-                        clear_collection("df_data")
-                        clear_collection("df_response")
-                        st.session_state.delete_state = 'success'
-                        st.rerun()  # Using st.rerun() instead of experimental_rerun
-                with col2:
-                    if st.button("Cancel", key="cancel_btn"):
-                        st.session_state.delete_state = 'idle'
-                        st.rerun()  # Using st.rerun() instead of experimental_rerun
-            
-            # Show success message
-            elif st.session_state.delete_state == 'success':
-                st.success("✅ Data deleted successfully!")
-                # Reset state after showing success
-                st.session_state.delete_state = 'idle'
+            clear_collection("df_data")
+            clear_collection("df_response")
 
     async def main(self):
         """Main method to run the dashboard"""
