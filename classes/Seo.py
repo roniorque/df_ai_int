@@ -133,7 +133,7 @@ class Seo:
                         
                         # INITIALIZING SESSIONS
                         pages_index += f"Pages Indexed: {self.page_index}\n"
-                        bounce_rate += f"Bounce Rate: {self.bounce_rate}\n"
+                        bounce_rate += f"Bounce Rate: {self.bounce_rate}%\n"
                         '''
                         try:
                             backlink_files = self.file_dict
