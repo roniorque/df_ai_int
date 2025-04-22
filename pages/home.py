@@ -135,8 +135,27 @@ class DigitalFootprintDashboard:
         reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
 
         if reset_button:
-            clear_collection("df_data")
-            clear_collection("df_response")
+            # Using Streamlit's dialog component
+            confirmation_dialog = st.dialog("Confirm Deletion", on_close=lambda: None)
+            
+            with confirmation_dialog:
+                st.warning("Are you sure you want to delete all data? This action cannot be undone.")
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Yes, delete data", key="confirm_btn"):
+                        # Perform the deletion
+                        clear_collection("df_data")
+                        clear_collection("df_response")
+                        
+                        # Close the dialog
+                        st.close_dialog()
+                        
+                        # Show success message in the main interface
+                        st.success("Data deleted successfully!")
+                        
+                with col2:
+                    if st.button("Cancel", key="cancel_btn"):
+                        st.close_dialog()
 
     async def main(self):
         """Main method to run the dashboard"""
