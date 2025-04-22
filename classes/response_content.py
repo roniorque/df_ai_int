@@ -49,6 +49,7 @@ class Content:
         response.raise_for_status()
         
         output = response.json()
+        #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         text = json.loads(text)
         #st.write(text)
