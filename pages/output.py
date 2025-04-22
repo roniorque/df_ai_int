@@ -264,7 +264,7 @@ In line with this, we have looked into the technology used by **{client_name}** 
     website_and_tools_data = get_analyst_response("Website and Tools Analyst")
     write_table(website_and_tools_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
    
     st.markdown("### SEARCH ENGINE MARKETING/PPC")
