@@ -246,7 +246,6 @@ def display_outputs():
     <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
     <li><a href='#social-media'>Social Media</a></li>
     <li><a href='#content'>Content</a></li>
-    <li><a href='#market-place'>Market Place</a></li>
     <li><a href='#target-market'>Target Market</a></li>
     <li><a href='#what-is-the-desired-outcomes-of-digital-marketing'>Desired Outcomes</a></li>
     </ul>""", unsafe_allow_html=True)
