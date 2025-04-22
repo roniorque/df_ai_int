@@ -242,7 +242,7 @@ def display_outputs():
     <li><a href='#client-footprint'>Client Footprint</a></li>
     <li><a href='#snapshot-by-channel'>Snapshot by Channel</a></li>
     <li><a href='#website-and-tools'>Website and Tools</a></li>
-    <li><a href='#search-engine-marketing'>Search Engine Marketing/PPC</a></li>
+    <li><a href='#search-engine-marketing-ppc'>Search Engine Marketing/PPC</a></li>
     <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
     <li><a href='#social-media'>Social Media</a></li>
     <li><a href='#content'>Content</a></li>
