@@ -25,6 +25,8 @@ def write_client_footprint():
         socmed = {item["category"]: item["current_footprint"] for item in socmed}
     except TypeError:
         socmed = None
+    except KeyError:
+        socmed = None
 
     def safe_get(data, key):
         value = data.get(key)
