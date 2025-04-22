@@ -75,7 +75,7 @@ class DigitalFootprintDashboard:
             self.client_summary = ClientSummary()
             
         with col2:
-            st.write("## WebsitEE Traffic")
+            st.write("## Website Traffic")
             self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
             self.keywords = Seo(os.getenv('MODEL_SEO_Analyst'))    
 
