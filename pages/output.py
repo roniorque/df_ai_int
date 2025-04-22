@@ -250,7 +250,7 @@ def display_outputs():
     st.write("")
     st.write("")
 
-    st.markdown("### Digital Footprint Overview")
+    st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
     st.markdown(f"{overview}")
     st.markdown("---")
     st.markdown("### Executive Summary")
