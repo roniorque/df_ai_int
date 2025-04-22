@@ -262,7 +262,7 @@ def display_outputs():
     st.markdown(get_analyst_response("Executive Summary"))
     st.markdown("---")
     
-    st.markdown("### CLIENT FOOTPRINT")
+    st.markdown("### Client Footprint")
     st.markdown(write_client_footprint())
     st.markdown(
         """
