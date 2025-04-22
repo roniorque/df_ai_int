@@ -386,16 +386,23 @@ Regardless, it is still a great channel worth investing to improve a business’
     website_audience_data = get_analyst_response("Website Audience Acquisition")
     st.write(website_audience_data)
     
+    def safe_value(data: dict, key: str) -> str:
+        try:
+            value = data.get(key)
+            return value if value else "N/A"
+        except Exception:
+            return "N/A"
+        
     #LLD/PM/LN
     lld_data = get_analyst_response("LLD/PM/LN Analyst")
     st.markdown("##### LEAD LIST DEVELOPMENT")
-    st.write(lld_data.get('lead_list_development', None))
+    st.write(safe_value(lld_data, 'lead_list_development'))
     
     st.markdown("##### PROSPECTING MECHANISM")
-    st.write(lld_data.get('prospecting_mechanism', None))
+    st.write(safe_value(lld_data, 'prospecting_mechanism'))
     
     st.markdown("##### LEAD NURTURING")
-    st.write(lld_data.get('lead_nurturing', None))
+    st.write(safe_value(lld_data, 'lead_nurturing'))
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -405,13 +412,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.write(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. \n
 We have evaluated the process of content development strategy and existing content assets of {client_name} based on how they serve clients throughout the customer journey. """)
     
-    def safe_value(data: dict, key: str) -> str:
-        try:
-            value = data.get(key)
-            return value if value else "N/A"
-        except Exception:
-            return "N/A"
-
+   
     pna_data = get_analyst_response("Content - Process and Assets Analyst")
     if pna_data:
         st.markdown("##### AWARENESS STAGE")
