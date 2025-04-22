@@ -29,8 +29,11 @@ def write_client_footprint():
         socmed = None
 
     def safe_get(data, key):
-        value = data.get(key)
-        return value if value else "N/A"
+        try:
+            value = data.get(key)
+            return value if value else "N/A"
+        except AttributeError:
+            pass
     
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
