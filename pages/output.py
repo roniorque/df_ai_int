@@ -274,10 +274,12 @@ def display_outputs():
             """,
             unsafe_allow_html=True,
     )
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")    
     
     st.markdown("### SNAPSHOT BY CHANNEL")    
     write_snapshot(get_analyst_response("Snapshot Analyst")) #write_snapshot
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     st.markdown("## AUDITS PER CHANNEL")
