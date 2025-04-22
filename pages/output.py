@@ -229,7 +229,27 @@ def display_outputs():
     st.markdown("# Digital Marketing Audit")
     st.markdown(f"for: **{client_name} ({client_website})**")
     st.write("")
+    st.write("")
     
+    st.markdown("#### Table of Contents")
+    st.markdown("""<ul><li><a href='#digital-footprint-overview'>Digital Footprint Overview</a></li>
+    <li><a href='#executive-summary'>Executive Summary</a></li>
+    <li><a href='#client-footprint'>Client Footprint</a></li>
+    <li><a href='#snapshot-by-channel'>Snapshot by Channel</a></li>
+    <li><a href='#website-and-tools'>Website and Tools</a></li>
+    <li><a href='#search-engine-marketing'>Search Engine Marketing</a></li>
+    <li><a href='#search-engine-optimization'>Search Engine Optimization</a></li>
+    <li><a href='#social-media'>Social Media</a></li>
+    <li><a href='#content'>Content</a></li>
+    <li><a href='#market-place'>Market Place</a></li>
+    <li><a href='#target-market'>Target Market</a></li>
+    <li><a href='#desired-outcomes'>Desired Outcomes</a></li>
+    </ul>""", unsafe_allow_html=True)
+    
+    st.markdown("---")  
+    st.write("")
+    st.write("")
+
     st.markdown("### DIGITAL FOOTPRINT OVERVIEW")
     st.markdown(f"{overview}")
     st.markdown("---")
@@ -276,7 +296,7 @@ Currently, {client_name} has already explored numerous online advertising. Its c
     sem_data = get_analyst_response("SEM/PPC Analyst")
     write_table(sem_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     st.markdown("### SEARCH ENGINE OPTIMIZATION")
@@ -287,7 +307,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     seo_data = get_analyst_response("SEO Analyst")
     write_table(seo_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write On Page Table
@@ -295,7 +315,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     on_page_data = get_analyst_response("On Page Analyst")
     seo_on_page_table(on_page_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write Off Page Table
@@ -303,7 +323,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     on_page_data = get_analyst_response("SEO Off Page Analyst")
     seo_on_page_table(on_page_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write SocMed Table
@@ -314,7 +334,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     social_media_data = get_analyst_response("Social Media Analyst")
     write_table(social_media_data)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write SocMed Table
@@ -322,7 +342,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. """)
     content_data = get_analyst_response("Content Analyst")
     write_table(content_data)
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
 
     # if (get_analyst_response("Marketplace Analyst")):
@@ -371,7 +391,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown("##### LEAD NURTURING")
     st.write(lld_data.get('lead_nurturing', None))
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     
@@ -404,7 +424,7 @@ We have evaluated the process of content development strategy and existing conte
         st.write(None)
         
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")       
     
     
@@ -438,7 +458,7 @@ We have evaluated the process of content development strategy and existing conte
     st.markdown("##### CONNECTION OF ALL ONLINE AND OFFLINE TOUCH POINTS")
     st.write(conversion)
     
-    #st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
+    st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     
 
 
