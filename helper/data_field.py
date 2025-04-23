@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import streamlit as st
 import os
 def data_field(data_src):
         mongodb_uri = os.getenv("MONGODB_URI")
@@ -22,7 +23,7 @@ def get_analyst_response(data_src):
                         return x["result"]
                 else:
                         print(f"No matching document or 'result' field found for data_src: {data_src} in df_response. 404")
-                        return None # Return None if no doc or 'result' field found
+                        st.warning("No data retrieved for analysis.")
         finally:
                 if myclient:
                         myclient.close()
