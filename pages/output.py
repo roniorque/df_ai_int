@@ -366,7 +366,10 @@ Regardless, it is still a great channel worth investing to improve a business’
     
     target_market_data = get_analyst_response("Target Market Analyst")
     st.markdown("##### TARGET MARKET")
-    st.write(target_market_data['target_market'])
+    try:
+        st.write(target_market_data['target_market'])
+    except TypeError:
+        st.warning("No data retrieved for analysis.")
     
     st.markdown("##### PRODUCT/SERVICE DEMOGRAPHICS")
     st.write(target_market_data['demographics'])
