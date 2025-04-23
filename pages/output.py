@@ -12,21 +12,21 @@ def write_client_footprint():
         web = get_analyst_response("Website and Tools Analyst")
         result_web = {item["category"]: item["current_footprint"] for item in web}
     except TypeError:
-        result_web = "N/A"
+        result_web = None
 
     try:
         seo = get_analyst_response("SEO Analyst")
         seo = {item["category"]: item["current_footprint"] for item in seo}
     except TypeError:
-        seo = "N/A"
+        seo = None
 
     try:
         socmed = get_analyst_response("Social Media Analyst")
         socmed = {item["category"]: item["current_footprint"] for item in socmed}
     except TypeError:
-        socmed = "N/A"
+        socmed = None
     except KeyError:
-        socmed = "N/A"
+        socmed = None
 
     def safe_get(data, key):
         try:
@@ -41,7 +41,7 @@ def write_client_footprint():
     markdown_table += f"| Organic Traffic to the Website | {safe_get(seo, 'organic_traffic')} |\n"
     markdown_table += f"| Paid Traffic to the Website | {safe_get(seo, 'paid_traffic')} |\n"
     markdown_table += f"| Referral Traffic to the Website | {safe_get(seo, 'referral_traffic')} |\n"
-    markdown_table += f"| Email Traffic to the Website | N/A |\n"
+    markdown_table += f"| Email Traffic to the Website | None |\n"
     markdown_table += f"| Direct Traffic to the Website | {safe_get(seo, 'direct_traffic')} |\n"
     markdown_table += f"| Social Traffic to the Website | N/A |\n"
     markdown_table += f"| Display Traffic to the Website | N/A |\n"
