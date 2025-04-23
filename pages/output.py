@@ -399,7 +399,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     def safe_value(data: dict, key: str) -> str:
         try:
             value = data.get(key)
-            return value if value else st.warning("No data retrieved for analysis.")
+            return value if value else "N/A"
         except Exception:
             return st.warning("No data retrieved for analysis.")
         
