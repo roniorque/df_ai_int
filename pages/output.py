@@ -43,14 +43,14 @@ def write_client_footprint():
     markdown_table += f"| Referral Traffic to the Website | {safe_get(seo, 'referral_traffic')} |\n"
     markdown_table += f"| Email Traffic to the Website | None |\n"
     markdown_table += f"| Direct Traffic to the Website | {safe_get(seo, 'direct_traffic')} |\n"
-    markdown_table += f"| Social Traffic to the Website | N/A |\n"
-    markdown_table += f"| Display Traffic to the Website | N/A |\n"
-    markdown_table += f"| Email Database | N/A |\n"
+    markdown_table += f"| Social Traffic to the Website | None |\n"
+    markdown_table += f"| Display Traffic to the Website | None |\n"
+    markdown_table += f"| Email Database | None |\n"
     markdown_table += f"| Facebook Followers | {safe_get(socmed, 'facebook_followers')} |\n"
     markdown_table += f"| Twitter Followers | {safe_get(socmed, 'twitter_followers')} |\n"
     markdown_table += f"| Instagram Followers | {safe_get(socmed, 'instagram_followers')} |\n"
     markdown_table += f"| Linkedin Followers | {safe_get(socmed, 'linkedin_followers')} |\n"
-    markdown_table += f"| Google My Business | N/A |\n"
+    markdown_table += f"| Google My Business | None |\n"
     markdown_table += f"| # of Keywords Ranking in Top 10 | {safe_get(seo, 'keyword_ranking_in_top_10')} |\n"
     markdown_table += f"| # of Keywords Ranking in Top 100 | {safe_get(seo, 'keyword_ranking_in_top_100')} |\n"
     
@@ -399,9 +399,9 @@ Regardless, it is still a great channel worth investing to improve a business’
     def safe_value(data: dict, key: str) -> str:
         try:
             value = data.get(key)
-            return value if value else "N/A"
+            return value if value else st.warning("No data retrieved for analysis.")
         except Exception:
-            return "N/A"
+            return st.warning("No data retrieved for analysis.")
         
     #LLD/PM/LN
     lld_data = get_analyst_response("LLD/PM/LN Analyst")
