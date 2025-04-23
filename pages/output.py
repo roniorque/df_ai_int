@@ -12,21 +12,21 @@ def write_client_footprint():
         web = get_analyst_response("Website and Tools Analyst")
         result_web = {item["category"]: item["current_footprint"] for item in web}
     except TypeError:
-        result_web = None
+        result_web = "N/A"
 
     try:
         seo = get_analyst_response("SEO Analyst")
         seo = {item["category"]: item["current_footprint"] for item in seo}
     except TypeError:
-        seo = None
+        seo = "N/A"
 
     try:
         socmed = get_analyst_response("Social Media Analyst")
         socmed = {item["category"]: item["current_footprint"] for item in socmed}
     except TypeError:
-        socmed = None
+        socmed = "N/A"
     except KeyError:
-        socmed = None
+        socmed = "N/A"
 
     def safe_get(data, key):
         try:
