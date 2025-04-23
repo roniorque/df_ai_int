@@ -401,7 +401,8 @@ Regardless, it is still a great channel worth investing to improve a business’
             value = data.get(key)
             return value if value else "N/A"
         except Exception:
-            return st.warning("No data retrieved for analysis.")
+            value = st.warning("No data retrieved for analysis.")
+            return value
         
     #LLD/PM/LN
     lld_data = get_analyst_response("LLD/PM/LN Analyst")
