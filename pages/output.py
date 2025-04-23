@@ -372,10 +372,17 @@ Regardless, it is still a great channel worth investing to improve a business’
         st.warning("No data retrieved for analysis.")
     
     st.markdown("##### PRODUCT/SERVICE DEMOGRAPHICS")
-    st.write(target_market_data['demographics'])
-    
+
+    try:
+        st.write(target_market_data['demographics'])
+    except TypeError:
+        st.warning("No data retrieved for analysis.")
+
     st.markdown("##### MARKETING MESSAGE SUMMARY")
-    st.write(target_market_data['summary'])
+    try:
+        st.write(target_market_data['summary'])
+    except TypeError:
+        st.warning("No data retrieved for analysis.")
     
     st.markdown("##### WHAT IS THE DESIRED OUTCOMES OF DIGITAL MARKETING?")
     st.markdown(get_analyst_response("Desired Outcomes Analyst"))
