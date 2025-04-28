@@ -74,6 +74,12 @@ class SocialMedia:
             sort=[("timestamp", -1)]  
         )
         
+        try:
+            if x is None:
+                st.session_state[data_field] = ''
+                return ''
+        except Exception:
+            pass
         x = x["result"]
         return x
     

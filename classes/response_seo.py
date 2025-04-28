@@ -51,18 +51,9 @@ class Seo:
         #st.write(output)
         text = output["outputs"][0]["outputs"][0]["results"]["text"]["data"]["text"]
         text = json.loads(text)
-        #st.write(text)
         return text
     
-    def fetch_backlinks(self, data_field):
-        mongodb_uri = os.getenv("MONGODB_URI")
-        myclient = MongoClient(mongodb_uri)
-        mydb = myclient.get_database()
-        mycol = mydb["df_data"]
-        x = mycol.find_one({"data_field": data_field})
-        x = x["result"]
-        return x
-    
+       
     def fetch_data(self, data_field):
         mongodb_uri = os.getenv("MONGODB_URI")
         myclient = MongoClient(mongodb_uri)
@@ -75,6 +66,12 @@ class Seo:
             sort=[("timestamp", -1)]  
         )
         
+        try:
+            if x is None:
+                st.session_state[data_field] = ''
+                return ''
+        except Exception:
+            pass
         x = x["result"]
         return x
     
@@ -113,7 +110,7 @@ class Seo:
     
             self.payload += self.fetch_data("Bounce Rate")    
 
-            self.payload += self.fetch_backlinks("Backlinks") 
+            self.payload += self.fetch_data("Backlinks") 
             
             summary = self.fetch_data("Client Summary")
             self.payload = summary + self.payload
