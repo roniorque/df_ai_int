@@ -43,6 +43,8 @@ class DigitalFootprintDashboard:
             st.session_state.analysis_completed = False
         if 'uploading' not in st.session_state:
             st.session_state['uploading'] = False
+        if 'run_all' not in st.session_state:
+            st.session_state['run_all'] = False
 
     async def create_row1(self):
         """Create the first row with four columns"""
@@ -66,10 +68,16 @@ class DigitalFootprintDashboard:
             #else:
             #    st.session_state["analyze"] = ''
             
+            run_all = st.checkbox("Run all (longer time)", value=False)
+            st.session_state['run_all'] = run_all
+            
             analyze_disabled = st.session_state.get('analyze') != 'clicked'
             if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
+                
+
+            st.session_state.run_all = run_all
             
             
             self.client_summary = ClientSummary()

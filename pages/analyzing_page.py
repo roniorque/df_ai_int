@@ -59,6 +59,8 @@ class ThreadSafeAnalysis:
                 pass
 
 def run_analysis():
+    st.write(st.session_state.get('run_all', {}))
+    pass
     # Create placeholders for status updates
     placeholders = {
         "off_page": st.empty(),
