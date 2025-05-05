@@ -59,8 +59,9 @@ class ThreadSafeAnalysis:
                 pass
 
 def run_analysis():
-    st.write(st.session_state.get('run_all', {}))
-    pass
+    run_all = (st.session_state.get('run_all', {}))
+    st.write(f"Run All: {run_all}")
+    
     # Create placeholders for status updates
     placeholders = {
         "off_page": st.empty(),
@@ -82,7 +83,6 @@ def run_analysis():
         "connection": st.empty(),
         "snapshot": st.empty(),
         "executive_summary": st.empty(),
-        
     }
     
     # Create thread-safe handlers for each analysis type
@@ -94,7 +94,7 @@ def run_analysis():
         handler = handlers["off_page"]
         try:
             handler.update_info("Running SEO Off Page Analysis...")
-            result = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
+            result = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'), run_all)
             handler.update_success("SEO Off Page Analysis completed successfully.")
             return result
         except Exception as e:
@@ -105,7 +105,7 @@ def run_analysis():
         handler = handlers["on_page"]
         try:
             handler.update_info("Running On Page Analysis...")
-            result = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
+            result = SeoOn(os.getenv('MODEL_On_Page_Analyst'), run_all)
             handler.update_success("On Page Analysis completed successfully.")
             return result
         except Exception as e:
@@ -116,7 +116,7 @@ def run_analysis():
         handler = handlers["website_tools"]
         try:
             handler.update_info("Running Website and Tools Analysis...")
-            result = WebsiteAndTools(os.getenv('Model_Website_and_Tools_Analyst'))
+            result = WebsiteAndTools(os.getenv('Model_Website_and_Tools_Analyst'), run_all)
             handler.update_success("Website and Tools completed successfully.")
             return result
         except Exception as e:
@@ -127,7 +127,7 @@ def run_analysis():
         handler = handlers["seo"]
         try:
             handler.update_info("Running SEO Analysis...")
-            result = Seo(os.getenv('MODEL_SEO_Analyst'))
+            result = Seo(os.getenv('MODEL_SEO_Analyst'), run_all)
             handler.update_success("SEO Analysis completed successfully.")
             return result
         except Exception as e:
@@ -138,7 +138,7 @@ def run_analysis():
         handler = handlers["social_media"]
         try:
             handler.update_info("Running Social Media Analysis...")
-            result = SocialMedia(os.getenv('MODEL_Social_Media_Analyst'))
+            result = SocialMedia(os.getenv('MODEL_Social_Media_Analyst'), run_all)
             handler.update_success("Social Media Analysis completed successfully.")
             return result
         except Exception as e:
@@ -149,7 +149,7 @@ def run_analysis():
         handler = handlers["lld_pm_ln"]
         try:
             handler.update_info("Running LLD/PM/LN Analysis...")
-            result = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
+            result = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'), run_all)
             handler.update_success("LLD/PM/LN completed successfully.")
             return result
         except Exception as e:
@@ -160,7 +160,7 @@ def run_analysis():
         handler = handlers["pull_through"]
         try:
             handler.update_info("Running Pull through offer Analysis...")
-            result = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
+            result = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'), run_all)
             handler.update_success("Pull through offer completed successfully.")
             return result
         except Exception as e:
@@ -171,7 +171,7 @@ def run_analysis():
         handler = handlers["content"]
         try:
             handler.update_info("Running Content Analysis...")
-            result = Content(os.getenv('Model_Content'))
+            result = Content(os.getenv('Model_Content'), run_all)
             handler.update_success("Content Analysis completed successfully.")
             return result
         except Exception as e:
@@ -182,7 +182,7 @@ def run_analysis():
         handler = handlers["sem_ppc"]
         try:
             handler.update_info("Running SEM/PPC Analysis...")
-            result = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
+            result = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'), run_all)
             handler.update_success("SEM/PPC Analysis completed successfully.")
             return result
         except Exception as e:
@@ -193,7 +193,7 @@ def run_analysis():
         handler = handlers["marketplace"]
         try:
             handler.update_info("Running Marketplace Analysis...")
-            result = Marketplace(os.getenv('Model_Marketplace_Analyst'))
+            result = Marketplace(os.getenv('Model_Marketplace_Analyst'), run_all)
             handler.update_success("Marketplace Analysis completed successfully.")
             return result
         except Exception as e:
@@ -204,7 +204,7 @@ def run_analysis():
         handler = handlers["target_market"]
         try:
             handler.update_info("Running Target Market Analysis...")
-            result = TargetMarket(os.getenv('Model_Target_Market_Analyst'))
+            result = TargetMarket(os.getenv('Model_Target_Market_Analyst'), run_all)
             handler.update_success("Target Market Analysis completed successfully.")
             return result
         except Exception as e:
@@ -215,7 +215,7 @@ def run_analysis():
         handler = handlers["df_overview"]
         try:
             handler.update_info("Running DF Overview Analysis...")
-            result = dfOverview(os.getenv('Model_DF_Overview_Analyst'))
+            result = dfOverview(os.getenv('Model_DF_Overview_Analyst'), run_all)
             handler.update_success("DF Overview Analysis completed successfully.")
             return result
         except Exception as e:
@@ -226,7 +226,7 @@ def run_analysis():
         handler = handlers["desired_outcome"]
         try:
             handler.update_info("Running Desired Outcomes Analysis...")
-            result = DesiredOutcome(os.getenv('Model_Desired_Outcomes_DM_Analyst'))
+            result = DesiredOutcome(os.getenv('Model_Desired_Outcomes_DM_Analyst'), run_all)
             handler.update_success("Desired Outcomes Analysis completed successfully.")
             return result
         except Exception as e:
@@ -237,7 +237,7 @@ def run_analysis():
         handler = handlers["conversion"]
         try:
             handler.update_info("Running Conversion Analysis...")
-            result = ConversionAnalyst(os.getenv('Model_Conversion_Analyst'))
+            result = ConversionAnalyst(os.getenv('Model_Conversion_Analyst'), run_all)
             handler.update_success("Conversion Analysis completed successfully.")
             return result
         except Exception as e:
@@ -248,7 +248,7 @@ def run_analysis():
         handler = handlers["website_audience"]
         try:
             handler.update_info("Running Website Audience Acquisition Analysis...")
-            result = WebsiteAudienceAcquisition(os.getenv('Model_Website_Audience_Acquisition_Analyst'))
+            result = WebsiteAudienceAcquisition(os.getenv('Model_Website_Audience_Acquisition_Analyst'), run_all)
             handler.update_success("Website Audience Acquisition Analysis completed successfully.")
             return result
         except Exception as e:
@@ -259,7 +259,7 @@ def run_analysis():
         handler = handlers["content_process_and_assets"]
         try:
             handler.update_info("Running Content - Process and Assets Analysis...")
-            result = Content_Process_and_Assets_Analyst(os.getenv('Model_Content_Process_and_Assets_Analyst'))
+            result = Content_Process_and_Assets_Analyst(os.getenv('Model_Content_Process_and_Assets_Analyst'), run_all)
             handler.update_success("Content - Process and Assets Analysis completed successfully.")
             return result
         except Exception as e:
@@ -270,7 +270,7 @@ def run_analysis():
         handler = handlers["connection"]
         try:
             handler.update_info("Connection Analysis...")
-            result = ConnectionAnalyst(os.getenv('Model_Connection_Analyst'))
+            result = ConnectionAnalyst(os.getenv('Model_Connection_Analyst'), run_all)
             handler.update_success("Connection Analysis completed successfully.")
             return result
         except Exception as e:
