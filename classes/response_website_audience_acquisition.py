@@ -12,9 +12,7 @@ class WebsiteAudienceAcquisition:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
-        #self.analyst_name = analyst_name
-        #self.data_src = data_src
-        #self.analyst_description = analyst_description
+        self.run_all = (st.session_state.get('run_all', {}))
         self.initialize()
         self.row1()
 
@@ -72,7 +70,7 @@ class WebsiteAudienceAcquisition:
             count = 0
             try:
                 session_content_outside_the_website = st.session_state['others']
-                if session_content_outside_the_website == 'uploaded':
+                if session_content_outside_the_website == 'uploaded'or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Traffic Acquisition")
             except Exception as e:

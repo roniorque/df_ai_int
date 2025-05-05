@@ -14,11 +14,13 @@ from helper.data_field import data_field
 from helper.upload_response import upload_response
 
 class SeoOn:
+    
     def __init__(self, model_url):
         self.uploaded_files = []
         self.file_dict = {}
         self.file_gt = {}
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
@@ -98,15 +100,15 @@ class SeoOn:
             self.payload = ""
             count = 0
             try:
-                session_first_meaningful_paint = st.session_state['first_meaningful_paint']
-                if session_first_meaningful_paint == 'uploaded':
+                session_first_meaningful_paint = st.session_state['first_meaningful_paint'] 
+                if session_first_meaningful_paint == 'uploaded'  or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("First Meaningful Paint")
             except Exception as e:
                 pass
             try:
                 session_crawl_file = st.session_state['crawl_file']
-                if session_crawl_file == 'uploaded':
+                if session_crawl_file == 'uploaded'  or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Crawl File")
             except Exception as e:

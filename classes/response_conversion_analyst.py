@@ -12,9 +12,7 @@ class ConversionAnalyst:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
-        #self.analyst_name = analyst_name
-        #self.data_src = data_src
-        #self.analyst_description = analyst_description
+        self.run_all = (st.session_state.get('run_all', {}))
         self.initialize()
         self.row1()
 
@@ -71,35 +69,35 @@ class ConversionAnalyst:
             count = 0
             try:
                 session_lead_generation_mechanism = st.session_state['lead_generation_mechanism']
-                if session_lead_generation_mechanism == 'uploaded':
+                if session_lead_generation_mechanism == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Lead Generation Mechanism")
             except Exception as e:
                 pass
             try:
                 session_client_relations_management_system = st.session_state['client_relations_management_system']
-                if session_client_relations_management_system == 'uploaded':
+                if session_client_relations_management_system == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Client Relations Management System")
             except Exception as e:
                 pass
             try:
                 session_pull_through_offers = st.session_state['pull_through_offers']
-                if session_pull_through_offers == 'uploaded':
+                if session_pull_through_offers == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Pull through offers")
             except Exception as e:
                 pass
             try:
                 session_content_in_the_website = st.session_state['content_in_the_website']
-                if session_content_in_the_website == 'uploaded':
+                if session_content_in_the_website == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Content in the Website")
             except Exception as e:
                 pass
             try:
                 session_content_outside_the_website = st.session_state['content_outside_the_website']
-                if session_content_outside_the_website == 'uploaded':
+                if session_content_outside_the_website == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Content outside the Website")
             except Exception as e:

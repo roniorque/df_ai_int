@@ -14,9 +14,7 @@ class dfOverview:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
-        #self.analyst_name = analyst_name
-        #self.data_src = data_src
-        #self.analyst_description = analyst_description
+        self.run_all = (st.session_state.get('run_all', {}))
         self.initialize()
         self.row1()
 
@@ -24,8 +22,6 @@ class dfOverview:
         # FOR ENV
         load_dotenv()
 
-        # AGENT NAME
-        #st.header(self.analyst_name)
     
     def request_model(self, payload_txt, headers):
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
@@ -75,7 +71,7 @@ class dfOverview:
             count = 0
             try:
                 session_client_summary = st.session_state['client_summary']
-                if session_client_summary == 'uploaded':
+                if session_client_summary == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Client Summary")
                     self.payload += self.fetch_data("Client Name")

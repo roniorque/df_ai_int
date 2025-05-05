@@ -19,6 +19,7 @@ class LLD_PM_LN:
         self.file_dict = {}
         self.file_gt = {}
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
@@ -115,7 +116,7 @@ class LLD_PM_LN:
             count = 0
             try:
                 session_lead_generation_mechanism = st.session_state['lead_generation_mechanism']
-                if session_lead_generation_mechanism == 'uploaded':
+                if session_lead_generation_mechanism == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Lead Generation Mechanism")
 

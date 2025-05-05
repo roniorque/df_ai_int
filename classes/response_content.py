@@ -19,6 +19,7 @@ class Content:
         self.file_dict = {}
         self.file_gt = {}
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
@@ -30,19 +31,6 @@ class Content:
         # FOR ENV
         load_dotenv()
 
-        # AGENT NAME
-        #st.header(self.analyst_name)
-
-        # EVALUATION FORM LINK
-        #url = os.getenv('Link')
-        #st.write('Evaluation Form: [Link](%s)' % url)
-
-        # RETURN BUTTON
-        '''try:
-            if st.button("Return", type='primary'):
-                st.switch_page("./pages/home.py")
-        except Exception:
-            pass'''
     
     def request_model(self, payload_txt, headers):
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
@@ -88,30 +76,6 @@ class Content:
                             pass
                        
                     
-                        #end_time = time.time()
-                        #time_lapsed = end_time - start_time
-
-                        #debug_info = {'data_field' : 'GT Metrix', 'result': result}
-                        
-                        
-                        '''
-                        debug_info = {#'analyst': self.analyst_name,
-                                      'url_uuid': self.model_url.split("-")[-1],
-                                      'time_lapsed' : time_lapsed, 
-                                    'crawl_file': [file.name for file in self.uploaded_files] if self.uploaded_files else ['Not available'],
-                                      'gt_metrix': [file.name for file in self.gtmetrix] if self.gtmetrix else ['Not available'],
-                                      'payload': payload_txt, 
-                                      'result': result}
-                        
-                        if self.gtmetrix:
-                            collect_telemetry(debug_info)
-                        '''
- 
-                            
-                        #with st.expander("Debug information", icon="⚙"):
-                        #    st.write(debug_info)
-                        
-
                         st.session_state['analyzing'] = False
                         try:
                             self.file_dict.popitem()
@@ -132,7 +96,7 @@ class Content:
                 pass
             try:
                 session_content_outside_the_website = st.session_state['content_outside_the_website']
-                if session_content_outside_the_website == 'uploaded':
+                if session_content_outside_the_website == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Content outside the Website")
             except Exception as e:

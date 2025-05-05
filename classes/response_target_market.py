@@ -14,9 +14,7 @@ class TargetMarket:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
-        #self.analyst_name = analyst_name
-        #self.data_src = data_src
-        #self.analyst_description = analyst_description
+        self.run_all = (st.session_state.get('run_all', {}))
         self.initialize()
         self.row1()
 
@@ -74,7 +72,7 @@ class TargetMarket:
             count = 0
             try:
                 session_target_market = st.session_state['target_market']
-                if session_target_market == 'uploaded':
+                if session_target_market == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Client Summary")
                 

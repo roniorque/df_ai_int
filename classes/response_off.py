@@ -18,6 +18,7 @@ class SeoOffPageAnalyst:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
@@ -81,7 +82,7 @@ class SeoOffPageAnalyst:
             count = 0
             try:
                 session_off_page_file_uploaded = st.session_state['off_page_file_uploaded']
-                if session_off_page_file_uploaded == 'uploaded':
+                if session_off_page_file_uploaded == 'uploaded' or self.run_all:
                     count += 1
                     self.payload += self.fetch_data("Backlinks")
                 

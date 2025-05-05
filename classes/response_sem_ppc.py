@@ -18,6 +18,7 @@ import json
 class Sem_PPC:
     def __init__(self, model_url):
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
@@ -28,19 +29,7 @@ class Sem_PPC:
         # FOR ENV
         load_dotenv()
 
-        # AGENT NAME
-        #st.header(self.analyst_name)
-
-        # EVALUATION FORM LINK
-        '''url = os.getenv('Link')
-        st.write('Evaluation Form: [Link](%s)' % url)
-
-        # RETURN BUTTON
-        try:
-            if st.button("Return", type='primary'):
-                st.switch_page("./pages/home.py")
-        except Exception:
-            pass'''
+       
     
     def request_model(self, payload_txt, headers):
         response = requests.post(self.model_url, json=payload_txt, headers=headers)
@@ -105,7 +94,7 @@ class Sem_PPC:
             count = 0
             try:
                 session_account_set_up = st.session_state['account_set_up']
-                if session_account_set_up == 'uploaded':
+                if session_account_set_up == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Account Set Up - Google Ads")
                 
@@ -113,14 +102,14 @@ class Sem_PPC:
                 pass
             try:
                 session_search_ads = st.session_state['search_ads']
-                if session_search_ads == 'uploaded':
+                if session_search_ads == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Search Ads - Google Ads/SEMRush")
             except Exception as e:
                 pass
             try:
                 session_display_ads = st.session_state['display_ads']
-                if session_display_ads == 'uploaded':
+                if session_display_ads == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Display Ads - Google Ads/SEMRush")
                 
@@ -128,21 +117,21 @@ class Sem_PPC:
                 pass
             try:
                 session_mobile_ads = st.session_state['mobile_ads']
-                if session_mobile_ads == 'uploaded':
+                if session_mobile_ads == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Mobile Ads - Google Ads")            
             except Exception as e:
                 pass
             try:
                 session_video_ads = st.session_state['video_ads']
-                if session_video_ads == 'uploaded':
+                if session_video_ads == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Video Ads - Google Ads")                 
             except Exception as e:
                 pass
             try:
                 session_shopping_ads = st.session_state['shopping_ads']
-                if session_shopping_ads == 'uploaded':
+                if session_shopping_ads == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Shopping Ads - Google Ads/SEMRush")                 
             except Exception as e:

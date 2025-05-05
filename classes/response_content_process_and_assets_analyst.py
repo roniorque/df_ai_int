@@ -11,9 +11,7 @@ class Content_Process_and_Assets_Analyst:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
-        #self.analyst_name = analyst_name
-        #self.data_src = data_src
-        #self.analyst_description = analyst_description
+        self.run_all = (st.session_state.get('run_all', {}))
         self.initialize()
         self.row1()
 
@@ -70,21 +68,21 @@ class Content_Process_and_Assets_Analyst:
             count = 0
             try:
                 session_client_summary = st.session_state['client_summary']
-                if session_client_summary == 'uploaded':
+                if session_client_summary == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Client Summary")
             except Exception as e:
                 pass
             try:
                 session_content_in_the_website = st.session_state['content_in_the_website']
-                if session_content_in_the_website == 'uploaded':
+                if session_content_in_the_website == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Content in the Website")
             except Exception as e:
                 pass
             try:
                 session_content_outside_the_website = st.session_state['content_outside_the_website']
-                if session_content_outside_the_website == 'uploaded':
+                if session_content_outside_the_website == 'uploaded' or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Content outside the Website")
             except Exception as e:

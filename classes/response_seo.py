@@ -20,6 +20,7 @@ class Seo:
         self.uploaded_files = []
         self.file_dict = {}
         self.model_url = model_url
+        self.run_all = (st.session_state.get('run_all', {}))
         #self.analyst_name = analyst_name
         #self.data_src = data_src
         #self.analyst_description = analyst_description
