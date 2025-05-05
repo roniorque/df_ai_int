@@ -51,6 +51,11 @@ class DigitalFootprintDashboard:
         col1, col2, col3, col4, col5 = st.columns(5, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
+            
+            
+            run_all = st.checkbox("Run all (longer time)", value=False)
+            st.session_state['run_all'] = run_all
+            
             button_label = "Uploading..." if st.session_state['uploading'] else "Sync Data"
             if st.button(button_label, key="sync_button", icon="🔄", use_container_width=True):
                 st.session_state['uploading'] = True
@@ -67,10 +72,6 @@ class DigitalFootprintDashboard:
                 #unhide_button()
             #else:
             #    st.session_state["analyze"] = ''
-            
-            run_all = st.checkbox("Run all (longer time)", value=False)
-            st.session_state['run_all'] = run_all
-            
             analyze_disabled = st.session_state.get('analyze') != 'clicked'
             if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
