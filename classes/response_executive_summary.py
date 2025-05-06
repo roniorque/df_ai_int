@@ -73,7 +73,7 @@ class ExecutiveSummary:
             self.sem_data = get_analyst_response("SEM/PPC Analyst")
             self.seo_data = get_analyst_response("SEO Analyst")
             self.on_page_data = get_analyst_response("On Page Analyst")
-            self.off_page_data = get_analyst_response("Off Page Analyst")
+            self.off_page_data = get_analyst_response("SEO Off Page Analyst")
             self.social_media_data = get_analyst_response("Social Media Analyst")
             self.content_data = get_analyst_response("Content Analyst")
             self.marketpalce_data = get_analyst_response("Marketplace Analyst")

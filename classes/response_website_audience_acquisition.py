@@ -55,7 +55,7 @@ class WebsiteAudienceAcquisition:
                         try:
                                 payload_txt = {"input_value": self.payload, "output_type": "text", "input_type": "chat"}
                                 payload_txt_model = self.request_model(payload_txt, headers)
-                                debug_info = {'data_field' : 'Website Audience Acquisition', 'result': payload_txt_model}
+                                debug_info = {'data_field' : 'Website Audience Acquisition Analyst', 'result': payload_txt_model}
                                 upload_response(debug_info)
                                 st.session_state['website_audience'] = ''
 
