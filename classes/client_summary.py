@@ -26,17 +26,18 @@ class ClientSummary:
     def process (self):
             with st.spinner('Uploading Client Details...', show_time=True):
                         st.write('')
-                        client_summary = ""
-                        client_name = ""
-                        client_website = ""
+                        #client_summary = ""
+                        #client_name = ""
+                        #client_website = ""
                         # 
-                        client_summary = f"Client Summary: {self.client_summary}\n"
-                        client_name = f"{self.name}\n"
-                        client_website = f"{self.website}\n"
+                        #client_summary = ""
+                        client_summary = f"{self.c_summary} {self.client_summary}\n"
+                        client_name = f"{self.c_name} {self.name}\n"
+                        client_website = f"{self.c_website} {self.website}\n"
 
-                        debug_client_summary = {'data_field' : 'Client Summary', 'result': client_summary}
-                        debug_client_name = {'data_field' : 'Client Name', 'result': client_name}
-                        debug_client_website = {'data_field' : 'Client Website', 'result': client_website}
+                        debug_client_summary = {'data_field' : f'{self.c_summary}', 'result': client_summary}
+                        debug_client_name = {'data_field' : f'{self.c_name}', 'result': client_name}
+                        debug_client_website = {'data_field' : f'{self.c_website}', 'result': client_website}
 
                         if self.client_summary:
                             st.session_state['client_summary'] = 'uploaded'
@@ -50,10 +51,14 @@ class ClientSummary:
                             collect_telemetry(debug_client_website)
              
     def row1(self):
-            self.client_summary = st.text_area("Client Summary:", help="Name of business, nature of business, location, products/services")
+            is_competitor = st.session_state.is_competitor
+            self.c_summary = "Competitor Summary: " if is_competitor == True else "Client Summary: "
+            self.c_name = "Competitor Name: " if is_competitor == True else "Client Name: "
+            self.c_website = "Competitor Website: " if is_competitor == True else "Client Website: "
+            self.client_summary = st.text_area(f"{self.c_summary}", help="Name of business, nature of business, location, products/services")
             session = st.session_state.analyze
-            self.name = st.text_input("Client Name:")
-            self.website = st.text_input("Client Website:")
+            self.name = st.text_input(f"{self.c_name}")
+            self.website = st.text_input(f"{self.c_website}")
 
             if (self.client_summary or self.name or self.website) and session == 'clicked':
                 self.process()

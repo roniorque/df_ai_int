@@ -45,6 +45,8 @@ class DigitalFootprintDashboard:
             st.session_state['uploading'] = False
         if 'run_all' not in st.session_state:
             st.session_state['run_all'] = False
+        if 'is_competitor' not in st.session_state:
+            st.session_state['is_competitor'] = False
 
     async def create_row1(self):
         """Create the first row with four columns"""
@@ -52,7 +54,9 @@ class DigitalFootprintDashboard:
         
         with col1:
             
-            
+            is_competitor = st.checkbox("Competitor", value=False)
+            st.session_state['is_competitor'] = is_competitor
+
             run_all = st.checkbox("Run all (longer time)", value=False)
             st.session_state['run_all'] = run_all
             
