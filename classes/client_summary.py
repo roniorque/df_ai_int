@@ -24,20 +24,25 @@ class ClientSummary:
             st.session_state['target_market'] = ''
     
     def process (self):
-            with st.spinner('Uploading Client Details...', show_time=True):
+            self.c_details = "Uploading Competitor Details..." if self.is_competitor == True else "Uploading Client Details..."
+            with st.spinner(f'{self.c_details}', show_time=True):
                         st.write('')
                         #client_summary = ""
                         #client_name = ""
                         #client_website = ""
                         # 
                         #client_summary = ""
-                        client_summary = f"{self.c_summary} {self.client_summary}\n"
-                        client_name = f"{self.c_name} {self.name}\n"
-                        client_website = f"{self.c_website} {self.website}\n"
+                        client_summary = f"{self.c_summary}{self.client_summary}\n"
+                        client_name = f"{self.c_name}{self.name}\n"
+                        client_website = f"{self.c_website}{self.website}\n"
 
-                        debug_client_summary = {'data_field' : f'{self.c_summary}', 'result': client_summary}
-                        debug_client_name = {'data_field' : f'{self.c_name}', 'result': client_name}
-                        debug_client_website = {'data_field' : f'{self.c_website}', 'result': client_website}
+                        c_summary = "Competitor Summary" if self.is_competitor == True else "Client Summary"
+                        c_name = "Competitor Name" if self.is_competitor == True else "Client Name"
+                        c_website = "Competitor Website" if self.is_competitor == True else "Client Website"
+
+                        debug_client_summary = {'data_field' : f'{c_summary}', 'result': client_summary}
+                        debug_client_name = {'data_field' : f'{c_name}', 'result': client_name}
+                        debug_client_website = {'data_field' : f'{c_website}', 'result': client_website}
 
                         if self.client_summary:
                             st.session_state['client_summary'] = 'uploaded'
@@ -51,10 +56,10 @@ class ClientSummary:
                             collect_telemetry(debug_client_website)
              
     def row1(self):
-            is_competitor = st.session_state.is_competitor
-            self.c_summary = "Competitor Summary: " if is_competitor == True else "Client Summary: "
-            self.c_name = "Competitor Name: " if is_competitor == True else "Client Name: "
-            self.c_website = "Competitor Website: " if is_competitor == True else "Client Website: "
+            self.is_competitor = st.session_state.is_competitor
+            self.c_summary = "Competitor Summary: " if self.is_competitor == True else "Client Summary: "
+            self.c_name = "Competitor Name: " if self.is_competitor == True else "Client Name: "
+            self.c_website = "Competitor Website: " if self.is_competitor == True else "Client Website: "
             self.client_summary = st.text_area(f"{self.c_summary}", help="Name of business, nature of business, location, products/services")
             session = st.session_state.analyze
             self.name = st.text_input(f"{self.c_name}")
