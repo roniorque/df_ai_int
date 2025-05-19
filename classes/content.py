@@ -47,6 +47,11 @@ class Content:
                             content_outside_the_website += f"\nContent outside the Website: {self.content_outside_the_website}"
                         except KeyError:
                             pass
+                        
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+                        content_in_the_website = self.competitor_name + content_in_the_website if self.is_competitor == True else content_in_the_website
+                        content_outside_the_website = self.competitor_name + content_outside_the_website if self.is_competitor == True else content_outside_the_website
 
                         debug_info_content_in_the_website = {'data_field' : 'Content in the Website', 'result': content_in_the_website}
                         debug_info_content_outside_the_website = {'data_field' : 'Content outside the Website', 'result': content_outside_the_website}

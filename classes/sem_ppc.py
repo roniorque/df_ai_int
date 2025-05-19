@@ -61,27 +61,27 @@ class Sem_PPC:
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"
                                 try:
-                                    account_set_up += f"\nAccount Set Up: {self.account_set_up}"
+                                    account_set_up += f"\nGoogle Ads Report:\nAccount Set Up: {self.account_set_up}"
                                 except KeyError:
                                     pass
                                 try:
-                                    search_ads += f"\nSearch Ads: {self.search_ads}"
+                                    search_ads += f"\nGoogle Ads Report:\nSearch Ads: {self.search_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    display_ads += f"\nDisplay Ads: {self.display_ads}"
+                                    display_ads += f"\nGoogle Ads Report:\nDisplay Ads: {self.display_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    mobile_ads += f"\nMobile Ads: {self.mobile_ads}"
+                                    mobile_ads += f"\nGoogle Ads Report:\nMobile Ads: {self.mobile_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    video_ads += f"\nVideo Ads: {self.video_ads}"
+                                    video_ads += f"\nGoogle Ads Report:\nVideo Ads: {self.video_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    shopping_ads += f"\nShopping Ads: {self.shopping_ads}"
+                                    shopping_ads += f"\nGoogle Ads Report:\nShopping Ads: {self.shopping_ads}"
                                 except KeyError:
                                     pass
 
@@ -92,6 +92,17 @@ class Sem_PPC:
                                 #end_time = time.time()
                                 #time_lapsed = end_time - start_time
                                 
+                                self.competitor_name = st.session_state.competitor_name
+                                self.is_competitor = st.session_state.is_competitor
+
+                                account_set_up = self.competitor_name + account_set_up if self.is_competitor == True else account_set_up
+                                search_ads = self.competitor_name + search_ads if self.is_competitor == True else search_ads
+                                display_ads = self.competitor_name + display_ads if self.is_competitor == True else display_ads
+                                mobile_ads = self.competitor_name + mobile_ads if self.is_competitor == True else mobile_ads
+                                video_ads = self.competitor_name + video_ads if self.is_competitor == True else video_ads
+                                shopping_ads = self.competitor_name + shopping_ads if self.is_competitor == True else shopping_ads
+                        
+
                                 debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
                                 debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
                                 debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
