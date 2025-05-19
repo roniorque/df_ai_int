@@ -136,7 +136,7 @@ class Seo:
                         
                         # INITIALIZING SESSIONS
                         pages_index += f"Google Search Console Report\nPages Indexed: {self.page_index}\n"
-                        bounce_rate += f"Bounce Rate: {self.bounce_rate}%\n"
+                        bounce_rate += f"GA4 Report\nBounce Rate: {self.bounce_rate}%\n"
                         seo_scope += f"SEO Scope: {self.seo_scope}\n"
                         '''
                         try:
@@ -309,7 +309,7 @@ class Seo:
                 except Exception:
                     pass
             
-            self.seo_scope = st.text_input("SEO Scope:", placeholder='Enter SEO Scope')
+            self.seo_scope = st.text_input("SEO Scope:", placeholder='Enter SEO Scope', help="i.e. Google.com.au, Google.com.ph")
             self.page_index = st.text_input("Pages Indexed - Google Search Console:", placeholder='Enter Pages Indexed')
             self.bounce_rate = st.text_input("Bounce Rate - GA4:", placeholder='Enter Bounce Rate')
             
