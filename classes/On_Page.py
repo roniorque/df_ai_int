@@ -114,7 +114,7 @@ class SeoOn:
                                     crawl_file += file_info['content'] + "\n"
                                 elif file_info['type'] == 'csv':
                                     try:
-                                        crawl_file += "CrawlFile CSV: {"+ file_info['content'].to_csv(index=True) + "\n"
+                                        crawl_file += "\nScreamingFrog Report\nCrawlFile CSV: {"+ file_info['content'].to_csv(index=True) + "\n"
                                     except AttributeError:
                                         pass
                         except KeyError:
@@ -122,10 +122,15 @@ class SeoOn:
                         except AttributeError:
                             pass
                         try:
-                            first_meaningful_paint += f"\nFirst Meaningful Paint: {self.first_meaningful_paint}"
+                            first_meaningful_paint += f"\nGTMetrix Report\nFirst Meaningful Paint: {self.first_meaningful_paint}"
                         except KeyError:
                             pass
                         
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+                        first_meaningful_paint = self.competitor_name + first_meaningful_paint if self.is_competitor == True else first_meaningful_paint
+                        crawl_file = self.competitor_name + crawl_file if self.is_competitor == True else crawl_file
+
                         debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
                         debug_info_crawl_file = {'data_field' : 'Crawl File', 'result': crawl_file}
 
