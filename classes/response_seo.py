@@ -88,6 +88,7 @@ class Seo:
 
                                 st.session_state['bounce_rate'] = ''
                                 st.session_state['pages_index'] = ''
+                                st.session_state['seo_scope'] = ''
                                 st.session_state['others'] = ''
                                 st.session_state['df_traffic'] = ''
                                 st.session_state['df_seo'] = ''
@@ -110,6 +111,8 @@ class Seo:
             self.payload += self.fetch_data("Pages Indexed")            
     
             self.payload += self.fetch_data("Bounce Rate")    
+            
+            self.payload += self.fetch_data("SEO Scope")   
 
             self.payload += self.fetch_data("Backlinks") 
             

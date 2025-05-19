@@ -47,6 +47,8 @@ class DigitalFootprintDashboard:
             st.session_state['run_all'] = False
         if 'is_competitor' not in st.session_state:
             st.session_state['is_competitor'] = False
+        if 'competitor_name' not in st.session_state:
+            st.session_state['competitor_name'] = False
 
     async def create_row1(self):
         """Create the first row with four columns"""

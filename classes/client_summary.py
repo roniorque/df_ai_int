@@ -60,11 +60,14 @@ class ClientSummary:
             self.c_summary = "Competitor Summary: " if self.is_competitor == True else "Client Summary: "
             self.c_name = "Competitor Name: " if self.is_competitor == True else "Client Name: "
             self.c_website = "Competitor Website: " if self.is_competitor == True else "Client Website: "
+            st.session_state.competitor_name = f"Competitor Name: {self.c_name}" if self.is_competitor == True else "Competitor Name:"
             self.client_summary = st.text_area(f"{self.c_summary}", help="Name of business, nature of business, location, products/services")
             session = st.session_state.analyze
             self.name = st.text_input(f"{self.c_name}")
             self.website = st.text_input(f"{self.c_website}")
-
+            
+            self.competitor_name = "Competitor Name: " + self.name + "\n"
+            st.session_state['competitor_name'] = self.competitor_name
             if (self.client_summary or self.name or self.website) and session == 'clicked':
                 self.process()
 
