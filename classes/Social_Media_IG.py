@@ -126,6 +126,11 @@ class Instagram:
                                     
                                     #end_time = time.time()
                                     #time_lapsed = end_time - start_time
+
+                                    self.competitor_name = st.session_state.competitor_name
+                                    self.is_competitor = st.session_state.is_competitor
+                                    combined_text = self.competitor_name + combined_text if self.is_competitor == True else combined_text
+                                    
                                     debug_info = {'data_field' : 'Instagram', 'result': combined_text}
                                     '''
                                     debug_info = {
