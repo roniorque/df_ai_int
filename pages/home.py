@@ -82,7 +82,9 @@ class DigitalFootprintDashboard:
             if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
-                
+            
+            if st.button("Show Output", key="show_output_button", icon="📃", use_container_width=True):
+                st.switch_page("pages/output.py")
 
             st.session_state.run_all = run_all
             
