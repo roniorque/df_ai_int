@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import json
+from helper.upload_response import upload_response
 
 # === CONFIG ===
 AGENT_URL = "http://172.17.21.23:7860/api/v1/run/51b63d7f-c30b-4df4-b591-6544d60b2f0c?stream=false"
@@ -26,9 +27,10 @@ def render_agent_reply(reply):
         st.write(reply)
 
 def save_output(output):
+    
+    debug_info = {'data_field' : st.session_state.report_title, 'result': output}
+    upload_response(debug_info)
     st.session_state.latest_reply = output
-    st.session_state.messages.append({"role": "assistant", "content": output})
-    st.session_state.report_title = st.session_state.latest_reply
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
 
 # === STATE INIT ===
@@ -90,9 +92,9 @@ with left_col:
 
         # Immediately show output in right pane after AI responds
         with right_col:
-            st.subheader("📄 AI Output")
-            render_agent_reply(st.session_state.latest_reply)
-            st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))
+            st.subheader("📄✨ Editing " + st.session_state.report_title)
+            render_agent_reply(reply)
+            st.button("Save Output", on_click=save_output, args=(reply,))
 
         # Append assistant's update note after rendering to avoid input field being pushed
         st.session_state.messages.append({"role": "assistant", "content": "✅ Output updated in right panel."})
@@ -100,6 +102,5 @@ with left_col:
 # === RIGHT PANE: Output (initial or fallback render) ===
 if not prompt:
     with right_col:
-        st.subheader("📄 AI Output")
+        st.subheader("📄✨ Editing " + st.session_state.report_title)
         render_agent_reply(st.session_state.latest_reply)
-        st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))
