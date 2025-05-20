@@ -28,8 +28,8 @@ def render_agent_reply(reply):
 
 def save_output(output):
     
-    debug_info = {'data_field' : st.session_state.report_title, 'result': output}
-    upload_response(debug_info)
+    ai_response = {'data_field' : st.session_state.report_title, 'result': output}
+    upload_response(ai_response)
     st.session_state.latest_reply = output
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
 
