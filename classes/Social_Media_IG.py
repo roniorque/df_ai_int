@@ -131,7 +131,10 @@ class Instagram:
                                     self.is_competitor = st.session_state.is_competitor
                                     combined_text = self.competitor_name + combined_text if self.is_competitor == True else combined_text
                                     
-                                    debug_info = {'data_field' : 'Instagram', 'result': combined_text}
+                                    if self.is_competitor:
+                                        debug_info = {'data_field' : 'Instagram Competitor', 'result': combined_text}
+                                    else:
+                                        debug_info = {'data_field' : 'Instagram', 'result': combined_text}
                                     '''
                                     debug_info = {
                                         #'analyst': self.analyst_name,

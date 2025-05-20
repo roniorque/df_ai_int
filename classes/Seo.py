@@ -220,12 +220,20 @@ class Seo:
                         bounce_rate = self.competitor_name + bounce_rate if self.is_competitor == True else bounce_rate
                         seo_scope = self.competitor_name + seo_scope if self.is_competitor == True else seo_scope
                         
-                        debug_info_seo_keywords = {'data_field' : 'SEO Keywords', 'result': seo_keywords}
-                        debug_info_traffic_channels = {'data_field' : 'Traffic Channels', 'result': traffic_channels}
-                        debug_info_traffic_aqcuisition = {'data_field' : 'Traffic Acquisition', 'result': traffic_aqcuisition}
-                        debug_info_pages_index = {'data_field' : 'Pages Indexed', 'result': pages_index}
-                        debug_info_bounce_rate = {'data_field' : 'Bounce Rate', 'result': bounce_rate}
-                        debug_info_seo_scope = {'data_field' : 'SEO Scope', 'result': seo_scope}
+                        if self.is_competitor:
+                            debug_info_seo_keywords = {'data_field': 'SEO Keywords Competitor', 'result': seo_keywords}
+                            debug_info_traffic_channels = {'data_field': 'Traffic Channels Competitor', 'result': traffic_channels}
+                            debug_info_traffic_aqcuisition = {'data_field': 'Traffic Acquisition Competitor', 'result': traffic_aqcuisition}
+                            debug_info_pages_index = {'data_field': 'Pages Indexed Competitor', 'result': pages_index}
+                            debug_info_bounce_rate = {'data_field': 'Bounce Rate Competitor', 'result': bounce_rate}
+                            debug_info_seo_scope = {'data_field': 'SEO Scope Competitor', 'result': seo_scope}
+                        else:
+                            debug_info_seo_keywords = {'data_field': 'SEO Keywords', 'result': seo_keywords}
+                            debug_info_traffic_channels = {'data_field': 'Traffic Channels', 'result': traffic_channels}
+                            debug_info_traffic_aqcuisition = {'data_field': 'Traffic Acquisition', 'result': traffic_aqcuisition}
+                            debug_info_pages_index = {'data_field': 'Pages Indexed', 'result': pages_index}
+                            debug_info_bounce_rate = {'data_field': 'Bounce Rate', 'result': bounce_rate}
+                            debug_info_seo_scope = {'data_field': 'SEO Scope', 'result': seo_scope}
 
                         '''
                         debug_info = {

@@ -131,9 +131,12 @@ class SeoOn:
                         first_meaningful_paint = self.competitor_name + first_meaningful_paint if self.is_competitor == True else first_meaningful_paint
                         crawl_file = self.competitor_name + crawl_file if self.is_competitor == True else crawl_file
 
-                        debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
-                        debug_info_crawl_file = {'data_field' : 'Crawl File', 'result': crawl_file}
-
+                        if self.is_competitor:
+                            debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint Competitor', 'result': first_meaningful_paint}
+                            debug_info_crawl_file = {'data_field' : 'Crawl File Competitor', 'result': crawl_file}
+                        else:
+                            debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
+                            debug_info_crawl_file = {'data_field' : 'Crawl File', 'result': crawl_file}
                         if self.first_meaningful_paint:
                             st.session_state['first_meaningful_paint'] = 'uploaded'
                             collect_telemetry(debug_info_first_meaningful_paint)

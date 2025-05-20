@@ -53,9 +53,12 @@ class Content:
                         content_in_the_website = self.competitor_name + content_in_the_website if self.is_competitor == True else content_in_the_website
                         content_outside_the_website = self.competitor_name + content_outside_the_website if self.is_competitor == True else content_outside_the_website
 
-                        debug_info_content_in_the_website = {'data_field' : 'Content in the Website', 'result': content_in_the_website}
-                        debug_info_content_outside_the_website = {'data_field' : 'Content outside the Website', 'result': content_outside_the_website}
-
+                        if self.is_competitor:
+                            debug_info_content_in_the_website = {'data_field' : 'Content in the Website Competitor', 'result': content_in_the_website}
+                            debug_info_content_outside_the_website = {'data_field' : 'Content outside the Website Competitor', 'result': content_outside_the_website}
+                        else:
+                            debug_info_content_in_the_website = {'data_field' : 'Content in the Website', 'result': content_in_the_website}
+                            debug_info_content_outside_the_website = {'data_field' : 'Content outside the Website', 'result': content_outside_the_website}
                         if self.content_in_the_website:
                             if self.content_in_the_website != self.template_content_in_the_website:
                                 st.session_state['content_in_the_website'] = 'uploaded'

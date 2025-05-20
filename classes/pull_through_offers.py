@@ -42,8 +42,10 @@ class PullThroughOffers:
                         self.is_competitor = st.session_state.is_competitor
                         pull_through_offers = self.competitor_name + pull_through_offers if self.is_competitor == True else pull_through_offers
                         
-                        debug_info_pull_through_offers = {'data_field' : 'Pull through offers', 'result': pull_through_offers}
-                        
+                        if self.is_competitor:
+                            debug_info_pull_through_offers = {'data_field' : 'Pull through offers Competitor', 'result': pull_through_offers}
+                        else:
+                            debug_info_pull_through_offers = {'data_field' : 'Pull through offers', 'result': pull_through_offers}
 
                         if self.pull_through_offers:
                             st.session_state['pull_through_offers'] = 'uploaded'

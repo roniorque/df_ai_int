@@ -167,15 +167,25 @@ class WebsiteAndTools:
                         mobile_loading_speed = self.competitor_name + mobile_loading_speed if self.is_competitor == True else mobile_loading_speed
                         web_analytics = self.competitor_name + web_analytics if self.is_competitor == True else web_analytics
                         client_relations_management_system = self.competitor_name + client_relations_management_system if self.is_competitor == True else client_relations_management_system
-
-                        debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness', 'result': website_responsiveness}
-                        debug_info_content_management_system = {'data_field' : 'Content Management System', 'result': content_management_system}
-                        debug_info_SSL_certificate = {'data_field' : 'SSL Certificate', 'result': SSL_certificate}
-                        debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness', 'result': mobile_responsiveness}
-                        debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed', 'result': desktop_loading_speed}
-                        debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
-                        debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
-                        debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
+                        
+                        if self.is_competitor:
+                            debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness Competitor', 'result': website_responsiveness}
+                            debug_info_content_management_system = {'data_field' : 'Content Management System Competitor', 'result': content_management_system}
+                            debug_info_SSL_certificate = {'data_field' : 'SSL Certificate Competitor', 'result': SSL_certificate}
+                            debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness Competitor', 'result': mobile_responsiveness}
+                            debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed Competitor', 'result': desktop_loading_speed}
+                            debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed Competitor', 'result': mobile_loading_speed}
+                            debug_info_web_analytics = {'data_field' : 'Web Analytics Competitor', 'result': web_analytics}
+                            debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System Competitor', 'result': client_relations_management_system}
+                        else:
+                            debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness', 'result': website_responsiveness}
+                            debug_info_content_management_system = {'data_field' : 'Content Management System', 'result': content_management_system}
+                            debug_info_SSL_certificate = {'data_field' : 'SSL Certificate', 'result': SSL_certificate}
+                            debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness', 'result': mobile_responsiveness}
+                            debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed', 'result': desktop_loading_speed}
+                            debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
+                            debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
+                            debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
 
                         '''
                         debug_info = {#'analyst': self.analyst_name,

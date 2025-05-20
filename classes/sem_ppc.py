@@ -102,14 +102,20 @@ class Sem_PPC:
                                 video_ads = self.competitor_name + video_ads if self.is_competitor == True else video_ads
                                 shopping_ads = self.competitor_name + shopping_ads if self.is_competitor == True else shopping_ads
                         
-
-                                debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
-                                debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
-                                debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
-                                debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': mobile_ads}
-                                debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': video_ads}
-                                debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads}
-
+                                if self.is_competitor:
+                                    debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads Competitor', 'result': account_set_up}
+                                    debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush Competitor', 'result': search_ads}
+                                    debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush Competitor', 'result': display_ads}
+                                    debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads Competitor', 'result': mobile_ads}
+                                    debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads Competitor', 'result': video_ads}
+                                    debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush Competitor', 'result': shopping_ads}
+                                else:
+                                    debug_info_account_set_up = {'data_field' : 'Account Set Up - Google Ads', 'result': account_set_up}
+                                    debug_info_search_ads = {'data_field' : 'Search Ads - Google Ads/SEMRush', 'result': search_ads}
+                                    debug_info_display_ads = {'data_field' : 'Display Ads - Google Ads/SEMRush', 'result': display_ads}
+                                    debug_info_mobile_ads = {'data_field' : 'Mobile Ads - Google Ads', 'result': mobile_ads}
+                                    debug_info_video_ads = {'data_field' : 'Video Ads - Google Ads', 'result': video_ads}
+                                    debug_info_shopping_ads = {'data_field' : 'Shopping Ads - Google Ads/SEMRush', 'result': shopping_ads}
                                 '''
                                 debug_info = {
                                     #'analyst': self.analyst_name,

@@ -120,7 +120,10 @@ class SeoOffPageAnalyst:
 
                         combined_text = self.competitor_name + combined_text if self.is_competitor == True else combined_text
 
-                        debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
+                        if self.is_competitor:
+                            debug_info = {'data_field' : 'Backlinks Competitor', 'result': combined_text}
+                        else:
+                            debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
                         debug_info_website_audience = {'data_field' : 'Website Audience Acquisition', 'result': website_audience}
                         #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
 
