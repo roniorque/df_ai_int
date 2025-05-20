@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import json
-import uuid
 
 # === CONFIG ===
 AGENT_URL = "http://172.17.21.23:7860/api/v1/run/51b63d7f-c30b-4df4-b591-6544d60b2f0c?stream=false"
@@ -24,17 +23,30 @@ def render_agent_reply(reply):
                     if k != "elements":
                         st.markdown(f"**{k}**: {v}")
     else:
-        st.markdown(reply)
+        st.write(reply)
 
+def save_output(output):
+    st.session_state.latest_reply = output
+    st.session_state.messages.append({"role": "assistant", "content": output})
+    st.session_state.report_title = st.session_state.latest_reply
+    st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
 
 # === STATE INIT ===
-st.session_state.messages = []
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 st.session_state.latest_reply = st.session_state.chat_text
-if "session_id" not in st.session_state:
-    st.session_state.session_id = str(uuid.uuid4())
+
 session_id = st.session_state.session_id
+
 # === LAYOUT ===
+    
 st.set_page_config(page_title="Langflow Collaborative Chat", page_icon="💬", layout="wide")
+
+if st.button("Back to Output Review"):
+    st.session_state.messages = []
+    st.switch_page("pages/output.py")
+    
 st.title("🤖 Digital Footprint AI Collaborative Workspace")
 
 left_col, right_col = st.columns([1, 1])
@@ -52,8 +64,6 @@ with left_col:
         st.session_state.messages.append({"role": "user", "content": prompt})
 
         try:
-            
-            
             payload = { 
                         "session_id": session_id,
                         "input_type": "chat",
@@ -62,8 +72,9 @@ with left_col:
                         "tweaks": {
                             "DataInput-jFbIt": {"input_value": st.session_state.latest_reply},
                             "TextInput-pR8UG": {"input_value": st.session_state.report_title}
-                            } 
-                        }
+                        } 
+                    }
+            # st.write(f"Payload: {payload}")
             response = requests.post(
                 AGENT_URL,
                 json=payload,
@@ -81,6 +92,7 @@ with left_col:
         with right_col:
             st.subheader("📄 AI Output")
             render_agent_reply(st.session_state.latest_reply)
+            st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))
 
         # Append assistant's update note after rendering to avoid input field being pushed
         st.session_state.messages.append({"role": "assistant", "content": "✅ Output updated in right panel."})
@@ -90,3 +102,4 @@ if not prompt:
     with right_col:
         st.subheader("📄 AI Output")
         render_agent_reply(st.session_state.latest_reply)
+        st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))
