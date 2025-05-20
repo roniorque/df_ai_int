@@ -66,7 +66,7 @@ class ClientSummary:
             self.name = st.text_input(f"{self.c_name}")
             self.website = st.text_input(f"{self.c_website}")
             
-            self.competitor_name = "Competitor Name: " + self.name + "\n"
+            self.competitor_name = "\n" + "Competitor Name: " + self.name 
             st.session_state['competitor_name'] = self.competitor_name
             if (self.client_summary or self.name or self.website) and session == 'clicked':
                 self.process()

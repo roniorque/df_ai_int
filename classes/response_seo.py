@@ -54,7 +54,6 @@ class Seo:
         text = json.loads(text)
         return text
     
-       
     def fetch_data(self, data_field):
         mongodb_uri = os.getenv("MONGODB_URI")
         myclient = MongoClient(mongodb_uri)
