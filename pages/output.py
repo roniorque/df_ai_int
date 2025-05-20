@@ -258,6 +258,7 @@ def display_outputs():
     st.markdown(f"{overview}")
     if st.button("Modify ✨"):
         st.session_state.chat_text = overview
+        st.session_state.report_title = "Digital Footprint Overview"
         st.switch_page("pages/chat.py")
         
         
