@@ -114,7 +114,7 @@ class SeoOn:
                                     crawl_file += file_info['content'] + "\n"
                                 elif file_info['type'] == 'csv':
                                     try:
-                                        crawl_file += "\nScreamingFrog Report\nCrawlFile CSV: {"+ file_info['content'].to_csv(index=True) + "\n"
+                                        crawl_file += "\nCrawl File - ScreamingFrog Report:\nCrawlFile CSV: {"+ file_info['content'].to_csv(index=True) + "\n"
                                     except AttributeError:
                                         pass
                         except KeyError:
@@ -122,7 +122,7 @@ class SeoOn:
                         except AttributeError:
                             pass
                         try:
-                            first_meaningful_paint += f"\nGTMetrix Report\nFirst Meaningful Paint: {self.first_meaningful_paint}"
+                            first_meaningful_paint += f"\nFirst Meaningful Paint - GTMetrix Report:\nFirst Meaningful Paint: {self.first_meaningful_paint}"
                         except KeyError:
                             pass
                         
@@ -137,6 +137,7 @@ class SeoOn:
                         else:
                             debug_info_first_meaningful_paint = {'data_field' : 'First Meaningful Paint', 'result': first_meaningful_paint}
                             debug_info_crawl_file = {'data_field' : 'Crawl File', 'result': crawl_file}
+                        
                         if self.first_meaningful_paint:
                             st.session_state['first_meaningful_paint'] = 'uploaded'
                             collect_telemetry(debug_info_first_meaningful_paint)

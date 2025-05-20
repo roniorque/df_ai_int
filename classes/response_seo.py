@@ -76,6 +76,34 @@ class Seo:
         x = x["result"]
         return x
     
+    def fetch_competitor_data(self, data_field):
+        mongodb_uri = os.getenv("MONGODB_URI")
+        myclient = MongoClient(mongodb_uri)
+        mydb = myclient.get_database()
+        mycol = mydb["df_data"]
+        
+        # Get all documents matching the data_field
+        results = mycol.find(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  # Still sorting by timestamp in descending order
+        )
+        
+        try:
+            # Convert cursor to list
+            results_list = list(results)
+            if not results_list:
+                st.session_state[data_field] = ''
+                return ''
+            
+            # Extract "result" field from each document into a list
+            data = [doc["result"] for doc in results_list]
+            
+            # Join the list into a single string with newlines between items
+            return "\n".join(str(item) for item in data)
+        except Exception as e:
+            st.session_state[data_field] = ''
+            return ''
+    
     def process (self):    
         with st.spinner('Seo Analyst...', show_time=True):
                         st.write('')
@@ -102,22 +130,31 @@ class Seo:
             #st.write("") # FOR THE HIDE BUTTON
             #analyze_button = st.button("Analyze", disabled=initialize_analyze_session())
             self.payload = ""  
-            self.payload += self.fetch_data("SEO Keywords")
-        
-            self.payload += self.fetch_data("Traffic Channels")
-    
-            self.payload += self.fetch_data("Traffic Acquisition")
-    
-            self.payload += self.fetch_data("Pages Indexed")            
-    
-            self.payload += self.fetch_data("Bounce Rate")    
-            
-            self.payload += self.fetch_data("SEO Scope")   
+            self.payload += self.fetch_data("SEO Keywords") + "\n"
+            self.payload += self.fetch_data("Traffic Channels") + "\n"
+            self.payload += self.fetch_data("Traffic Acquisition") + "\n"
+            self.payload += self.fetch_data("Pages Indexed") + "\n"           
+            self.payload += self.fetch_data("Bounce Rate") + "\n"    
+            self.payload += self.fetch_data("SEO Scope") + "\n"   
+            self.payload += self.fetch_data("Backlinks") + "\n"
+            client_summary = self.fetch_data("Client Summary") + "\n"
 
-            self.payload += self.fetch_data("Backlinks") 
-            
-            summary = self.fetch_data("Client Summary")
-            self.payload = summary + self.payload
+            self.payload = client_summary + self.payload
+
+            self.competitor = ""
+            self.competitor += self.fetch_competitor_data("SEO Keywords Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("Traffic Channels Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("Traffic Acquisition Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("Pages Indexed Competitor") + "\n"           
+            self.competitor += self.fetch_competitor_data("Bounce Rate Competitor") + "\n"    
+            self.competitor += self.fetch_competitor_data("SEO Scope Competitor") + "\n"   
+            self.competitor += self.fetch_competitor_data("Backlinks Competitor") + "\n"
+            competitor_summary = self.fetch_competitor_data("Competitor Summary") + "\n"
+
+            self.payload = "\n=== CLIENT DATA ===\n\n" + self.payload
+            self.competitor = "\n\n=== COMPETITOR DATA ===\n\n" + competitor_summary + self.competitor
+            self.payload = self.payload + "\n" + "=" * 50 + "\n" + self.competitor
+
             self.process()
             
 

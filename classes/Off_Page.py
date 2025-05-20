@@ -73,7 +73,7 @@ class SeoOffPageAnalyst:
                                     df['Source Domain'] = df['Source url'].apply(lambda x: urlparse(x).netloc)
                                     unique_domains = df['Source Domain'].nunique()
                                         
-                                    combined_text += f"SEMRush Report\nTotal Backlinks Count: {num_rows}\n"
+                                    combined_text += f"Backlinks - SEMRush Report:\nTotal Backlinks Count: {num_rows}\n"
                                     combined_text += f"Referring Domain: {unique_domains}"
                                     #st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
                             except KeyError:

@@ -135,8 +135,8 @@ class Seo:
                         st.write('')
                         
                         # INITIALIZING SESSIONS
-                        pages_index += f"Google Search Console Report\nPages Indexed: {self.page_index}\n"
-                        bounce_rate += f"GA4 Report\nBounce Rate: {self.bounce_rate}%\n"
+                        pages_index += f"\nPages Indexed - Google Search Console Report:\nPages Indexed: {self.page_index}\n"
+                        bounce_rate += f"Bounce Rate - GA4 Report:\nBounce Rate: {self.bounce_rate}%\n"
                         seo_scope += f"SEO Scope: {self.seo_scope}\n"
                         '''
                         try:
@@ -154,7 +154,7 @@ class Seo:
                             direct_traffic = st.session_state['direct_traffic']
                             referral_traffic = st.session_state['referral_traffic']
 
-                            traffic_channels += f"SEMRush Report\nOrganic Traffic: {organic_traffic}"
+                            traffic_channels += f"Traffic Channels - SEMRush Report:\nOrganic Traffic: {organic_traffic}"
                             traffic_channels += f"\nPaid Traffic: {paid_traffic}"
                             traffic_channels += f"\nDirect Traffic: {direct_traffic}"
                             traffic_channels += f"\nReferral Traffic: {referral_traffic}"
@@ -174,7 +174,7 @@ class Seo:
                             df_seo = st.session_state['df_seo']
                             self.keyword_ranking(df_seo)
                             keyword_ranking = st.session_state['keyword_ranking']    
-                            seo_keywords += f"SEMRush Report\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
+                            seo_keywords += f"SEO Keywords - SEMRush Report:\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
                             seo_keywords += f"\nKeyword Ranking Top 100: {keyword_ranking['Keyword_top_100']}\n\n"
                             
                             seo_keywords += df_seo.to_csv(index=True)
@@ -193,7 +193,7 @@ class Seo:
 
                             traffics = ga4_direct_traffic + ga4_organic_traffic + ga4_paid_social + ga4_referral_traffic
                             
-                            traffic_aqcuisition += f"GA4 Report\nTraffics: {traffics}"
+                            traffic_aqcuisition += f"Traffic Acquisition - GA4 Report:\nTraffics: {traffics}"
                             traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
                         except KeyError:
                             

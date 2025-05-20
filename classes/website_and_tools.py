@@ -95,36 +95,36 @@ class WebsiteAndTools:
                             pass
                         '''
                         try:
-                            website_responsiveness += f"\nGTMetrix Report:\nWebsite Responsiveness: {self.website_responsiveness}"
+                            website_responsiveness += f"\n Website Overall Health Scores - GTMetrix Report:\nWebsite Responsiveness: {self.website_responsiveness}"
                         except KeyError:
                             pass
                         try:
-                            content_management_system += f"\nBuiltWith Report:\nContent Management System: {self.content_management_system}"
+                            content_management_system += f"\n Content Management System - BuiltWith Report:\nContent Management System: {self.content_management_system}"
                         except KeyError:
                             pass
                         try:
-                            SSL_certificate += f"\nBuiltWith Report:\nSSL Certificate: {self.SSL_certificate}"
+                            SSL_certificate += f"\nSSL Certificate - BuiltWith Report:\nSSL Certificate: {self.SSL_certificate}"
                         except KeyError:
                             pass
                         try:
-                            mobile_responsiveness += f"\nGTMetrix Report:\nMobile Responsiveness: {self.mobile_responsiveness}"
+                            mobile_responsiveness += f"\nMobile Responsiveness - GTMetrix Report:\nMobile Responsiveness: {self.mobile_responsiveness}"
                         except KeyError:
                             pass
                         try:
-                            desktop_loading_speed += f"\nGTMetrix Report:\nDesktop Loading Speed: {self.desktop_loading_speed}"
+                            desktop_loading_speed += f"\nDesktop Loading Speed - GTMetrix Report:\nDesktop Loading Speed: {self.desktop_loading_speed}"
                         except KeyError:
                             pass
                         try:
-                            mobile_loading_speed += f"\nGTMetrix Report:\nMobile Loading Speed: {self.mobile_loading_speed}"
+                            mobile_loading_speed += f"\nMobile Loading Speed - GTMetrix Report:\nMobile Loading Speed: {self.mobile_loading_speed}"
                         except KeyError:
                             pass
                         try:
-                            web_analytics += f"\nBuiltWith (GA4) Report:\nWeb Analytics: {self.web_analytics}"
+                            web_analytics += f"\nWeb Analytics - BuiltWith (GA4) Report:\nWeb Analytics: {self.web_analytics}"
 
                         except KeyError:
                             pass
                         try:
-                            client_relations_management_system += f"\nBuiltWith Report:\nClient Relations Management System: {self.client_relations_management_system}"
+                            client_relations_management_system += f"\nClient Relations Management System - BuiltWith Report:\nClient Relations Management System: {self.client_relations_management_system}"
                         except KeyError:
                             pass
                         

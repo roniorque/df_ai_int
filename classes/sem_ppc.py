@@ -61,27 +61,27 @@ class Sem_PPC:
                                 # INITIALIZING SESSIONS
                                 #combined_text += f"Client Summary: {st.session_state.nature}\n"
                                 try:
-                                    account_set_up += f"\nGoogle Ads Report:\nAccount Set Up: {self.account_set_up}"
+                                    account_set_up += f"\nAccount Set Up - Google Ads Report:\nAccount Set Up: {self.account_set_up}"
                                 except KeyError:
                                     pass
                                 try:
-                                    search_ads += f"\nGoogle Ads Report:\nSearch Ads: {self.search_ads}"
+                                    search_ads += f"\nSearch Ads - Google Ads Report/SEMRush:\nSearch Ads: {self.search_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    display_ads += f"\nGoogle Ads Report:\nDisplay Ads: {self.display_ads}"
+                                    display_ads += f"\nDisplay Ads - Google Ads Report/SEMRush:\nDisplay Ads: {self.display_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    mobile_ads += f"\nGoogle Ads Report:\nMobile Ads: {self.mobile_ads}"
+                                    mobile_ads += f"\nMobile Ads - Google Ads Report:\nMobile Ads: {self.mobile_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    video_ads += f"\nGoogle Ads Report:\nVideo Ads: {self.video_ads}"
+                                    video_ads += f"\nVideo Ads - Google Ads Report:\nVideo Ads: {self.video_ads}"
                                 except KeyError:
                                     pass
                                 try:
-                                    shopping_ads += f"\nGoogle Ads Report:\nShopping Ads: {self.shopping_ads}"
+                                    shopping_ads += f"\nShopping Ads - Google Ads Report/SEMRush:\nShopping Ads: {self.shopping_ads}"
                                 except KeyError:
                                     pass
 
