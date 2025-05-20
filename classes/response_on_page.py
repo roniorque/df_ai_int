@@ -134,7 +134,6 @@ class SeoOn:
                     count += 1
                     self.payload += self.fetch_data("First Meaningful Paint") + "\n"
                     self.competitor += self.fetch_competitor_data("First Meaningful Paint Competitor") + "\n"
-
             except Exception as e:
                 pass
             try:
@@ -145,7 +144,6 @@ class SeoOn:
                     self.competitor += self.fetch_competitor_data("Crawl File Competitor") + "\n"
             except Exception as e:
                 pass
-
             if count >= 1:
                 client_summary = self.fetch_data("Client Summary")
                 competitor_summary = self.fetch_competitor_data("Competitor Summary") + "\n"

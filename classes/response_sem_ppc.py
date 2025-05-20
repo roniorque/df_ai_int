@@ -178,7 +178,6 @@ class Sem_PPC:
                 self.competitor = "\n\n=== COMPETITOR DATA ===\n\n" + competitor_summary + self.competitor
                 self.payload = self.payload + "\n" + "=" * 50 + "\n" + self.competitor
 
-                print(self.payload)
                 self.process()
             
 
