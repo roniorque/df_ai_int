@@ -27,11 +27,12 @@ def render_agent_reply(reply):
         st.write(reply)
 
 def save_output(output):
-    
-    ai_response = {'data_field' : st.session_state.report_title, 'result': output}
+    ai_response = {'data_field': st.session_state.report_title, 'result': output}
     upload_response(ai_response)
-    st.session_state.latest_reply = output
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
+    # Force update the session state after saving
+    st.session_state.latest_reply = output
+    st.rerun()  # Using the new rerun() method instead of experimental_rerun()
 
 # === STATE INIT ===
 if "messages" not in st.session_state:
@@ -85,16 +86,17 @@ with left_col:
             response.raise_for_status()
             result = response.json()
             reply = result["outputs"][0]["outputs"][0]["results"]["message"]["data"]["text"]
+            st.session_state.latest_reply = reply  # Update the session state here
         except Exception as e:
             reply = f"❌ Error: {e}"
-
-        st.session_state.latest_reply = reply
+            st.session_state.latest_reply = reply  # Ensure session state is updated even on error
 
         # Immediately show output in right pane after AI responds
         with right_col:
             st.subheader("📄✨ Editing " + st.session_state.report_title)
-            render_agent_reply(reply)
-            st.button("Save Output", on_click=save_output, args=(reply,))
+            with st.container(height=500, border=True):
+                render_agent_reply(st.session_state.latest_reply)  # Render the updated value
+            st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))  # Pass the latest reply
 
         # Append assistant's update note after rendering to avoid input field being pushed
         st.session_state.messages.append({"role": "assistant", "content": "✅ Output updated in right panel."})
@@ -103,4 +105,10 @@ with left_col:
 if not prompt:
     with right_col:
         st.subheader("📄✨ Editing " + st.session_state.report_title)
-        render_agent_reply(st.session_state.latest_reply)
+        with st.container(height=500, border=True):
+            # Store the current reply in a variable to ensure consistency
+            current_reply = st.session_state.latest_reply
+            render_agent_reply(current_reply)
+    
+        if st.button("Save Output"):
+            save_output(current_reply)
