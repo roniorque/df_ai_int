@@ -52,6 +52,8 @@ def save_output(output):
         'data_field': st.session_state.report_title,
         'result': output
     }
+    # IF TABULAR DATA, GET THE RESULT FIRST, INJECT THE OTHER FINDINGS AND SAVE DOCUMENTS
+    
     upload_response(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
     st.session_state.latest_reply = output
