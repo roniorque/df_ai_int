@@ -224,15 +224,17 @@ def seo_on_page_table(df_data):
     # --- End: Loop and display data ---
     
 def display_outputs():
-    client_name = data_field("Client Name")
-    client_website = data_field("Client Website")
+    try:
+        client_name = data_field("Client Name")
+        client_website = data_field("Client Website")
     
     
-    
-    overview = get_analyst_response("DF Overview Analyst")    
-    
-    st.markdown("# Digital Marketing Audit")
-    st.markdown(f"for: **{client_name} ({client_website})**")
+        overview = get_analyst_response("DF Overview Analyst")    
+        
+        st.markdown("# Digital Marketing Audit")
+        st.markdown(f"for: **{client_name} ({client_website})**")
+    except TypeError:
+        st.warning("Client name and summary are missing and have been excluded from this document.")
     st.write("")
     st.write("")
     
@@ -255,7 +257,10 @@ def display_outputs():
     st.write("")
 
     st.markdown("### Digital Footprint Overview")
-    st.markdown(f"{overview}")
+    try:
+        st.markdown(f"{overview}")
+    except UnboundLocalError:
+        st.warning("Client name and summary are missing and have been excluded from this document.")
     st.markdown("---")
     st.markdown("### Executive Summary")
     st.markdown(get_analyst_response("Executive Summary"))
