@@ -258,7 +258,7 @@ def display_outputs():
 
     st.markdown("### Digital Footprint Overview")
     st.markdown(f"{overview}")
-    if st.button("Modify ✨"):
+    if st.button("Modify ✨", key="overview"):
         st.session_state.chat_text = overview
         st.session_state.report_title = "DF Overview Analyst"
         st.session_state.session_id = str(uuid.uuid4())
@@ -268,6 +268,11 @@ def display_outputs():
     st.markdown("---")
     st.markdown("### Executive Summary")
     st.markdown(get_analyst_response("Executive Summary"))
+    if st.button("Modify ✨", key="exec_summary"):
+        st.session_state.chat_text = get_analyst_response("Executive Summary")
+        st.session_state.report_title = "Executive Summary"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
     st.markdown("---")
     
     st.markdown("### CLIENT FOOTPRINT")
