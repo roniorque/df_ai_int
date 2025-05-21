@@ -42,6 +42,8 @@ class Seo:
             pass'''
         if 'bounce_rate' not in st.session_state:
             st.session_state['bounce_rate'] = ''
+        if 'seo_scope' not in st.session_state:
+            st.session_state['seo_scope'] = ''
         if 'page_index' not in st.session_state:
             st.session_state['page_index'] = ''
         if 'others' not in st.session_state:
@@ -122,18 +124,20 @@ class Seo:
     
     def process (self):
         session = st.session_state.analyze
-        if ((self.uploaded_file or self.others or self.uploaded_file_seo) or (self.page_index or self.bounce_rate)) and  session == 'clicked':
+        if ((self.uploaded_file or self.others or self.uploaded_file_seo) or (self.page_index or self.bounce_rate or self.seo_scope)) and  session == 'clicked':
                     seo_keywords = ""
                     traffic_channels = ""
                     traffic_aqcuisition = ""
                     pages_index = ""
                     bounce_rate = ""
+                    seo_scope = ""
                     with st.spinner('Uploading Seo Files...', show_time=True):
                         st.write('')
                         
                         # INITIALIZING SESSIONS
-                        pages_index += f"Pages Indexed: {self.page_index}\n"
-                        bounce_rate += f"Bounce Rate: {self.bounce_rate}%\n"
+                        pages_index += f"\nPages Indexed - Google Search Console Report:\nPages Indexed: {self.page_index}\n"
+                        bounce_rate += f"Bounce Rate - GA4 Report:\nBounce Rate: {self.bounce_rate}%\n"
+                        seo_scope += f"SEO Scope: {self.seo_scope}\n"
                         '''
                         try:
                             backlink_files = self.file_dict
@@ -150,7 +154,7 @@ class Seo:
                             direct_traffic = st.session_state['direct_traffic']
                             referral_traffic = st.session_state['referral_traffic']
 
-                            traffic_channels += f"\nOrganic Traffic: {organic_traffic}"
+                            traffic_channels += f"Traffic Channels - SEMRush Report:\nOrganic Traffic: {organic_traffic}"
                             traffic_channels += f"\nPaid Traffic: {paid_traffic}"
                             traffic_channels += f"\nDirect Traffic: {direct_traffic}"
                             traffic_channels += f"\nReferral Traffic: {referral_traffic}"
@@ -170,7 +174,7 @@ class Seo:
                             df_seo = st.session_state['df_seo']
                             self.keyword_ranking(df_seo)
                             keyword_ranking = st.session_state['keyword_ranking']    
-                            seo_keywords += f"\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
+                            seo_keywords += f"SEO Keywords - SEMRush Report:\nKeyword Ranking Top 10: {keyword_ranking['Keyword_top_10']}"
                             seo_keywords += f"\nKeyword Ranking Top 100: {keyword_ranking['Keyword_top_100']}\n\n"
                             
                             seo_keywords += df_seo.to_csv(index=True)
@@ -189,7 +193,7 @@ class Seo:
 
                             traffics = ga4_direct_traffic + ga4_organic_traffic + ga4_paid_social + ga4_referral_traffic
                             
-                            traffic_aqcuisition += f"Traffics: {traffics}"
+                            traffic_aqcuisition += f"Traffic Acquisition - GA4 Report:\nTraffics: {traffics}"
                             traffic_aqcuisition += f"\nPaid Traffic: {ga4_paid_social}\nOrganic Traffic: {ga4_organic_traffic}\nDirect Traffic: {ga4_direct_traffic}\nReferral Traffic: {ga4_referral_traffic}"
                         except KeyError:
                             
@@ -205,11 +209,31 @@ class Seo:
                         #result = self.request_model(payload_txt_seo_keywords)
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
-                        debug_info_seo_keywords = {'data_field' : 'SEO Keywords', 'result': seo_keywords}
-                        debug_info_traffic_channels = {'data_field' : 'Traffic Channels', 'result': traffic_channels}
-                        debug_info_traffic_aqcuisition = {'data_field' : 'Traffic Acquisition', 'result': traffic_aqcuisition}
-                        debug_info_pages_index = {'data_field' : 'Pages Indexed', 'result': pages_index}
-                        debug_info_bounce_rate = {'data_field' : 'Bounce Rate', 'result': bounce_rate}
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+                        #self.competitor_name += seo_keywords
+
+                        seo_keywords = self.competitor_name + seo_keywords if self.is_competitor == True else seo_keywords
+                        traffic_channels = self.competitor_name + traffic_channels if self.is_competitor == True else traffic_channels
+                        traffic_aqcuisition = self.competitor_name + traffic_aqcuisition if self.is_competitor == True else traffic_aqcuisition
+                        pages_index = self.competitor_name + pages_index if self.is_competitor == True else pages_index
+                        bounce_rate = self.competitor_name + bounce_rate if self.is_competitor == True else bounce_rate
+                        seo_scope = self.competitor_name + seo_scope if self.is_competitor == True else seo_scope
+                        
+                        if self.is_competitor:
+                            debug_info_seo_keywords = {'data_field': 'SEO Keywords Competitor', 'result': seo_keywords}
+                            debug_info_traffic_channels = {'data_field': 'Traffic Channels Competitor', 'result': traffic_channels}
+                            debug_info_traffic_aqcuisition = {'data_field': 'Traffic Acquisition Competitor', 'result': traffic_aqcuisition}
+                            debug_info_pages_index = {'data_field': 'Pages Indexed Competitor', 'result': pages_index}
+                            debug_info_bounce_rate = {'data_field': 'Bounce Rate Competitor', 'result': bounce_rate}
+                            debug_info_seo_scope = {'data_field': 'SEO Scope Competitor', 'result': seo_scope}
+                        else:
+                            debug_info_seo_keywords = {'data_field': 'SEO Keywords', 'result': seo_keywords}
+                            debug_info_traffic_channels = {'data_field': 'Traffic Channels', 'result': traffic_channels}
+                            debug_info_traffic_aqcuisition = {'data_field': 'Traffic Acquisition', 'result': traffic_aqcuisition}
+                            debug_info_pages_index = {'data_field': 'Pages Indexed', 'result': pages_index}
+                            debug_info_bounce_rate = {'data_field': 'Bounce Rate', 'result': bounce_rate}
+                            debug_info_seo_scope = {'data_field': 'SEO Scope', 'result': seo_scope}
 
                         '''
                         debug_info = {
@@ -228,6 +252,9 @@ class Seo:
                         if self.page_index:
                             st.session_state['pages_index'] = 'uploaded'
                             collect_telemetry(debug_info_pages_index)
+                        if self.seo_scope:
+                            st.session_state['seo_scope'] = 'uploaded'
+                            collect_telemetry(debug_info_seo_scope)
                         if self.others:
                             st.session_state['others'] = 'uploaded'
                             collect_telemetry(debug_info_traffic_aqcuisition)
@@ -289,7 +316,8 @@ class Seo:
                     st.session_state['others'] = pd.read_csv(self.others, skiprows=9)
                 except Exception:
                     pass
-
+            
+            self.seo_scope = st.text_input("SEO Scope:", placeholder='Enter SEO Scope', help="i.e. Google.com.au, Google.com.ph")
             self.page_index = st.text_input("Pages Indexed - Google Search Console:", placeholder='Enter Pages Indexed')
             self.bounce_rate = st.text_input("Bounce Rate - GA4:", placeholder='Enter Bounce Rate')
             

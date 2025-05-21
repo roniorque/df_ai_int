@@ -41,16 +41,20 @@ class LLD_PM_LN:
                             lead_generation_mechanism += f"\nLead Generation Mechanism: {self.lead_generation_mechanism}"
                         except KeyError:
                             pass
+                        
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+                        lead_generation_mechanism = self.competitor_name + lead_generation_mechanism if self.is_competitor == True else lead_generation_mechanism
 
-                        debug_info_lead_generation_mechanism = {'data_field' : 'Lead Generation Mechanism', 'result': lead_generation_mechanism}
-                       
+                        if self.is_competitor:
+                            debug_info_lead_generation_mechanism = {'data_field' : 'Lead Generation Mechanism Competitor', 'result': lead_generation_mechanism}
+                        else:
+                            debug_info_lead_generation_mechanism = {'data_field' : 'Lead Generation Mechanism', 'result': lead_generation_mechanism}
              
                         if self.lead_generation_mechanism:
                             st.session_state['lead_generation_mechanism'] = 'uploaded'
                             collect_telemetry(debug_info_lead_generation_mechanism)
-                        
-                        
-                            
+                                
                         #with st.expander("Debug information", icon="⚙"):
                         #    st.write(debug_info)
 

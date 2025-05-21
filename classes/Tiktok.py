@@ -126,7 +126,16 @@ class Tiktok:
                                 
                                 #end_time = time.time()
                                 #time_lapsed = end_time - start_time
-                                debug_info = {'data_field' : 'Tiktok', 'result': combined_text}
+
+                                self.competitor_name = st.session_state.competitor_name
+                                self.is_competitor = st.session_state.is_competitor
+                                combined_text = self.competitor_name + combined_text if self.is_competitor == True else combined_text
+                                
+                                if self.is_competitor:
+                                    debug_info = {'data_field' : 'Tiktok Competitor', 'result': combined_text}
+                                else:
+                                    debug_info = {'data_field' : 'Tiktok', 'result': combined_text}
+
                                 '''
                                 debug_info = {
                                     #'analyst': self.analyst_name,

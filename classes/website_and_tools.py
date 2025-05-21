@@ -95,36 +95,36 @@ class WebsiteAndTools:
                             pass
                         '''
                         try:
-                            website_responsiveness += f"\nWebsite Responsiveness: {self.website_responsiveness}"
+                            website_responsiveness += f"\n Website Overall Health Scores - GTMetrix Report:\nWebsite Responsiveness: {self.website_responsiveness}"
                         except KeyError:
                             pass
                         try:
-                            content_management_system += f"\nContent Management System: {self.content_management_system}"
+                            content_management_system += f"\n Content Management System - BuiltWith Report:\nContent Management System: {self.content_management_system}"
                         except KeyError:
                             pass
                         try:
-                            SSL_certificate += f"\nSSL Certificate: {self.SSL_certificate}"
+                            SSL_certificate += f"\nSSL Certificate - BuiltWith Report:\nSSL Certificate: {self.SSL_certificate}"
                         except KeyError:
                             pass
                         try:
-                            mobile_responsiveness += f"\nMobile Responsiveness: {self.mobile_responsiveness}"
+                            mobile_responsiveness += f"\nMobile Responsiveness - GTMetrix Report:\nMobile Responsiveness: {self.mobile_responsiveness}"
                         except KeyError:
                             pass
                         try:
-                            desktop_loading_speed += f"\nDesktop Loading Speed: {self.desktop_loading_speed}"
+                            desktop_loading_speed += f"\nDesktop Loading Speed - GTMetrix Report:\nDesktop Loading Speed: {self.desktop_loading_speed}"
                         except KeyError:
                             pass
                         try:
-                            mobile_loading_speed += f"\nMobile Loading Speed: {self.mobile_loading_speed}"
+                            mobile_loading_speed += f"\nMobile Loading Speed - GTMetrix Report:\nMobile Loading Speed: {self.mobile_loading_speed}"
                         except KeyError:
                             pass
                         try:
-                            web_analytics += f"\nWeb Analytics: {self.web_analytics}"
+                            web_analytics += f"\nWeb Analytics - BuiltWith (GA4) Report:\nWeb Analytics: {self.web_analytics}"
 
                         except KeyError:
                             pass
                         try:
-                            client_relations_management_system += f"\nClient Relations Management System: {self.client_relations_management_system}"
+                            client_relations_management_system += f"\nClient Relations Management System - BuiltWith Report:\nClient Relations Management System: {self.client_relations_management_system}"
                         except KeyError:
                             pass
                         
@@ -155,15 +155,37 @@ class WebsiteAndTools:
                         #result = self.request_model(payload_txt)
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
+                        
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
 
-                        debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness', 'result': website_responsiveness}
-                        debug_info_content_management_system = {'data_field' : 'Content Management System', 'result': content_management_system}
-                        debug_info_SSL_certificate = {'data_field' : 'SSL Certificate', 'result': SSL_certificate}
-                        debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness', 'result': mobile_responsiveness}
-                        debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed', 'result': desktop_loading_speed}
-                        debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
-                        debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
-                        debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
+                        website_responsiveness = self.competitor_name + website_responsiveness if self.is_competitor == True else website_responsiveness
+                        content_management_system = self.competitor_name + content_management_system if self.is_competitor == True else content_management_system
+                        SSL_certificate = self.competitor_name + SSL_certificate if self.is_competitor == True else SSL_certificate
+                        mobile_responsiveness = self.competitor_name + mobile_responsiveness if self.is_competitor == True else mobile_responsiveness
+                        desktop_loading_speed = self.competitor_name + desktop_loading_speed if self.is_competitor == True else desktop_loading_speed
+                        mobile_loading_speed = self.competitor_name + mobile_loading_speed if self.is_competitor == True else mobile_loading_speed
+                        web_analytics = self.competitor_name + web_analytics if self.is_competitor == True else web_analytics
+                        client_relations_management_system = self.competitor_name + client_relations_management_system if self.is_competitor == True else client_relations_management_system
+                        
+                        if self.is_competitor:
+                            debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness Competitor', 'result': website_responsiveness}
+                            debug_info_content_management_system = {'data_field' : 'Content Management System Competitor', 'result': content_management_system}
+                            debug_info_SSL_certificate = {'data_field' : 'SSL Certificate Competitor', 'result': SSL_certificate}
+                            debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness Competitor', 'result': mobile_responsiveness}
+                            debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed Competitor', 'result': desktop_loading_speed}
+                            debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed Competitor', 'result': mobile_loading_speed}
+                            debug_info_web_analytics = {'data_field' : 'Web Analytics Competitor', 'result': web_analytics}
+                            debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System Competitor', 'result': client_relations_management_system}
+                        else:
+                            debug_info_website_responsiveness = {'data_field' : 'Website Responsiveness', 'result': website_responsiveness}
+                            debug_info_content_management_system = {'data_field' : 'Content Management System', 'result': content_management_system}
+                            debug_info_SSL_certificate = {'data_field' : 'SSL Certificate', 'result': SSL_certificate}
+                            debug_info_mobile_responsiveness = {'data_field' : 'Mobile Responsiveness', 'result': mobile_responsiveness}
+                            debug_info_desktop_loading_speed = {'data_field' : 'Desktop Loading Speed', 'result': desktop_loading_speed}
+                            debug_info_mobile_loading_speed = {'data_field' : 'Mobile Loading Speed', 'result': mobile_loading_speed}
+                            debug_info_web_analytics = {'data_field' : 'Web Analytics', 'result': web_analytics}
+                            debug_info_client_relations_management_system = {'data_field' : 'Client Relations Management System', 'result': client_relations_management_system}
 
                         '''
                         debug_info = {#'analyst': self.analyst_name,

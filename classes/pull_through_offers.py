@@ -38,10 +38,14 @@ class PullThroughOffers:
                         except KeyError:
                             pass
                         
-
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+                        pull_through_offers = self.competitor_name + pull_through_offers if self.is_competitor == True else pull_through_offers
                         
-                        debug_info_pull_through_offers = {'data_field' : 'Pull through offers', 'result': pull_through_offers}
-                        
+                        if self.is_competitor:
+                            debug_info_pull_through_offers = {'data_field' : 'Pull through offers Competitor', 'result': pull_through_offers}
+                        else:
+                            debug_info_pull_through_offers = {'data_field' : 'Pull through offers', 'result': pull_through_offers}
 
                         if self.pull_through_offers:
                             st.session_state['pull_through_offers'] = 'uploaded'
@@ -57,7 +61,7 @@ class PullThroughOffers:
                                              
     def row1(self):
             
-            self.pull_through_offers = st.text_input("Pull through offers (Business Context)", placeholder='Enter Pull through offers')
+            self.pull_through_offers = st.text_input("Pull through offers (Business Context):", placeholder='Enter Pull through offers')
             
             st.session_state['analyzing'] = False
 

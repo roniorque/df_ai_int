@@ -72,6 +72,34 @@ class SeoOn:
         x = x["result"]
         return x
 
+    def fetch_competitor_data(self, data_field):
+        mongodb_uri = os.getenv("MONGODB_URI")
+        myclient = MongoClient(mongodb_uri)
+        mydb = myclient.get_database()
+        mycol = mydb["df_data"]
+        
+        # Get all documents matching the data_field
+        results = mycol.find(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  # Still sorting by timestamp in descending order
+        )
+        
+        try:
+            # Convert cursor to list
+            results_list = list(results)
+            if not results_list:
+                st.session_state[data_field] = ''
+                return ''
+            
+            # Extract "result" field from each document into a list
+            data = [doc["result"] for doc in results_list]
+            
+            # Join the list into a single string with newlines between items
+            return "\n".join(str(item) for item in data)
+        except Exception as e:
+            st.session_state[data_field] = ''
+            return ''
+        
     def process(self):
                 with st.spinner('SEO On Page...', show_time=True):
                         st.write('')
@@ -98,12 +126,14 @@ class SeoOn:
     def row1(self):
             st.session_state['analyzing'] = False
             self.payload = ""
+            self.competitor = ""
             count = 0
             try:
                 session_first_meaningful_paint = st.session_state['first_meaningful_paint'] 
                 if session_first_meaningful_paint == 'uploaded'  or self.run_all == True:
                     count += 1
-                    self.payload += self.fetch_data("First Meaningful Paint")
+                    self.payload += self.fetch_data("First Meaningful Paint") + "\n"
+                    self.competitor += self.fetch_competitor_data("First Meaningful Paint Competitor") + "\n"
             except Exception as e:
                 pass
             try:
@@ -111,11 +141,17 @@ class SeoOn:
                 if session_crawl_file == 'uploaded'  or self.run_all == True:
                     count += 1
                     self.payload += self.fetch_data("Crawl File")
+                    self.competitor += self.fetch_competitor_data("Crawl File Competitor") + "\n"
             except Exception as e:
                 pass
             if count >= 1:
-                summary = self.fetch_data("Client Summary")
-                self.payload = summary + self.payload
+                client_summary = self.fetch_data("Client Summary")
+                competitor_summary = self.fetch_competitor_data("Competitor Summary") + "\n"
+
+                self.payload = "\n=== CLIENT DATA ===\n\n" + client_summary + self.payload
+                self.competitor = "\n\n=== COMPETITOR DATA ===\n\n" + competitor_summary + self.competitor
+                self.payload = self.payload + "\n" + "=" * 50 + "\n" + self.competitor
+                
                 self.process()
                  
 

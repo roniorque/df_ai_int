@@ -73,7 +73,7 @@ class SeoOffPageAnalyst:
                                     df['Source Domain'] = df['Source url'].apply(lambda x: urlparse(x).netloc)
                                     unique_domains = df['Source Domain'].nunique()
                                         
-                                    combined_text += f"Total Backlinks Count: {num_rows}\n"
+                                    combined_text += f"Backlinks - SEMRush Report:\nTotal Backlinks Count: {num_rows}\n"
                                     combined_text += f"Referring Domain: {unique_domains}"
                                     #st.info("Backlinks - SEMRush Uploaded Successfuly", icon="ℹ️")
                             except KeyError:
@@ -115,10 +115,18 @@ class SeoOffPageAnalyst:
                         #end_time = time.time()
                         #time_lapsed = end_time - start_time
                         
-                        debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
+                        self.competitor_name = st.session_state.competitor_name
+                        self.is_competitor = st.session_state.is_competitor
+
+                        combined_text = self.competitor_name + combined_text if self.is_competitor == True else combined_text
+
+                        if self.is_competitor:
+                            debug_info = {'data_field' : 'Backlinks Competitor', 'result': combined_text}
+                        else:
+                            debug_info = {'data_field' : 'Backlinks', 'result': combined_text}
                         debug_info_website_audience = {'data_field' : 'Website Audience Acquisition', 'result': website_audience}
                         #debug_info = {'url_uuid': self.model_url.split("-")[-1],'time_lapsed' : time_lapsed, 'files': [*st.session_state['uploaded_files']],'payload': payload_txt, 'result': result}
-                        
+
                         if self.uploaded_files:
                             st.session_state['off_page_file_uploaded'] = 'uploaded'
                             collect_telemetry(debug_info)

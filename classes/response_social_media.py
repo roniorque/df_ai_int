@@ -83,6 +83,34 @@ class SocialMedia:
         x = x["result"]
         return x
     
+    def fetch_competitor_data(self, data_field):
+        mongodb_uri = os.getenv("MONGODB_URI")
+        myclient = MongoClient(mongodb_uri)
+        mydb = myclient.get_database()
+        mycol = mydb["df_data"]
+        
+        # Get all documents matching the data_field
+        results = mycol.find(
+            {"data_field": data_field},
+            sort=[("timestamp", -1)]  # Still sorting by timestamp in descending order
+        )
+        
+        try:
+            # Convert cursor to list
+            results_list = list(results)
+            if not results_list:
+                st.session_state[data_field] = ''
+                return ''
+            
+            # Extract "result" field from each document into a list
+            data = [doc["result"] for doc in results_list]
+            
+            # Join the list into a single string with newlines between items
+            return "\n".join(str(item) for item in data)
+        except Exception as e:
+            st.session_state[data_field] = ''
+            return ''
+        
     def process(self):  
         with st.spinner('Social Media Analyst...', show_time=True):
                     st.write('')
@@ -109,25 +137,29 @@ class SocialMedia:
             st.session_state['analyzing'] = False
             self.payload = ""                   
             
-            self.payload += self.fetch_data("Facebook")        
-    
-    
-            self.payload += self.fetch_data("Instagram")
-    
-    
-            self.payload += self.fetch_data("Twitter")
-    
-    
-            self.payload += self.fetch_data("YouTube")
-    
-    
-            self.payload += self.fetch_data("Linkedin")           
-    
-    
-            self.payload += self.fetch_data("Tiktok")
+            self.payload += self.fetch_data("Facebook") + "\n" 
+            self.payload += self.fetch_data("Instagram") + "\n"
+            self.payload += self.fetch_data("Twitter") + "\n"
+            self.payload += self.fetch_data("YouTube") + "\n"
+            self.payload += self.fetch_data("Linkedin") + "\n"     
+            self.payload += self.fetch_data("Tiktok") + "\n"
+            summary = self.fetch_data("Client Summary") + "\n"
             
-            summary = self.fetch_data("Client Summary")
             self.payload = summary + self.payload
+
+            self.competitor = ""
+            self.competitor += self.fetch_competitor_data("Facebook Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("Instagram Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("Twitter Competitor") + "\n"
+            self.competitor += self.fetch_competitor_data("YouTube Competitor") + "\n"           
+            self.competitor += self.fetch_competitor_data("Linkedin Competitor") + "\n"    
+            self.competitor += self.fetch_competitor_data("Tiktok Competitor") + "\n"   
+            competitor_summary = self.fetch_competitor_data("Competitor Summary") + "\n"
+
+            self.payload = "\n=== CLIENT DATA ===\n\n" + self.payload
+            self.competitor = "\n\n=== COMPETITOR DATA ===\n\n" + competitor_summary + self.competitor
+            self.payload = self.payload + "\n" + "=" * 50 + "\n" + self.competitor
+
             self.process()
             
 

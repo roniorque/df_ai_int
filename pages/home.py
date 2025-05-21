@@ -47,17 +47,30 @@ class DigitalFootprintDashboard:
             st.session_state['run_all'] = False
         if 'is_competitor' not in st.session_state:
             st.session_state['is_competitor'] = False
+        if 'competitor_name' not in st.session_state:
+            st.session_state['competitor_name'] = False
 
     async def create_row1(self):
         """Create the first row with four columns"""
-        col1, col2, col3, col4, col5 = st.columns(5, border=True, gap="medium", vertical_alignment="top")
+        # Add custom CSS for scrollable expanders
+        st.markdown(
+            """
+            <style>
+            .scrollable-expander > div[role='region'] {
+                max-height: 350px;s
+                overflow-y: auto;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
-            
-            is_competitor = st.checkbox("Competitor", value=False)
+            is_competitor = st.checkbox("Competitor", value=False, help="Select to compare this entity against client data")
             st.session_state['is_competitor'] = is_competitor
 
-            run_all = st.checkbox("Run all (longer time)", value=False)
+            run_all = st.checkbox("Run all", value=False, help="Run all processes (longer time); file upload optional")
             st.session_state['run_all'] = run_all
             
             button_label = "Uploading..." if st.session_state['uploading'] else "Sync Data"
@@ -69,94 +82,157 @@ class DigitalFootprintDashboard:
             else:
                 st.session_state["analyze"] = ''
 
-            #self.upload_file_button = st.button("Sync Data", st.session_state['analyze'], icon="🔄", use_container_width=True)
-            
-            #if self.upload_file_button == True:
-            #    st.session_state["analyze"] = 'clicked'
-                #unhide_button()
-            #else:
-            #    st.session_state["analyze"] = ''
             analyze_disabled = st.session_state.get('analyze') != 'clicked'
             if st.button("Analyze", key="analyze_button", icon="✨", use_container_width=True, disabled=analyze_disabled):
                 st.session_state.analysis_completed = False
                 st.switch_page("pages/analyzing_page.py")
-                
+            
+            if st.button("Show Output", key="show_output_button", icon="📃", use_container_width=True):
+                st.switch_page("pages/output.py")
 
             st.session_state.run_all = run_all
             
-            
+            # Show Client Summary directly (not in expander)
             self.client_summary = ClientSummary()
             
         with col2:
             st.write("## Website Traffic")
-            self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
-            self.keywords = Seo(os.getenv('MODEL_SEO_Analyst'))    
-
+            with st.expander("Backlinks", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.backlinks = SeoOffPageAnalyst(os.getenv('MODEL_Off_Page_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("Keywords", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.keywords = Seo(os.getenv('MODEL_SEO_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+        
         with col3:
             st.write("## Social Media")
-            st.write("### Facebook")
-            self.facebook = Facebook(os.getenv('MODEL_Social_Media_Analyst'))
-
-            st.write('### Instagram')
-            self.instagram = Instagram(os.getenv('MODEL_Social_Media_Analyst'))
-
-            st.write('### Twitter')
-            self.twitter = Twitter(os.getenv('MODEL_Social_Media_Analyst'))
-
-            
-        with col4:
-            st.write("## Social Media")
-            st.write('### YouTube')
-            self.youtube = YouTube(os.getenv('MODEL_Social_Media_Analyst'))
-            
-            st.write('### Linkedin')
-            self.linkedin = Linkedin(os.getenv('MODEL_Social_Media_Analyst'))
-
-            st.write('### Tiktok')
-            self.tiktok = Tiktok(os.getenv('MODEL_Social_Media_Analyst'))
+            with st.expander("Facebook", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write("### Facebook")
+                self.facebook = Facebook(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("Instagram", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write('### Instagram')
+                self.instagram = Instagram(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("Twitter", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write('### Twitter')
+                self.twitter = Twitter(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("YouTube", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write('### YouTube')
+                self.youtube = YouTube(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("LinkedIn", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write('### Linkedin')
+                self.linkedin = Linkedin(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("TikTok", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                st.write('### Tiktok')
+                self.tiktok = Tiktok(os.getenv('MODEL_Social_Media_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
         
-        with col5:
+        with col4:
             st.write("## Website Structure")
-            #self.crawl = SeoOnCrawl(os.getenv('MODEL_On_Page_Analyst'))
-            self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
-            self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
-            self.lld_pm_ln = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
-            self.pull_through_offers = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
-
-        return col1, col2, col3, col4, col5
+            with st.expander("On Page SEO", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.on_page = SeoOn(os.getenv('MODEL_On_Page_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("Website and Tools", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.website_and_tools = WebsiteAndTools(os.getenv('MODEL_On_Page_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("LLD PM LN", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.lld_pm_ln = LLD_PM_LN(os.getenv('Model_LLD_PM_LN_ANALYST'))
+                st.markdown('</div>', unsafe_allow_html=True)
+            with st.expander("Pull Through Offers", expanded=False):
+                st.markdown('<div class="scrollable-expander">', unsafe_allow_html=True)
+                self.pull_through_offers = PullThroughOffers(os.getenv('Model_Pull_Through_Offers_Analyst'))
+                st.markdown('</div>', unsafe_allow_html=True)
+        return col1, col2, col3, col4
 
     async def create_row2(self):
         """Create the first row with four columns"""
         col1, col4 = st.columns(2, border=True, gap="medium", vertical_alignment="top")
-        # col1, col2, col3, col4 = st.columns(4, border=True, gap="medium", vertical_alignment="top")
         
         with col1:
             st.write("## Ads")
-            self.sem_ppc = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
-        # with col2:
-        #     st.write("## Amazon")
-        #     self.amazon = Amazon(os.getenv('Model_SEM_PPC_Analyst'))
-        # with col3:
-        #     st.write("## eBay")
-        #     self.ebay = eBay(os.getenv('Model_SEM_PPC_Analyst'))
+            with st.expander("SEM/PPC"):
+                self.sem_ppc = Sem_PPC(os.getenv('Model_SEM_PPC_Analyst'))
+
         with col4:
             st.write("## Website Content")
-            self.content = Content(os.getenv('Model_Content'))
+            with st.expander("Content"):
+                self.content = Content(os.getenv('Model_Content'))
         return col1, col4
     
     async def delete_button(self):
-        reset_button = st.button("RESET ALL",icon="🗑️", use_container_width=True)
+        # Add a warning confirmation before resetting all
+        if 'confirm_reset' not in st.session_state:
+            st.session_state['confirm_reset'] = False
+        if 'db_wiped' not in st.session_state:
+            st.session_state['db_wiped'] = False
 
-        if reset_button:
-            clear_collection("df_data")
-            clear_collection("df_response")
+        # Use key for the reset button to avoid rerun issues
+        reset_clicked = st.button("RESET ALL", icon="🗑️", use_container_width=True, key="reset_all_btn")
+        if reset_clicked:
+            st.session_state['confirm_reset'] = True
+            st.session_state['db_wiped'] = False
+
+        if st.session_state['db_wiped']:
+            st.markdown("""
+                <div style='display: flex; flex-direction: column; align-items: center;'>
+                    <div style='width: 100%; text-align: center;'>
+                        <span style='color: #008000; font-weight: 600; font-size: 1.1rem;'>✅ Database wiped out.</span>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            st.session_state['confirm_reset'] = False
+        elif st.session_state['confirm_reset']:
+            st.markdown("""
+                <div style='display: flex; flex-direction: column; align-items: center;'>
+                    <div style='width: 100%; text-align: center;'>
+                        <span style='color: #b30000; font-weight: 600; font-size: 1.1rem;'>⚠️ Are you sure you want to reset all? This will wipe out the database and cannot be undone.</span>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            st.markdown("<div style='height: 1.5em;'></div>", unsafe_allow_html=True)
+            col_spacer1, col_buttons, col_spacer2 = st.columns([4.4,2,4])
+            with col_spacer1:
+                st.write("")
+            with col_buttons:
+                col_cancel, col_confirm = st.columns([2,2], gap="small")
+                with col_cancel:
+                    if st.button("Cancel", key="cancel_wipe"):
+                        st.session_state['confirm_reset'] = False
+                with col_confirm:
+                    if st.button("Yes, wipe database", key="confirm_wipe", type="primary"):
+                        # Run clear_collection in parallel for speed
+                        import threading
+                        t1 = threading.Thread(target=clear_collection, args=("df_data",))
+                        t2 = threading.Thread(target=clear_collection, args=("df_response",))
+                        t1.start()
+                        t2.start()
+                        t1.join()
+                        t2.join()
+                        st.session_state['confirm_reset'] = False
+                        st.session_state['db_wiped'] = True
+            with col_spacer2:
+                st.write("")
 
     async def main(self):
         """Main method to run the dashboard"""
         await self.create_row1()
         await self.create_row2()
         await self.delete_button()
-        #self.run_analysis()
 
 # Main execution
 if __name__ == "__main__":
