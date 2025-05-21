@@ -259,7 +259,7 @@ def display_outputs():
     st.markdown("### Digital Footprint Overview")
     st.markdown(f"{overview}")
     if st.button("AI Edit ✨", key="overview"):
-        st.session_state.chat_text = overview
+        st.session_state.chat_text = get_analyst_response("DF Overview Analyst") 
         st.session_state.report_title = "DF Overview Analyst"
         st.session_state.session_id = str(uuid.uuid4())
         st.switch_page("pages/chat.py")
