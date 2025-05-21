@@ -315,15 +315,20 @@ Currently, {client_name} has already explored numerous online advertising. Its c
 There are two types of SEO based on where the optimization is implemented: On-page SEO (which refers to any type of optimization done within the website) and Off-page SEO (which is often called Link Building or Link Acquisition – the process of getting more “votes” for the website through other domains). Both are essential in increasing a website’s visibility in search results pages and in ranking for more business-related keywords. """)
     
     # Write SEO Table
-    seo_data = get_analyst_response("SEO Analyst")
+    seo_all_data = get_analyst_response("SEO Analyst")
+    other_findings = seo_all_data["other_findings"]
+    seo_data = seo_all_data["table"][0]["seo"]
     write_table(seo_data)
+    st.write("**Other SEO Findings:**")
+    st.write(other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
     # Write On Page Table
     st.markdown("### ON-PAGE OPTIMIZATION")
-    on_page_data = get_analyst_response("On Page Analyst")
+    #on_page_data = get_analyst_response("On Page Analyst")
+    on_page_data = seo_all_data["table"][0]["onpage"]
     seo_on_page_table(on_page_data)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
@@ -331,8 +336,9 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     
     # Write Off Page Table
     st.markdown("### OFF PAGE OPTIMIZATION")
-    on_page_data = get_analyst_response("SEO Off Page Analyst")
-    seo_on_page_table(on_page_data)
+    #on_page_data = get_analyst_response("SEO Off Page Analyst")
+    off_page_data = seo_all_data["table"][0]["offpage"]
+    seo_on_page_table(off_page_data)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
