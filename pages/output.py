@@ -397,6 +397,12 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown("##### MARKETING MESSAGE SUMMARY")
     try:
         st.write(target_market_data['summary'])
+        
+        if st.button("AI Edit ✨", key="target_market_data"):
+            st.session_state.chat_text = get_analyst_response("Target Market Analyst")
+            st.session_state.report_title = "Target Market Analyst"
+            st.session_state.session_id = str(uuid.uuid4())
+            st.switch_page("pages/chat.py")
     except TypeError:
         st.warning("No data retrieved for analysis.")
     
