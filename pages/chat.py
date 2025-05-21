@@ -7,6 +7,13 @@ from helper.upload_response import upload_response
 AGENT_URL = "http://172.17.21.23:7860/api/v1/run/51b63d7f-c30b-4df4-b591-6544d60b2f0c?stream=false"
 
 # === FUNCTIONS ===
+def parseable(report_title):
+    """
+    Check if the report title is parseable.
+    """
+    parseable_titles = ["Target Market Analyst", "SEM/PPC", "SEO", "Social Media", "Content", "Marketplace"]
+    return report_title in parseable_titles
+
 def render_agent_reply(reply):
     def try_parse_json(text):
         try:
@@ -16,17 +23,36 @@ def render_agent_reply(reply):
 
     parsed = try_parse_json(reply)
     placeholder = st.empty()
-    if isinstance(parsed, list) and all(isinstance(item, dict) for item in parsed):
+    
+    # Handle dictionary response
+    if parseable(st.session_state.report_title) and isinstance(parsed, dict):
+        with placeholder.container():
+            for key, value in parsed.items():
+                # Convert key from snake_case to Title Case for display
+                display_key = key.replace('_', ' ').title()
+                st.markdown(f"### {display_key}")
+                st.markdown(value)
+                st.markdown("---")
+    # Handle list of dictionaries (existing logic)
+    elif isinstance(parsed, list) and all(isinstance(item, dict) for item in parsed):
         for idx, item in enumerate(parsed):
-            label = item.get("elements", f"Item {idx + 1}")
-            with placeholder.expander(label, expanded=True):
-                for k, v in item.items():
-                    if k != "elements":
-                        placeholder.markdown(f"**{k}**: {v}")
+            if "elements" in item:
+                label = item.get("elements", f"Item {idx + 1}")
+                with placeholder.expander(label, expanded=True):
+                    for k, v in item.items():
+                        if k != "elements":
+                            st.markdown(f"**{k}**: {v}")
+    # Fallback for non-JSON or other formats
     else:
         placeholder.write(reply)
 
 def save_output(output):
+    if parseable(st.session_state.report_title):
+        try:
+            output = json.loads(output)
+        except TypeError:
+            st.error("Output is not JSON serializable.")
+            return
     ai_response = {'data_field': st.session_state.report_title, 'result': output}
     upload_response(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
@@ -48,6 +74,8 @@ st.set_page_config(page_title="Langflow Collaborative Chat", page_icon="💬", l
 
 if st.button("Back to Output Review"):
     st.session_state.messages = []
+    if "saved_reply" in st.session_state:
+        del st.session_state.saved_reply
     st.switch_page("pages/output.py")
     
 st.title("🤖 Digital Footprint AI Collaborative Workspace")
@@ -71,9 +99,9 @@ with left_col:
                         "session_id": session_id,
                         "input_type": "chat",
                         "output_type": "chat",
+                        "input_value":prompt,
                         "tweaks": {
-                            "ChatInput-H6VJy": { "input_value": prompt},
-                            "DataInput-jFbIt": {"input_value": st.session_state.latest_reply}
+                            "DataInput-jFbIt": {"input_value": json.dumps(st.session_state.latest_reply)}
                         } 
                     }
             # st.write(f"Payload: {payload}")
@@ -90,12 +118,11 @@ with left_col:
             reply = f"❌ Error: {e}"
             st.session_state.latest_reply = reply  # Ensure session state is updated even on error
 
-        # render_agent_reply(st.session_state.latest_reply)
         # Immediately show output in right pane after AI responds
         with right_col:
             st.subheader("📄✨ Editing " + st.session_state.report_title)
                 
-            with st.container(height=500, border=True):
+            with st.container(border=True):
                 render_agent_reply(reply)  # Render the updated value
                 st.button("Save Output", on_click=save_output, args=(reply,))  # Pass the latest reply
             
@@ -111,10 +138,7 @@ with left_col:
 if not prompt:
     with right_col:
         st.subheader("📄✨ Editing " + st.session_state.report_title)
-        with st.container(height=500, border=True):
+        with st.container(border=True):
             # Use saved_reply if available, otherwise use latest_reply
             display_reply = st.session_state.get('saved_reply', st.session_state.latest_reply)
             render_agent_reply(display_reply)
-
-        # if st.button("Save Output"):
-        #     save_output(display_reply)
