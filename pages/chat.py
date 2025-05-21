@@ -11,7 +11,7 @@ def parseable(report_title):
     """
     Check if the report title is parseable.
     """
-    parseable_titles = ["Target Market Analyst", "SEM/PPC", "SEO", "Social Media", "Content", "Marketplace"]
+    parseable_titles = ["Target Market Analyst", "Conversion Analyst", "Content - Process and Assets Analyst", "LLD/PM/LN Analyst", "Content", "Marketplace"]
     return report_title in parseable_titles
 
 def render_agent_reply(reply):
@@ -71,7 +71,7 @@ session_id = st.session_state.session_id
 # === LAYOUT ===
     
 st.set_page_config(page_title="Langflow Collaborative Chat", page_icon="💬", layout="wide")
-
+client_context = st.session_state.client_context
 if st.button("Back to Output Review"):
     st.session_state.messages = []
     if "saved_reply" in st.session_state:
@@ -101,6 +101,9 @@ with left_col:
                         "output_type": "chat",
                         "input_value":prompt,
                         "tweaks": {
+                            "TextInput-U9c9a": {
+                                "input_value": client_context
+                            },
                             "DataInput-jFbIt": {"input_value": json.dumps(st.session_state.latest_reply)}
                         } 
                     }
@@ -141,4 +144,6 @@ if not prompt:
         with st.container(border=True):
             # Use saved_reply if available, otherwise use latest_reply
             display_reply = st.session_state.get('saved_reply', st.session_state.latest_reply)
+            if parseable(st.session_state.report_title):
+                display_reply = json.dumps(display_reply)
             render_agent_reply(display_reply)

@@ -1,7 +1,7 @@
 import json
 import os
 import streamlit as st
-from helper.data_field import get_analyst_response, data_field, get_marketplace_response
+from helper.data_field import get_analyst_response, data_field
 import time
 
 import uuid
@@ -408,15 +408,30 @@ Regardless, it is still a great channel worth investing to improve a business’
     
     st.markdown("##### WHAT IS THE DESIRED OUTCOMES OF DIGITAL MARKETING?")
     st.markdown(get_analyst_response("Desired Outcomes Analyst"))
+    if st.button("AI Edit ✨", key="desired_outcomes"):
+        st.session_state.chat_text = get_analyst_response("Desired Outcomes Analyst")
+        st.session_state.report_title = "Desired Outcomes Analyst"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
     
     st.markdown("##### WHAT IS THE PULL-THROUGH OFFER?")
     pull_through_data = get_analyst_response("Pull through offers Analyst")
     st.write(pull_through_data)
+    if st.button("AI Edit ✨", key="pull_through_data"):
+        st.session_state.chat_text = pull_through_data
+        st.session_state.report_title = "Pull through offers Analyst"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
     
     
     st.markdown("##### WEBSITE AUDIENCE ACQUISITION")
     website_audience_data = get_analyst_response("Website Audience Acquisition")
     st.write(website_audience_data)
+    if st.button("AI Edit ✨", key="website_audience_data"):
+        st.session_state.chat_text = website_audience_data
+        st.session_state.report_title = "Website Audience Acquisition"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
     
     def safe_value(data: dict, key: str) -> str:
         try:
@@ -436,6 +451,13 @@ Regardless, it is still a great channel worth investing to improve a business’
     st.markdown("##### LEAD NURTURING")
     st.write(safe_value(lld_data, 'lead_nurturing'))
     
+    if st.button("AI Edit ✨", key="lld_data"):
+        st.session_state.chat_text = lld_data
+        st.session_state.report_title = "LLD/PM/LN Analyst"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
+    
+    
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -453,6 +475,11 @@ We have evaluated the process of content development strategy and existing conte
         st.write(safe_value(pna_data, 'consideration_stage'))
         st.markdown("##### DECISION STAGE")
         st.write(safe_value(pna_data, 'decision_stage'))
+        if st.button("AI Edit ✨", key="pna_data"):
+            st.session_state.chat_text = pna_data
+            st.session_state.report_title = "Content - Process and Assets Analyst"
+            st.session_state.session_id = str(uuid.uuid4())
+            st.switch_page("pages/chat.py")
         
     else:
         st.markdown("##### AWARENESS STAGE")
@@ -482,6 +509,11 @@ We have evaluated the process of content development strategy and existing conte
         
         st.markdown("##### CONVERSION TO BRAND LOYALTY")
         st.write(safe_value(conversion, 'conversion_to_brand'))
+        if st.button("AI Edit ✨", key="conversion"):
+            st.session_state.chat_text = conversion
+            st.session_state.report_title = "Conversion Analyst"
+            st.session_state.session_id = str(uuid.uuid4())
+            st.switch_page("pages/chat.py")
     else:
         st.markdown("##### AWARENESS TO TRAFFIC")
         st.write(None)
@@ -496,6 +528,11 @@ We have evaluated the process of content development strategy and existing conte
     conversion = get_analyst_response("Connection Analyst")
     st.markdown("##### CONNECTION OF ALL ONLINE AND OFFLINE TOUCH POINTS")
     st.write(conversion)
+    if st.button("AI Edit ✨", key="connection"):
+        st.session_state.chat_text = conversion
+        st.session_state.report_title = "Connection Analyst"
+        st.session_state.session_id = str(uuid.uuid4())
+        st.switch_page("pages/chat.py")
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     
@@ -504,4 +541,6 @@ We have evaluated the process of content development strategy and existing conte
 st.markdown("<div id='top'></div>", unsafe_allow_html=True);    
 if st.button("Back to Dashboard", icon="🏠"):
         st.switch_page("pages/home.py")
+
+st.session_state.client_context = data_field("Client Summary")
 display_outputs()
