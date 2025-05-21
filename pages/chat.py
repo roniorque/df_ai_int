@@ -15,24 +15,24 @@ def render_agent_reply(reply):
             return None
 
     parsed = try_parse_json(reply)
-
+    placeholder = st.empty()
     if isinstance(parsed, list) and all(isinstance(item, dict) for item in parsed):
         for idx, item in enumerate(parsed):
             label = item.get("elements", f"Item {idx + 1}")
-            with st.expander(label, expanded=True):
+            with placeholder.expander(label, expanded=True):
                 for k, v in item.items():
                     if k != "elements":
-                        st.markdown(f"**{k}**: {v}")
+                        placeholder.markdown(f"**{k}**: {v}")
     else:
-        st.write(reply)
+        placeholder.write(reply)
 
 def save_output(output):
     ai_response = {'data_field': st.session_state.report_title, 'result': output}
     upload_response(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": "✅ Output saved."})
-    # Force update the session state after saving
-    st.session_state.latest_reply = output
-    st.rerun()  # Using the new rerun() method instead of experimental_rerun()
+    st.session_state.latest_reply = output  # Update the session state
+    st.session_state.saved_reply = output   # Track the saved state
+    # st.rerun()
 
 # === STATE INIT ===
 if "messages" not in st.session_state:
@@ -71,10 +71,9 @@ with left_col:
                         "session_id": session_id,
                         "input_type": "chat",
                         "output_type": "chat",
-                        "input_value": prompt,
                         "tweaks": {
-                            "DataInput-jFbIt": {"input_value": st.session_state.latest_reply},
-                            "TextInput-pR8UG": {"input_value": st.session_state.report_title}
+                            "ChatInput-H6VJy": { "input_value": prompt},
+                            "DataInput-jFbIt": {"input_value": st.session_state.latest_reply}
                         } 
                     }
             # st.write(f"Payload: {payload}")
@@ -91,12 +90,19 @@ with left_col:
             reply = f"❌ Error: {e}"
             st.session_state.latest_reply = reply  # Ensure session state is updated even on error
 
+        # render_agent_reply(st.session_state.latest_reply)
         # Immediately show output in right pane after AI responds
         with right_col:
             st.subheader("📄✨ Editing " + st.session_state.report_title)
+                
             with st.container(height=500, border=True):
-                render_agent_reply(st.session_state.latest_reply)  # Render the updated value
-            st.button("Save Output", on_click=save_output, args=(st.session_state.latest_reply,))  # Pass the latest reply
+                render_agent_reply(reply)  # Render the updated value
+                st.button("Save Output", on_click=save_output, args=(reply,))  # Pass the latest reply
+            
+            with st.expander("Debug Info", expanded=False):
+                st.markdown(f"**Session ID**: {session_id}")
+                st.markdown(f"**Payload**: {payload}")
+                st.markdown(f"**Response**: {reply}")
 
         # Append assistant's update note after rendering to avoid input field being pushed
         st.session_state.messages.append({"role": "assistant", "content": "✅ Output updated in right panel."})
@@ -106,9 +112,9 @@ if not prompt:
     with right_col:
         st.subheader("📄✨ Editing " + st.session_state.report_title)
         with st.container(height=500, border=True):
-            # Store the current reply in a variable to ensure consistency
-            current_reply = st.session_state.latest_reply
-            render_agent_reply(current_reply)
-    
-        if st.button("Save Output"):
-            save_output(current_reply)
+            # Use saved_reply if available, otherwise use latest_reply
+            display_reply = st.session_state.get('saved_reply', st.session_state.latest_reply)
+            render_agent_reply(display_reply)
+
+        # if st.button("Save Output"):
+        #     save_output(display_reply)
