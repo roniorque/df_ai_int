@@ -12,7 +12,7 @@ PARSEABLE_TITLES = [
 
 # === UTILS ===
 def is_parseable(title):
-    return title in PARSEABLE_TITLES
+    return title in PARSEABLE_TITLES 
 
 def try_parse_json(text):
     try:
@@ -60,6 +60,9 @@ def save_output(output):
     st.session_state.saved_reply = output
 
 def post_prompt(prompt):
+    inital_analysis = st.session_state.latest_reply
+    if is_parseable(st.session_state.report_title):
+        inital_analysis = json.dumps(st.session_state.latest_reply)
     payload = {
         "session_id": st.session_state.session_id,
         "input_type": "chat",
@@ -67,7 +70,7 @@ def post_prompt(prompt):
         "input_value": prompt,
         "tweaks": {
             "TextInput-U9c9a": {"input_value": st.session_state.client_context},
-            "DataInput-jFbIt": {"input_value": json.dumps(st.session_state.latest_reply)}
+            "DataInput-jFbIt": {"input_value": inital_analysis}
         }
     }
 
