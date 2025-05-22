@@ -39,7 +39,8 @@ def write_client_footprint():
             return value if value else "N/A"
         except AttributeError:
             pass
-    
+        
+    google_my_business = st.session_state.google_my_business
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
     markdown_table += f"| Website Health Score | {safe_get(result_web, 'website_overall_health_score')} |\n"
@@ -55,7 +56,7 @@ def write_client_footprint():
     markdown_table += f"| Twitter Followers | {safe_get(socmed, 'twitter_followers')} |\n"
     markdown_table += f"| Instagram Followers | {safe_get(socmed, 'instagram_followers')} |\n"
     markdown_table += f"| Linkedin Followers | {safe_get(socmed, 'linkedin_followers')} |\n"
-    markdown_table += f"| Google My Business | None |\n"
+    markdown_table += f"| Google My Business | {google_my_business} |\n"
     markdown_table += f"| # of Keywords Ranking in Top 10 | {safe_get(seo, 'keyword_ranking_in_top_10')} |\n"
     markdown_table += f"| # of Keywords Ranking in Top 100 | {safe_get(seo, 'keyword_ranking_in_top_100')} |\n"
     
