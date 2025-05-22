@@ -22,6 +22,8 @@ class ClientSummary:
             st.session_state['client_website'] = ''
         if 'target_market' not in st.session_state:
             st.session_state['target_market'] = ''
+        if 'google_my_business' not in st.session_state:
+            st.session_state['google_my_business'] = ''
     
     def process (self):
             self.c_details = "Uploading Competitor Details..." if self.is_competitor == True else "Uploading Client Details..."
@@ -56,16 +58,22 @@ class ClientSummary:
                             collect_telemetry(debug_client_website)
              
     def row1(self):
+            session = st.session_state.analyze
             self.is_competitor = st.session_state.is_competitor
+            self.google_my_business = st.session_state.google_my_business
+
             self.c_summary = "Competitor Summary: " if self.is_competitor == True else "Client Summary: "
             self.c_name = "Competitor Name: " if self.is_competitor == True else "Client Name: "
             self.c_website = "Competitor Website: " if self.is_competitor == True else "Client Website: "
             st.session_state.competitor_name = f"Competitor Name: {self.c_name}" if self.is_competitor == True else "Competitor Name:"
+            
             self.client_summary = st.text_area(f"{self.c_summary}", help="Name of business, nature of business, location, products/services")
-            session = st.session_state.analyze
             self.name = st.text_input(f"{self.c_name}")
             self.website = st.text_input(f"{self.c_website}")
-            
+            self.google_my_business = st.text_input("Google My Business:")
+
+            st.session_state.google_my_business = self.google_my_business if self.google_my_business else "None"
+        
             self.competitor_name = "\n" + "Competitor Name: " + self.name 
             st.session_state['competitor_name'] = self.competitor_name
             if (self.client_summary or self.name or self.website) and session == 'clicked':
