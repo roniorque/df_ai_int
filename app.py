@@ -8,7 +8,8 @@ load_dotenv()
 
 actual_email = os.getenv('email')
 actual_password = os.getenv('password')
-# Insert a form in the container
+
+# Simple login form
 with placeholder.form("login"):
     st.markdown("#### Digital Footprint AI Team")
     email = st.text_input("Username")
@@ -16,6 +17,7 @@ with placeholder.form("login"):
     submit = st.form_submit_button("Login")
 
 if submit and email == actual_email and password == actual_password:
+    st.session_state['logged_in'] = True
     st.switch_page("pages/home.py")
     st.success("Login successful")
 elif submit and email != actual_email and password != actual_password:

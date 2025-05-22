@@ -3,6 +3,11 @@ import requests
 import json
 from helper.upload_response import upload_response
 
+# === LOGIN CHECK ===
+if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+    st.switch_page('app.py')
+    st.stop()
+
 # === CONFIG ===
 AGENT_URL = "http://172.17.21.23:7860/api/v1/run/51b63d7f-c30b-4df4-b591-6544d60b2f0c?stream=false"
 PARSEABLE_TITLES = [

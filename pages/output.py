@@ -8,6 +8,10 @@ import uuid
 
 st.set_page_config(layout="centered") 
 
+if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+    st.switch_page('app.py')
+    st.stop()
+
 def write_client_footprint():
 
     try:
@@ -39,7 +43,7 @@ def write_client_footprint():
             return value if value else "N/A"
         except AttributeError:
             pass
-        
+
     google_my_business = st.session_state.google_my_business
     markdown_table = "| Source/Channel | Current KPI |\n"
     markdown_table += "|---|---|\n"
@@ -71,7 +75,7 @@ def write_snapshot(data):
             if isinstance(parsed_data, list):
                 # Create Markdown table header
                 markdown_table = "| Channel | Status | Requirements | Competitors | What's Needed to Deliver |\n"
-                markdown_table += "|:---:|:---:|:---:|:---:|:---:|\n"
+                markdown_table += "|:---|:---|:---|:---|:---|\n"
 
                 # Loop through the list of dictionaries
                 for item in parsed_data:
@@ -363,8 +367,6 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     other_findings = seo_all_data["other_findings"]
     seo_data = seo_all_data["table"][0]["seo"]
     write_table(seo_data)
-    st.write("**Other SEO Findings:**")
-    st.write(other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -383,6 +385,8 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     #on_page_data = get_analyst_response("SEO Off Page Analyst")
     off_page_data = seo_all_data["table"][0]["offpage"]
     seo_on_page_table(off_page_data)
+    st.write("**Other SEO Findings:**")
+    st.write(other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")

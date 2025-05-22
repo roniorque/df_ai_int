@@ -23,6 +23,11 @@ from classes.response_connection_analyst import ConnectionAnalyst
 from classes.response_executive_summary import ExecutiveSummary
 from classes.response_snapshot import Snapshot
 
+# Check login session
+if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+    st.switch_page('app.py')
+    st.stop()
+
 # Initialize session state to track if analysis has been run
 if 'analysis_completed' not in st.session_state:
     st.session_state.analysis_completed = False

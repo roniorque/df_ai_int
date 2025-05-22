@@ -22,6 +22,11 @@ from helper.upload_button import hide_button, unhide_button
 from helper.telemetry import clear_collection
 import time
 
+# Check login session
+if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+    st.switch_page('app.py')
+    st.stop()
+
 class DigitalFootprintDashboard:
     def __init__(self):
         # Set page configuration
