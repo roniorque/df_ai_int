@@ -59,7 +59,6 @@ def write_client_footprint():
     return markdown_table
     
 def write_snapshot(data):
-     
     if data:
         try:
             
@@ -67,8 +66,8 @@ def write_snapshot(data):
             
             if isinstance(parsed_data, list):
                 # Create Markdown table header
-                markdown_table = "| Channel | Status | Requirements | What's Needed to Deliver |\n"
-                markdown_table += "|---|---|---|---|\n"
+                markdown_table = "| Channel | Status | Requirements | Competitors | What's Needed to Deliver |\n"
+                markdown_table += "|:---:|:---:|:---:|:---:|:---:|\n"
 
                 # Loop through the list of dictionaries
                 for item in parsed_data:
@@ -76,6 +75,7 @@ def write_snapshot(data):
                     channel = item.get('channel', 'N/A')
                     status = item.get('status', 'N/A')
                     requirements = item.get('requirements', 'N/A')
+                    competitor = item.get('competitors', 'N/A')
                     deliver = item.get('deliver', 'N/A')
 
                     # Add a row to the Markdown table string
@@ -90,9 +90,24 @@ def write_snapshot(data):
                         channel_formatted = channel_temp.upper() # Use upper() instead of upper_case()
                    
 
-                    markdown_table += f"| {channel_formatted} | {status} | {requirements} | {deliver} |\n"
+                    markdown_table += f"| **{channel_formatted}** | {status} | {requirements} | {competitor} | {deliver} |\n"
                     
 
+                # Display the complete Markdown table
+                 # Add custom CSS for top vertical alignment
+                st.markdown("""
+                <style>
+                table td {
+                    vertical-align: top !important;
+                    padding-top: 5px !important;
+                }
+                table th {
+                    vertical-align: top !important;
+                    padding-top: 5px !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                
                 # Display the complete Markdown table
                 st.markdown(markdown_table)
 
@@ -293,7 +308,13 @@ def display_outputs():
     st.markdown("---")    
     
     st.markdown("### SNAPSHOT BY CHANNEL")    
-    write_snapshot(get_analyst_response("Snapshot Analyst")) #write_snapshot
+    snapshot_all_data = get_analyst_response("Snapshot Analyst")
+    snapshot_data = snapshot_all_data["table"]
+    snapshot_other_notes = snapshot_all_data["other_notes"]
+    write_snapshot(snapshot_data)
+    st.write("**Other Notes:**")
+    st.write(snapshot_other_notes)
+    #write_snapshot(get_analyst_response("Snapshot Analyst")) #write_snapshot
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
     
@@ -303,8 +324,12 @@ def display_outputs():
 In line with this, we have looked into the technology used by **{client_name}** as well as the different digital channels currently in place to see how they are structured and how they are performing.""")
     
     # Write W&T Table
-    website_and_tools_data = get_analyst_response("Website and Tools Analyst")
+    website_and_tools_all_data = get_analyst_response("Website and Tools Analyst")
+    website_and_tools_data = website_and_tools_all_data["table"]
+    website_and_tools_all_data_other_findings = website_and_tools_all_data["other_findings"]
     write_table(website_and_tools_data)
+    st.write("**Other Findings:**")
+    st.write(website_and_tools_all_data_other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -315,8 +340,12 @@ With several businesses out there all vying for the same eyeballs, it’s never 
 Currently, {client_name} has already explored numerous online advertising. Its competitors are also experienced in PPC in multiple platforms. """)
     
     # Write SEM Table
-    sem_data = get_analyst_response("SEM/PPC Analyst")
+    sem_data_all = get_analyst_response("SEM/PPC Analyst")
+    sem_data = sem_data_all["table"]
+    sem_data_other_findings = sem_data_all["other_findings"]
     write_table(sem_data)
+    st.write("**Other Findings:**")
+    st.write(sem_data_other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -359,8 +388,12 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     st.markdown(f"""Social Media Marketing for the B2B industry is tricky. While B2C businesses can easily have millions of fans through social media, B2B lead generation such as {client_name} sources from a significantly smaller market.
     
 Regardless, it is still a great channel worth investing to improve a business’ lead generation if handled correctly. {client_name}, along with its competitors, are found to be using different social media platforms to extend their brand presence. """)
-    social_media_data = get_analyst_response("Social Media Analyst")
+    social_media_data_all = get_analyst_response("Social Media Analyst")
+    social_media_data = social_media_data_all["table"]
+    social_media_data_other_findings = social_media_data_all["other_findings"]
     write_table(social_media_data)
+    st.write("**Other Findings:**")
+    st.write(social_media_data_other_findings)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -368,8 +401,12 @@ Regardless, it is still a great channel worth investing to improve a business’
     # Write SocMed Table
     st.markdown("### CONTENT")
     st.markdown(f"""Content is king in digital marketing. People log into the internet to look for and consume information in different formats: text-based, video, audio, or image. Content is what help businesses establish their expertise in the industry, convert leads into customers, guide their customers through their sales funnel, and build relationships with their customers. """)
-    content_data = get_analyst_response("Content Analyst")
+    content_data_all = get_analyst_response("Content Analyst")
+    content_data = content_data_all["table"]
+    content_data_other_findings = content_data_all["other_findings"]
     write_table(content_data)
+    st.write("**Other Findings:**")
+    st.write(content_data_other_findings)
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
 
