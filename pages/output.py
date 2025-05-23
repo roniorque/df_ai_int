@@ -163,12 +163,23 @@ def write_table(website_and_tools_data):
                     current_footprint = item.get('current_footprint', 'N/A')
                     best_of_breed = item.get('best_of_breed_solution', 'N/A')
 
-                    # Add a row to the Markdown table string
-                    # Replace underscores with spaces and apply title case to category
+                    # Format current_footprint for multiple items (string with newlines or list)
+                    if isinstance(current_footprint, list):
+                        current_footprint_formatted = '<br>'.join(str(x) for x in current_footprint)
+                    elif isinstance(current_footprint, str) and ('\n' in current_footprint or '\r' in current_footprint):
+                        current_footprint_formatted = '<br>'.join([line.strip() for line in current_footprint.splitlines() if line.strip()])
+                    else:
+                        current_footprint_formatted = str(current_footprint).replace('_', ' ')
+
+                    # Format best_of_breed for multiple items (string with newlines or list)
+                    if isinstance(best_of_breed, list):
+                        best_of_breed_formatted = '<br>'.join(str(x) for x in best_of_breed)
+                    elif isinstance(best_of_breed, str) and ('\n' in best_of_breed or '\r' in best_of_breed):
+                        best_of_breed_formatted = '<br>'.join([line.strip() for line in best_of_breed.splitlines() if line.strip()])
+                    else:
+                        best_of_breed_formatted = str(best_of_breed).replace('_', ' ')
+
                     category_formatted = category.replace('_', ' ').title()
-                    
-                    current_footprint_formatted = current_footprint.replace('_', ' ')
-                    best_of_breed_formatted = best_of_breed.replace('_', ' ')
 
                     markdown_table += f"| {category_formatted} | {current_footprint_formatted} | {best_of_breed_formatted} |\n"
                     
@@ -218,6 +229,14 @@ def write_table_with_competitor_footprint(seo):
                     competitor_footprint = item.get('competitor_footprint', 'N/A')
                     best_of_breed = item.get('best_of_breed_solution', 'N/A')
 
+                    # Format current_footprint for multiple items (string with newlines or list)
+                    if isinstance(current_footprint, list):
+                        current_footprint_formatted = '<br>'.join(str(x) for x in current_footprint)
+                    elif isinstance(current_footprint, str) and ('\n' in current_footprint or '\r' in current_footprint):
+                        current_footprint_formatted = '<br>'.join([line.strip() for line in current_footprint.splitlines() if line.strip()])
+                    else:
+                        current_footprint_formatted = str(current_footprint).replace('_', ' ')
+
                     # Format competitor_footprint for multiple competitors (string with newlines or list)
                     if isinstance(competitor_footprint, list):
                         competitor_footprint_formatted = '<br>'.join(str(x) for x in competitor_footprint)
@@ -226,9 +245,15 @@ def write_table_with_competitor_footprint(seo):
                     else:
                         competitor_footprint_formatted = str(competitor_footprint).replace('_', ' ')
 
+                    # Format best_of_breed for multiple items (string with newlines or list)
+                    if isinstance(best_of_breed, list):
+                        best_of_breed_formatted = '<br>'.join(str(x) for x in best_of_breed)
+                    elif isinstance(best_of_breed, str) and ('\n' in best_of_breed or '\r' in best_of_breed):
+                        best_of_breed_formatted = '<br>'.join([line.strip() for line in best_of_breed.splitlines() if line.strip()])
+                    else:
+                        best_of_breed_formatted = str(best_of_breed).replace('_', ' ')
+
                     category_formatted = category.replace('_', ' ').title()
-                    current_footprint_formatted = str(current_footprint).replace('_', ' ')
-                    best_of_breed_formatted = str(best_of_breed).replace('_', ' ')
 
                     markdown_table += f"| {category_formatted} | {current_footprint_formatted} | {competitor_footprint_formatted} | {best_of_breed_formatted} |\n"
                     
