@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 import json
 from helper.upload_response import upload_response
+from dotenv import load_dotenv
+import os
 
 # === LOGIN CHECK ===
 if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
@@ -9,7 +11,8 @@ if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
     st.stop()
 
 # === CONFIG ===
-AGENT_URL = "http://172.17.21.23:7860/api/v1/run/51b63d7f-c30b-4df4-b591-6544d60b2f0c?stream=false"
+load_dotenv()
+AGENT_URL = os.getenv("AGENT_URL")
 PARSEABLE_TITLES = [
     "Target Market Analyst", "Conversion Analyst", "Content - Process and Assets Analyst",
     "LLD/PM/LN Analyst", "Content", "Marketplace"

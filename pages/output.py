@@ -195,6 +195,61 @@ def write_table(website_and_tools_data):
         st.warning("No data retrieved for analysis.")
     # --- End: Loop and display data ---
 
+def write_table_with_competitor_footprint(seo):
+     
+    if seo:
+        try:
+            
+            parsed_data = seo
+            
+            if isinstance(parsed_data, list):
+                # Create Markdown table header
+                markdown_table = "|  | Current Footprint | Competitor Footprint | Best of Breed Solution |\n"
+                markdown_table += "|---|---|---|---|\n"
+
+                # Loop through the list of dictionaries
+                for item in parsed_data:
+                    # Use .get() for safety in case keys are missing
+                    category = item.get('category', 'N/A')
+                    current_footprint = item.get('current_footprint', 'N/A')
+                    competitor_footprint = item.get('competitor_footprint', 'N/A')
+                    best_of_breed = item.get('best_of_breed_solution', 'N/A')
+
+                    # Add a row to the Markdown table string
+                    # Replace underscores with spaces and apply title case to category
+                    category_formatted = category.replace('_', ' ').title()
+                    competitor_footprint_formatted = competitor_footprint.replace('_', ' ')
+                    current_footprint_formatted = current_footprint.replace('_', ' ')
+                    best_of_breed_formatted = best_of_breed.replace('_', ' ')
+
+                    markdown_table += f"| {category_formatted} | {current_footprint_formatted} | {competitor_footprint_formatted} | {best_of_breed_formatted} |\n"
+                    
+
+                # Display the complete Markdown table
+                st.markdown(markdown_table)
+
+            # Handle case if data is not a list (e.g., a single dictionary)
+            elif isinstance(parsed_data, dict):
+                 st.write("Analysis Result (Summary):")
+                 # You might want to display dictionary data differently
+                 st.json(parsed_data) # Example: Display as JSON
+            else:
+                 st.warning("data is not in the expected list format.")
+                 st.write(parsed_data) # Show the raw data
+
+        except json.JSONDecodeError:
+            st.error("Error: Could not parse the data as JSON.")
+            st.text(seo) # Show the raw string data
+        except AttributeError:
+             st.error("Error: Could not find expected keys ('category', 'current_footprint', 'best_of_breed_solution') in the data.")
+             st.write(parsed_data) # Show the data that caused the error
+        except Exception as e:
+            st.error(f"An unexpected error occurred while processing data: {e}")
+            st.write(seo) # Show the raw data
+    else:
+        st.warning("No data retrieved for analysis.")
+    # --- End: Loop and display data ---
+
 def seo_on_page_table(df_data):
      
     if df_data:
@@ -335,7 +390,7 @@ In line with this, we have looked into the technology used by **{client_name}** 
     website_and_tools_all_data = get_analyst_response("Website and Tools Analyst")
     website_and_tools_data = website_and_tools_all_data["table"]
     website_and_tools_all_data_other_findings = website_and_tools_all_data["other_findings"]
-    write_table(website_and_tools_data)
+    write_table_with_competitor_footprint(website_and_tools_data)
     st.write("**Other Findings:**")
     st.write(website_and_tools_all_data_other_findings)
     
@@ -351,7 +406,7 @@ Currently, {client_name} has already explored numerous online advertising. Its c
     sem_data_all = get_analyst_response("SEM/PPC Analyst")
     sem_data = sem_data_all["table"]
     sem_data_other_findings = sem_data_all["other_findings"]
-    write_table(sem_data)
+    write_table_with_competitor_footprint(sem_data)
     st.write("**Other Findings:**")
     st.write(sem_data_other_findings)
     
@@ -366,7 +421,7 @@ There are two types of SEO based on where the optimization is implemented: On-pa
     seo_all_data = get_analyst_response("SEO Analyst")
     other_findings = seo_all_data["other_findings"]
     seo_data = seo_all_data["table"][0]["seo"]
-    write_table(seo_data)
+    write_table_with_competitor_footprint(seo_data)
     
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
     st.markdown("---")
@@ -399,7 +454,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     social_media_data_all = get_analyst_response("Social Media Analyst")
     social_media_data = social_media_data_all["table"]
     social_media_data_other_findings = social_media_data_all["other_findings"]
-    write_table(social_media_data)
+    write_table_with_competitor_footprint(social_media_data)
     st.write("**Other Findings:**")
     st.write(social_media_data_other_findings)
     
@@ -412,7 +467,7 @@ Regardless, it is still a great channel worth investing to improve a business’
     content_data_all = get_analyst_response("Content Analyst")
     content_data = content_data_all["table"]
     content_data_other_findings = content_data_all["other_findings"]
-    write_table(content_data)
+    write_table_with_competitor_footprint(content_data)
     st.write("**Other Findings:**")
     st.write(content_data_other_findings)
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
