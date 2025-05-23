@@ -8,7 +8,10 @@ import uuid
 
 st.set_page_config(layout="centered") 
 
-if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+
+if not st.session_state['logged_in']:
     st.switch_page('app.py')
     st.stop()
 
@@ -215,18 +218,23 @@ def write_table_with_competitor_footprint(seo):
                     competitor_footprint = item.get('competitor_footprint', 'N/A')
                     best_of_breed = item.get('best_of_breed_solution', 'N/A')
 
-                    # Add a row to the Markdown table string
-                    # Replace underscores with spaces and apply title case to category
+                    # Format competitor_footprint for multiple competitors (string with newlines or list)
+                    if isinstance(competitor_footprint, list):
+                        competitor_footprint_formatted = '<br>'.join(str(x) for x in competitor_footprint)
+                    elif isinstance(competitor_footprint, str) and ('\n' in competitor_footprint or '\r' in competitor_footprint):
+                        competitor_footprint_formatted = '<br>'.join([line.strip() for line in competitor_footprint.splitlines() if line.strip()])
+                    else:
+                        competitor_footprint_formatted = str(competitor_footprint).replace('_', ' ')
+
                     category_formatted = category.replace('_', ' ').title()
-                    competitor_footprint_formatted = competitor_footprint.replace('_', ' ')
-                    current_footprint_formatted = current_footprint.replace('_', ' ')
-                    best_of_breed_formatted = best_of_breed.replace('_', ' ')
+                    current_footprint_formatted = str(current_footprint).replace('_', ' ')
+                    best_of_breed_formatted = str(best_of_breed).replace('_', ' ')
 
                     markdown_table += f"| {category_formatted} | {current_footprint_formatted} | {competitor_footprint_formatted} | {best_of_breed_formatted} |\n"
                     
 
-                # Display the complete Markdown table
-                st.markdown(markdown_table)
+                # Display the complete Markdown table with HTML rendering for <br>
+                st.markdown(markdown_table, unsafe_allow_html=True)
 
             # Handle case if data is not a list (e.g., a single dictionary)
             elif isinstance(parsed_data, dict):
@@ -376,7 +384,7 @@ def display_outputs():
     snapshot_other_notes = snapshot_all_data["other_notes"]
     write_snapshot(snapshot_data)
     st.write("**Other Notes:**")
-    snapshot_other_notes = json.loads(snapshot_other_notes)
+    #snapshot_other_notes = json.loads(snapshot_other_notes)
     st.write(snapshot_other_notes)
     #write_snapshot(get_analyst_response("Snapshot Analyst")) #write_snapshot
     st.markdown("<a href='#top'>Go to top</a>", unsafe_allow_html=True)
